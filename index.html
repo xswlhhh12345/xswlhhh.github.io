@@ -554,10 +554,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-03-27 18:26:27 / 修改时间：19:49:35" itemprop="dateCreated datePublished" datetime="2024-03-27T18:26:27+08:00">2024-03-27</time>
+              <time title="创建时间：2024-03-27 18:26:27" itemprop="dateCreated datePublished" datetime="2024-03-27T18:26:27+08:00">2024-03-27</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-28 11:31:59" itemprop="dateModified" datetime="2024-10-28T11:31:59+08:00">2024-10-28</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -597,14 +603,14 @@
 <p>动态链接库(.ddl)(.so)和静态链接库(.lib)(.a)都按照可执行文件存储。</p>
 <p>静态链接库可理解成多个目标文件捆绑在一起的包。</p>
 <p>下面是ELF文件相关的一个总结图，建议看看。</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_3_1.jpg"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730085119003.jpg"></p>
 <p>随后书下面就讲了一些 目标文件和可执行文件的小历史 这里不做概括</p>
 <p>COFF的主要贡献就是在目标文件中引入了段的机制。</p>
 <h1 id="3-2目标文件是什么样的"><a href="#3-2目标文件是什么样的" class="headerlink" title="3.2目标文件是什么样的?"></a>3.2目标文件是什么样的?</h1><p><strong>目标文件</strong>其实已经是二进制文件了。里面有机器指令代码和数据。</p>
 <p>当然它<strong>还有链接时需要的一些信息，比如符号表，调试信息，字符串等</strong>。</p>
 <p>一般目标文件将这些信息按照不同的属性，<strong>以“节”的形式存储</strong>，有时候也叫做“段”。节与节之间唯一的区别就是ELF的链接视图和装载视图的时候，此处节和段都叫段。</p>
 <p><strong>编译后的机器指令通常放在代码段（.text)，全局变量和局部静态变量放在数据段(.data)。</strong></p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_3_2.jpg"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730085552659.jpg"></p>
 <p>从上图可以看到，<strong>ELF文件开头是“文件头”</strong>，它描述了整个文件的属性（包括是否可执行、静态链接还是动态、入口地址、目标硬件、目标操作系统）<strong>其中还包括一个段表</strong>，<strong>是描述文件中各个段的数组（描述各个段在文件的偏移和属性）。</strong></p>
 <p>值得一提的是，初始化的全局变量和局部静态变量保存在data段；未初始化的全局变量和局部静态变量保存在bss段。但是本来它们应该在data段的，但是因为没初始化，都是0，程序不给存放数据0预留空间，所以此时bss段只是给它们预留位置而已。</p>
 <p>总的来说，程序指令去了text代码段，程序数据去了data和bss段。</p>
@@ -621,7 +627,7 @@
 
 <p>-h是把ELF各个段的基本信息打印出来，-x可以把更多信息打印出来。</p>
 <p>这里多了打印出来除了上面提到的段的话，还有三个段(.rodata)只读数据段，(.comment)注释信息段，（.note.GNU-stack）堆栈提示段（此处是0，暂且忽略它）。此ELF文件事实上存在的段就只有text，data，rodata，comment这四个段了。</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_3_4.jpg"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/ca5b3bcd84d6debdbc422e6c8f3cbcb.png"></p>
 <h2 id="3-3-1-代码段"><a href="#3-3-1-代码段" class="headerlink" title="3.3.1 代码段"></a>3.3.1 代码段</h2><p>主要是对着格式分析,此处不再赘诉</p>
 <h2 id="3-3-2数据段和只读数据段"><a href="#3-3-2数据段和只读数据段" class="headerlink" title="3.3.2数据段和只读数据段"></a>3.3.2数据段和只读数据段</h2><p>主要是对着格式分析,此处不再赘诉</p>
 <hr>
@@ -632,39 +638,39 @@
 <p>通过bss段的符号是否被定义，是否存放在目标文件的BSS段，引出了“弱符号和强符号和common块”这两个概念，在下一章会讨论这个问题。</p>
 <p>编译器优化有时候会给我们分析系统软件背后的机制带来很多在障碍，使很多问题不能够一目了然，本书尽量避开优化过程，还原机制和原理本身</p>
 <h2 id="3-3-4其他段"><a href="#3-3-4其他段" class="headerlink" title="3.3.4其他段"></a>3.3.4其他段</h2><p>这张图片帮忙说了很多，一下子概括了整整一小节的内容，后仅做补充</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_3_5.jpg"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730085644558.jpg"></p>
 <h3 id="自定义段"><a href="#自定义段" class="headerlink" title="自定义段"></a>自定义段</h3><p>有些时候我们可能希望变量或者某部分代码放到指定的段去，实现某些特定功能。比如为了满足某些硬件的内存和I&#x2F;O地址布局，或者是像Linux操作系统内核中用来完成一些初始化和用户空间复制时出现页错误异常等。</p>
 <p>GCC提供了一个扩展机制，使得程序员可以指定变量所处的段：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">__attribute__((section(<span class="string">&quot;FOO&quot;</span>))) <span class="type">int</span> global=<span class="number">42</span></span><br><span class="line">__attribute__((section(<span class="string">&quot;BAR&quot;</span>))) <span class="type">void</span> foo()</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>我们在全局变量或者函数之前加入“<strong>attribute</strong>((section(“name”)))”属性，就可以把相应的变量和函数放到以“name”作为段名的段中。</p>
 <h1 id="3-4ELF文件结构描述"><a href="#3-4ELF文件结构描述" class="headerlink" title="3.4ELF文件结构描述"></a>3.4ELF文件结构描述</h1><p>先放ELF文件结构预览图</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_3_6.jpg"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730085763485.jpg"></p>
 <p>ELF目标文件格式最前面是ELF文件头（包含了整个文件的基本属性，比如ELF文件版本、目标机器型号、程序入口地址等）紧接着是ELF各个段。</p>
 <p><strong>其中与ELF中和段的重要结构就是段表（SHtable），表中描述了（段名，段长度，偏移，读写权限以及其他）段的属性。</strong></p>
 <h2 id="3-4-1文件头"><a href="#3-4-1文件头" class="headerlink" title="3.4.1文件头"></a>3.4.1文件头</h2><p>直接上图</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_3_7.jpg"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730085850283.jpg"></p>
 <p>ELF文件头定义了ELF魔数、文件机器字节长度、数据存储方式、版本、运行平台、ABI版本、ELF重定位类型、硬件平台、硬件平台版本、入口地址、程序头入口和长度、段表的位置和长度及段的数量等。</p>
 <p>ELF文件头结构以及相关常数被定义在“&#x2F;usr&#x2F;include&#x2F;elf.h”里，<strong>ELF有32和64位的版本。不同版本的成员大小不一样，但是ELF文件头内容基本上一样</strong>，它们文件头分别叫做“Elf32_Ehdr”和“Elf64_Ehdr”。“elf.h”使用typedef定义了一套自己的变量体系。</p>
 <p>一下是Elfxx_Ehdr的结构体图</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_3_8.jpg"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730085883441.jpg"></p>
 <p>然后较详细介绍了ELF头部结构体一些成员的含义，比如ELF魔数、ELF_type，系统一般通过ELF_type来判断它是ET_REL，ET_EXEC，ET_DYN这三种之一的文件。</p>
-<details class="lake-collapse"><summary id="u4c678d99"><span class="ne-text">ELF头部结构体一些成员的含义</span></summary><p id="u60014499" class="ne-p" style="margin: 0; padding: 0; min-height: 24px"><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_3_15.png" width="1025" id="u5587b1b1" class="ne-image"></p><p id="ubd04a8f1" class="ne-p" style="margin: 0; padding: 0; min-height: 24px"><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_3_16.png" width="1006" id="u32a9dd32" class="ne-image"></p></details>
+<details class="lake-collapse"><summary id="u4c678d99"><span class="ne-text">ELF头部结构体一些成员的含义</span></summary><p id="u60014499" class="ne-p" style="margin: 0; padding: 0; min-height: 24px"><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730085943016.jpg" width="1025" id="u5587b1b1" class="ne-image"></p><p id="ubd04a8f1" class="ne-p" style="margin: 0; padding: 0; min-height: 24px"><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730085995128.jpg" width="1006" id="u32a9dd32" class="ne-image"></p></details>
 
 <h2 id="3-4-2段表"><a href="#3-4-2段表" class="headerlink" title="3.4.2段表"></a>3.4.2段表</h2><p><strong>段表存放段的基本属性的结构</strong>，位置由ELF文件头的“e_shoff”成员决定。</p>
 <p>我们可以看ELF文件段表的基本内容</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_3_9.jpg"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730086037825.jpg"></p>
 <p>段表的结构比较简单，它是一个以“Elf32_Shdr”（也叫段描述符）结构体为元素的数组。每个结构体意味着一个段的信息。ELF段表第一个元素是无效的段描述符。</p>
 <p>“Elf32_Shdr”被定义在”&#x2F;usr&#x2F;include&#x2F;elf.h”，如图:</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_3_10.png"></p>
-<details class="lake-collapse"><summary id="u86eb7fea"><span class="ne-text">各个成员含义如下</span></summary><p id="u75baa19b" class="ne-p" style="margin: 0; padding: 0; min-height: 24px"><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_3_11.png" width="576" id="u9500522c" class="ne-image"></p></details>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730086102351.jpg"></p>
+<details class="lake-collapse"><summary id="u86eb7fea"><span class="ne-text">各个成员含义如下</span></summary><p id="u75baa19b" class="ne-p" style="margin: 0; padding: 0; min-height: 24px"><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/3ad734d862830a85f303d8c2d7b496e.png" width="576" id="u9500522c" class="ne-image"></p></details>
 
 <hr>
 <p>这里简单说一下段的标志位，表示该段在进程虚拟地址空间的属性，比如是否可写，是否可执行等。</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_3_12.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/a945ceae467dd87f8b4268d7c01942d.png"></p>
 <hr>
 <p>然后再简单说一下段的链接信息(sh_link、sh_info)</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_3_13.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730086244994.jpg"></p>
 <h2 id="3-4-3重定位表"><a href="#3-4-3重定位表" class="headerlink" title="3.4.3重定位表"></a>3.4.3重定位表</h2><p>如果一个段的类型是”SHT_REL”，也就是说它是一个<strong>重定位表</strong>，对于每个需要重定位的段都有一个相应的重定位表</p>
 <p>比如”.rel.text”就是对”.text”的重定位表。此时sh_link表示符号表的下标，sh_info表示它作用域哪个段。</p>
 <p>下一章静态链接过程的时候，再细细分析。</p>
@@ -674,7 +680,7 @@
 <p>还有几种不常用到的符号：定义在本目标文件的全局符号、段名(它的值就是段的起始地址)、本目标文件引用的全局符号、局部符号、行号信息（目标文件指令和源代码中代码行对应的关系）。</p>
 <h2 id="3-5-1-ELF符号结构"><a href="#3-5-1-ELF符号结构" class="headerlink" title="3.5.1 ELF符号结构"></a>3.5.1 ELF符号结构</h2><p>elf符号表往往是个段，段名“.symtab”。</p>
 <p>符号表结构是一个Elf32_Sym结构的数组</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_3_14.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730086280295.jpg"></p>
 <p>符号绑定st_info，低4位表示符号类型。高28位表示符号绑定信息，有局部，全局符号还有弱引用。</p>
 <p>符号所在段st_shndx，定义在本目标文件中，表示<strong>符号所在段 在段表 中的下标。</strong></p>
 <p><strong>其他详细建议看书</strong></p>
