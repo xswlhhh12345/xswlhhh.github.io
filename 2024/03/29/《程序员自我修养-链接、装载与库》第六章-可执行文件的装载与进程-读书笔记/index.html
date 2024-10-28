@@ -29,17 +29,26 @@
 <meta property="og:site_name" content="xswlhhh的黄金屋">
 <meta property="og:description" content="可执行文件只有装载到内存以后才能被CPU执行，早起装载基本上就是把程序从外部存储器读取到内存中某个位置。但是硬件MMU诞生，多进程，多用户，虚拟存储的操作系统，装载过程变得复杂起来。 作者介绍在ELF文件在linux下的装载过程。来为我们解答一些问题。 首先什么是进程的虚拟地址空间？ 为什么进程要有自己独立的虚拟地址空间？ 我们从历史的角度来看看装载的几种方式，包括覆盖装载、页映射。 接着还会介绍">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_6_1.png">
-<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_6_2.png">
-<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_6_3.png">
-<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_6_4.png">
-<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_6_5.png">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711442516836-73099559-d1d8-4dc8-afd9-428362c817d4.webp">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711443804520-75898888-25ff-4c0e-a297-6e488bb495d1.png">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711443927274-ef1fa4b3-9dbe-4042-acf0-258652a0f712.png">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711445006885-36419e1a-3c74-4c16-b8cd-06c046c88b00.png">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711445011172-1727b70b-259c-42bd-b739-7554a6470f6d.png">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711789734907-7ce5741e-6aca-47b0-869e-88018e87f3ce.png">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711790314095-b733652c-1d7a-48a0-a2f3-ec37ad2112b6.jpeg">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711790346659-323dfd64-81c9-4a7e-b42e-1f7d81e4c668.png">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711790679106-5ff94738-11df-4748-823a-200c993159f5.png">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711790938771-4a77cbef-6482-41fb-a9cd-ea32a021de1f.png">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711791530548-f7a13520-4ffc-4c1d-9da5-8f851589e413.png">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711791431071-84dcbb6e-a141-4557-83f3-832c69b0982c.png">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711791939688-1b589f7f-e2ed-40c8-88ae-f836d2dc7270.png">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711792554441-96de7111-a21a-47ce-a996-215cfa2837dd.png">
 <meta property="article:published_time" content="2024-03-29T08:33:43.000Z">
-<meta property="article:modified_time" content="2024-10-28T03:33:24.782Z">
+<meta property="article:modified_time" content="2024-10-28T03:52:43.903Z">
 <meta property="article:author" content="xswlhhh">
 <meta property="article:tag" content="books-reading">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_6_1.png">
+<meta name="twitter:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711442516836-73099559-d1d8-4dc8-afd9-428362c817d4.webp">
 
 <link rel="canonical" href="http://example.com/2024/03/29/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB-%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93%E3%80%8B%E7%AC%AC%E5%85%AD%E7%AB%A0-%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E7%9A%84%E8%A3%85%E8%BD%BD%E4%B8%8E%E8%BF%9B%E7%A8%8B-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">
 
@@ -237,7 +246,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-10-28 11:33:24" itemprop="dateModified" datetime="2024-10-28T11:33:24+08:00">2024-10-28</time>
+                <time title="修改时间：2024-10-28 11:52:43" itemprop="dateModified" datetime="2024-10-28T11:52:43+08:00">2024-10-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -261,13 +270,13 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
               </span>
-              <span>2.7k</span>
+              <span>5.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
-              <span>2 分钟</span>
+              <span>5 分钟</span>
             </span>
 
         </div>
@@ -292,7 +301,7 @@
 <p><strong>那么在32位的4GB空间中，我们程序是否可以任意使用？</strong></p>
 <p>很遗憾，并不可以。因为操作系统还要监管程序运行，我们要给其分配一段空间。</p>
 <p>Linux操作系统将进程的虚拟地址空间做了如图分配</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_6_1.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711442516836-73099559-d1d8-4dc8-afd9-428362c817d4.webp" alt="img"></p>
 <p>我们只看左边，4gb被分成了两部分，用户和内核地址。原则上说我们最多用3GB的虚拟空间，但是在现代程序中，明显这是不够用的（这里不是讲64位，而是依然是32位，虽然64位才是一本万利的选择）。PAE机制能够让我们在32位下使用超过4GB的内存空间。这点我们后面会说。</p>
 <p>Window则2gb&#x2F;2gb这样分，也可以让操作系统占用的内存空间减少到1GB，在windows系统盘根目录下的Boot.ini加个“&#x2F;3g”参数</p>
 <h2 id="PAE"><a href="#PAE" class="headerlink" title="PAE"></a>PAE</h2><p>从硬件层面来讲，Inter将32位地址线拓展到36位之后，修改了页映射的，这样可以访问更多的物理地址。这个扩展方式就叫做PAE。</p>
@@ -306,7 +315,7 @@
 <p>在一些现代嵌入式的内存受限环境下，特别是诸如DSP等，这种方法或许还有用武之地。</p>
 <p>覆盖装入把挖掘内存潜力的任务交给了程序员，程序员在编写程序时要把其分成若干块，然后编写一个小小的辅助代码（覆盖管理器）来管理这些模块应该何时驻留内存之中，何时被替换掉。</p>
 <p>最简单的情况下，一个main模块会调用到模块A和模块B，但是AB之间没有相互调用的关系。假设这三个模块的大小分别为1024,512,256字节。不考虑内存对齐，装载地址限制的情况下，理论上运行这个程序需要有1792个字节的内存。此时在内存中应该这样安排。</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_6_2.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711443804520-75898888-25ff-4c0e-a297-6e488bb495d1.png" alt="img"></p>
 <p>由于AB之间没有相互调用的依赖关系，因此可以相互覆盖。这样就省下了一些字节。</p>
 <p>所以程序要把这些模块手动分成一个树状结构来表示其调用依赖关系。但是要注意两点：</p>
 <ol>
@@ -316,16 +325,16 @@
 </ol>
 </li>
 </ol>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_6_3.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711443927274-ef1fa4b3-9dbe-4042-acf0-258652a0f712.png" alt="img"></p>
 <p>当然跨模块间的调用要经过覆盖管理器，以确保所有被调用的模块都能够驻留在内存。</p>
 <p>覆盖装入的速度肯定还是比较慢的。</p>
 <h2 id="页映射"><a href="#页映射" class="headerlink" title="页映射"></a>页映射</h2><p>它是虚拟存储机制的一部分，由其发明而诞生。这里我们结合可执行文件的装载来阐述一下页映射是如何应用到动态装载中去的。</p>
 <p>页映射将磁盘中数据和指令按照“页”为单位划分为若干个页。硬件规定页的大小有4096字节、8192字节、2MB、4MB等。InterA32一般使用4096字节的页。</p>
 <p>假设我们有如下页，有16KB大小内存，这些页的大小为4KB。</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_6_4.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711445006885-36419e1a-3c74-4c16-b8cd-06c046c88b00.png" alt="img"></p>
 <p>如果我们的程序是P0~P7有32KB的程序，我们16KB空间显然无法直接装入。</p>
 <p>假设程序刚开始执行时的入口地址在P0，这时装载管理器（假设控制装载的叫这个名字）会把F0分配给P0，然后运行一段时间需要用到其他程序的页，如P5,P3,P6，会将P5分配到F1，P3分配到F2，P6分配到F3。</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_6_5.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711445011172-1727b70b-259c-42bd-b739-7554a6470f6d.png" alt="img"></p>
 <p>那么此时应该占满了16KB的内存了吧。如果还要装入P4，那么装载器必须做出选择，舍弃哪个页来装入。</p>
 <p>我们有很多算法来决定选择哪个页，比如FIFO算法，或者最少使用算法LUA。</p>
 <p>很多人可能猜到了，这个所谓的装载器其实就是我们的操纵系统，更精确的说，是它的存储管理器。目前几乎所有主流的操作系统都是按照这种方式装载的。</p>
@@ -342,7 +351,73 @@
 <h3 id="创建虚拟空间"><a href="#创建虚拟空间" class="headerlink" title="创建虚拟空间"></a>创建虚拟空间</h3><p>一个虚拟空间由一组映射函数将虚拟空间的页映射到物理空间，<strong>创建虚拟空间</strong>不是创建映射函数，而<strong>是创建对应的数据结构</strong>。在i386Linux下，创建虚拟空间实际上只是分配一个页目录，甚至不需要设置映射关系，这些映射关系等到后面程序发生页错误再进行设置。</p>
 <p>感觉有点绕？听不懂？不急，后面会解释</p>
 <p>这里是 虚拟空间映射到物理空间 的过程</p>
-<h3 id="建立虚拟空间和可执行文件的映射"><a href="#建立虚拟空间和可执行文件的映射" class="headerlink" title="建立虚拟空间和可执行文件的映射"></a>建立虚拟空间和可执行文件的映射</h3><p>这一步做的是虚拟空间和可执行文件的映射关系，</p>
+<h3 id="建立虚拟空间和可执行文件的映射"><a href="#建立虚拟空间和可执行文件的映射" class="headerlink" title="建立虚拟空间和可执行文件的映射"></a>建立虚拟空间和可执行文件的映射</h3><p>这一步做的是虚拟空间和可执行文件的映射关系。有一个机制：当程序执行发生页错误时，操作系统从物理内存分配一个物理页，然后将此页从磁盘读取到内存中，再设置虚拟页和物理页的映射关系，这样程序才能正常的运行。那么这个机制就有一个问题，它是如何知道缺页错误的程序所需要的页在可执行文件的哪个位置？这就是可执行文件和虚拟空间的映射关系。从某种角度来看，这一步是整个装载过程中最重要的一步，也是传统意义上”装载”的过程。</p>
+<p>可执行文件也被叫做映像文件。</p>
+<p>考虑最简单的情况</p>
+<h3 id="设置可执行文件入口"><a href="#设置可执行文件入口" class="headerlink" title="设置可执行文件入口"></a>设置可执行文件入口</h3><p>第三步也是最简单的一步，操作系统通过设置CPU的指令寄存器将控制权移交给进程，然后进程开始执行。这一步看似简单，实际上在操作系统层面比较复杂，它涉及到内核堆栈和用户堆栈的切换、CPU运行权限的切换。不过从进程的角度来看这一步可以简单的认为操作系统执行了一条跳转指令。其实也就是ELF文件头保存的入口地址。</p>
+<h2 id="页错误"><a href="#页错误" class="headerlink" title="页错误"></a>页错误</h2><p>上面步骤完成后，可执行文件的指令和数据都没有装入到内存中。操作系统只是通过可执行文件头部信息建立起可执行文件和进程虚拟内存的联系罢了。</p>
+<p>假设程序的入口是0x08048000，即刚好是.text段的起始地址，当CPU执行命令时，会发现这是个空页面，于是会产生页错误。CPU将控制权交给操作系统，操作系统通过页错误处理机制来处理，然后通过装载过程第二步建立的数据结构来找到空页面所在的VMA（虚拟内存），计算出相应页面的偏移，然后分配一个物理内存页面，建立虚拟页和分配的物理页的映射关系。</p>
+<p>随着进程执行，页错误不断产生，程序也不断“补全”</p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711789734907-7ce5741e-6aca-47b0-869e-88018e87f3ce.png" alt="img"></p>
+<h1 id="6-4-进程虚存空间分布"><a href="#6-4-进程虚存空间分布" class="headerlink" title="6.4 进程虚存空间分布"></a>6.4 进程虚存空间分布</h1><h3 id="ELF文件链接视图和执行视图"><a href="#ELF文件链接视图和执行视图" class="headerlink" title="ELF文件链接视图和执行视图"></a>ELF文件链接视图和执行视图</h3><p>如果我们按照链接时的节（Section）一一映射成一个页的整数倍，那么浪费的内存是可想而知的。</p>
+<p>操作系统只关心装载相关的问题，最主要的是段（Section）的权限，这些权限往往只有几种组合。</p>
+<p>基本上是这三种</p>
+<ol>
+<li>以代码段为代表的可读可执行段</li>
+<li>以数据段和bss段为代表的可读可写段</li>
+<li>以只读数据为代表的只读段。</li>
+</ol>
+<p>对于权限相同的段，我们可以把他们合成到一个段（Segment）进行映射</p>
+<p>（Segment）和（Section）都可以是段，但是他们是不同视图下的说法，（Section）是链接视图，（Segment）是装载执行视图</p>
+<p>ELF可执行文件有个程序头表，用来保存（Segment）信息。</p>
+<p>目标文件没有头表，因为它不需要被装载。而ELF可执行文件和共享库文件都有。</p>
+<p>头表结构体</p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711790314095-b733652c-1d7a-48a0-a2f3-ec37ad2112b6.jpeg" alt="img"></p>
+<p>各个成员基本含义</p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711790346659-323dfd64-81c9-4a7e-b42e-1f7d81e4c668.png" alt="img"></p>
+<h2 id="堆和栈"><a href="#堆和栈" class="headerlink" title="堆和栈"></a>堆和栈</h2><p>做多点x86和x64的题，大概能看出点规律，这里不做总结了。</p>
+<p>还有个很特殊的VMA叫做“vdso”，它的地址已经位于内核空间（即大于0XC0000000）的地址。</p>
+<p>操作系统通过给进程空间划分出一个个VMA来管理进程的虚拟空间；基本原则是将相同属性、相同映像文件的映射成一个VMA，一个进程基本上可以分为如下几种VMA区域：</p>
+<ol>
+<li>代码VMA，权限只读、可执行；有映像文件</li>
+<li>数据VMA，权限可读可写，有映像文件</li>
+<li>堆VMA，权限可读写、可执行（应该大多数不可以？）；无映像文件，匿名，向上拓展</li>
+<li>栈VMA，权限可读写，不可执行；无映像文件，匿名，向下拓展</li>
+</ol>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711790679106-5ff94738-11df-4748-823a-200c993159f5.png" alt="img"></p>
+<h2 id="堆的最大申请数量"><a href="#堆的最大申请数量" class="headerlink" title="堆的最大申请数量"></a>堆的最大申请数量</h2><p>自己实验吧hhh，现在是x64时代，可能有时候编译器会自动帮你优化了（或者是其他操作），注意一下。</p>
+<h2 id="段地址对齐"><a href="#段地址对齐" class="headerlink" title="段地址对齐"></a>段地址对齐</h2><p>页是最小以映射单位。对于Intel80x86处理器来说，默认页大小为4096字节。</p>
+<p>我们先拿一个例子来看看：</p>
+<p>如果一个可执行文件有三个段需要装载，分别为SEG0、1、2。</p>
+<p>如果对应起始地址为0x08048000，则如下表6.4</p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711790938771-4a77cbef-6482-41fb-a9cd-ea32a021de1f.png" alt="img"></p>
+<p>这里占据了5个页，20480字节，但是三个段总长度才12014字节，利用率才58.6%。</p>
+<p>为了解决这个问题，有些UNIX系统采取了一个取巧的方法，就是让那些各个段接壤部分共享一个物理页面，然后将该物理页面分别映射两次（如下图）</p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711791530548-f7a13520-4ffc-4c1d-9da5-8f851589e413.png" alt="img"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711791431071-84dcbb6e-a141-4557-83f3-832c69b0982c.png" alt="img"></p>
+<p>因为段地址对齐的关系，各个段的虚拟地址就往往不是系统页面长度的整数倍了。</p>
+<h2 id="进程栈初始化"><a href="#进程栈初始化" class="headerlink" title="进程栈初始化"></a>进程栈初始化</h2><p>进程刚开始启动时，需要知道进程的一些运行环境，最基本的就是系统环境变量和进程的运行参数。很常见的一种做法就是将它们保存到栈中。</p>
+<p>假设有如下两个环境变量</p>
+<p>HOME&#x3D;&#x2F;home&#x2F;user</p>
+<p>PATH&#x3D;&#x2F;usr&#x2F;bin</p>
+<p>比如我们运行程序的命令行是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ prog <span class="number">123</span></span><br></pre></td></tr></table></figure>
+
+<p>假设栈段底部地址为0xBF802000，那么进程初始化后堆栈就如图所示</p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711791939688-1b589f7f-e2ed-40c8-88ae-f836d2dc7270.png" alt="img"></p>
+<h1 id="6-5-Linux内核装载ELF过程简介"><a href="#6-5-Linux内核装载ELF过程简介" class="headerlink" title="6.5 Linux内核装载ELF过程简介"></a>6.5 Linux内核装载ELF过程简介</h1><p>当我们在Linux系统的bash输入一个命令执行ELF程序时。</p>
+<p>在用户层面bash进程会调用fork系统调用创建一个新的进程，然后新的进程调用execve()系统调用执行指定的ELF文件，原先的bash进程继续返回等待刚才启动的新进程结束，然后继续等待用户输入命令。</p>
+<p>在内核中，execve系统调用相应的入口是sys_execve()，进行参数检查后会调用do_execve()。</p>
+<p>do_execve()首先会查找被执行的文件，找到文件，则读取文件前128字节（参考ELF结构），这个函数要判断该ELF文件的格式，每种可执行文件的格式的开头几个字节都很特殊，特别是开头四个字节，常被称作魔数</p>
+<ul>
+<li>如果是ELF可执行文件，则头四字节为 0x7f、’e’、’l’、’f’；</li>
+<li>如果是java，则是’c’、’a’、’f’、’e’；</li>
+<li>如果是Shell脚本或者perl、python等，那么其第一行一定是”#&#x2F;bin&#x2F;sh”、”#!&#x2F;usr&#x2F;bin&#x2F;perl”、”#!&#x2F;usr&#x2F;bin&#x2F;python”</li>
+</ul>
+<p>do_execve()检查之后会调用search_binary_handle()去搜索适合的可执行文件装载处理过程。</p>
+<p>比如装载ELF的叫做load_elf_binary()，其有以下五个步骤</p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1711792554441-96de7111-a21a-47ce-a996-215cfa2837dd.png" alt="img"></p>
+<p>当其执行完毕后，原路返回。当其又sys_execve()返回用户态时，EIP寄存器直接跳转到ELF程序的入口地址，则ELF可执行文件装载完成。</p>
 
     </div>
 
@@ -448,7 +523,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#6-1-%E8%BF%9B%E7%A8%8B%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4"><span class="nav-number">1.</span> <span class="nav-text">6.1 进程虚拟地址空间</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#PAE"><span class="nav-number">1.1.</span> <span class="nav-text">PAE</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-2-%E8%A3%85%E8%BD%BD%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">6.2 装载的方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A6%86%E7%9B%96%E8%A3%85%E5%85%A5"><span class="nav-number">2.1.</span> <span class="nav-text">覆盖装入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B5%E6%98%A0%E5%B0%84"><span class="nav-number">2.2.</span> <span class="nav-text">页映射</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-3-%E4%BB%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%A7%92%E5%BA%A6%E7%9C%8B%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E7%9A%84%E8%A3%85%E8%BD%BD%E3%80%82"><span class="nav-number">3.</span> <span class="nav-text">6.3 从操作系统角度看可执行文件的装载。</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%BB%BA%E7%AB%8B"><span class="nav-number">3.1.</span> <span class="nav-text">进程的建立</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E8%99%9A%E6%8B%9F%E7%A9%BA%E9%97%B4"><span class="nav-number">3.1.1.</span> <span class="nav-text">创建虚拟空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E8%99%9A%E6%8B%9F%E7%A9%BA%E9%97%B4%E5%92%8C%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E7%9A%84%E6%98%A0%E5%B0%84"><span class="nav-number">3.1.2.</span> <span class="nav-text">建立虚拟空间和可执行文件的映射</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#6-1-%E8%BF%9B%E7%A8%8B%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4"><span class="nav-number">1.</span> <span class="nav-text">6.1 进程虚拟地址空间</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#PAE"><span class="nav-number">1.1.</span> <span class="nav-text">PAE</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-2-%E8%A3%85%E8%BD%BD%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">6.2 装载的方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A6%86%E7%9B%96%E8%A3%85%E5%85%A5"><span class="nav-number">2.1.</span> <span class="nav-text">覆盖装入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B5%E6%98%A0%E5%B0%84"><span class="nav-number">2.2.</span> <span class="nav-text">页映射</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-3-%E4%BB%8E%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E8%A7%92%E5%BA%A6%E7%9C%8B%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E7%9A%84%E8%A3%85%E8%BD%BD%E3%80%82"><span class="nav-number">3.</span> <span class="nav-text">6.3 从操作系统角度看可执行文件的装载。</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%BB%BA%E7%AB%8B"><span class="nav-number">3.1.</span> <span class="nav-text">进程的建立</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E8%99%9A%E6%8B%9F%E7%A9%BA%E9%97%B4"><span class="nav-number">3.1.1.</span> <span class="nav-text">创建虚拟空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E8%99%9A%E6%8B%9F%E7%A9%BA%E9%97%B4%E5%92%8C%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E7%9A%84%E6%98%A0%E5%B0%84"><span class="nav-number">3.1.2.</span> <span class="nav-text">建立虚拟空间和可执行文件的映射</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%85%A5%E5%8F%A3"><span class="nav-number">3.1.3.</span> <span class="nav-text">设置可执行文件入口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B5%E9%94%99%E8%AF%AF"><span class="nav-number">3.2.</span> <span class="nav-text">页错误</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-4-%E8%BF%9B%E7%A8%8B%E8%99%9A%E5%AD%98%E7%A9%BA%E9%97%B4%E5%88%86%E5%B8%83"><span class="nav-number">4.</span> <span class="nav-text">6.4 进程虚存空间分布</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ELF%E6%96%87%E4%BB%B6%E9%93%BE%E6%8E%A5%E8%A7%86%E5%9B%BE%E5%92%8C%E6%89%A7%E8%A1%8C%E8%A7%86%E5%9B%BE"><span class="nav-number">4.0.1.</span> <span class="nav-text">ELF文件链接视图和执行视图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A0%86%E5%92%8C%E6%A0%88"><span class="nav-number">4.1.</span> <span class="nav-text">堆和栈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A0%86%E7%9A%84%E6%9C%80%E5%A4%A7%E7%94%B3%E8%AF%B7%E6%95%B0%E9%87%8F"><span class="nav-number">4.2.</span> <span class="nav-text">堆的最大申请数量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AE%B5%E5%9C%B0%E5%9D%80%E5%AF%B9%E9%BD%90"><span class="nav-number">4.3.</span> <span class="nav-text">段地址对齐</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E6%A0%88%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">4.4.</span> <span class="nav-text">进程栈初始化</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-5-Linux%E5%86%85%E6%A0%B8%E8%A3%85%E8%BD%BDELF%E8%BF%87%E7%A8%8B%E7%AE%80%E4%BB%8B"><span class="nav-number">5.</span> <span class="nav-text">6.5 Linux内核装载ELF过程简介</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -464,20 +539,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -518,12 +593,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">49k</span>
+    <span title="站点总字数">70k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">44 分钟</span>
+    <span title="站点阅读时长">1:03</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
   </div>
