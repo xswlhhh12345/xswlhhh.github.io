@@ -22,30 +22,48 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="用最少的时间做无关的事，用最多的时间做紧要的事">
-<meta property="og:type" content="website">
-<meta property="og:title" content="xswlhhh的黄金屋">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="参考：linux进程相关函数(获取、销毁、切换···)_储处理器执行的代码-CSDN博客 参考：fork()、vfork()、clone()的区别_linux clone fork-CSDN博客 0x1 从C函数走进子进程1.1 进程有关概念1.1.1 进程程序是指存放指令的文件，存放在磁盘上，它是固定不变的，保存着指令的有序集合 进程是动起来的概念，可以理解成动起来的程序。（回头看看程序员自我修">
+<meta property="og:type" content="article">
+<meta property="og:title" content="紫禁城之殇">
+<meta property="og:url" content="http://example.com/2024/10/28/%E7%B4%AB%E7%A6%81%E5%9F%8E%E4%B9%8B%E6%AE%87/index.html">
 <meta property="og:site_name" content="xswlhhh的黄金屋">
-<meta property="og:description" content="用最少的时间做无关的事，用最多的时间做紧要的事">
+<meta property="og:description" content="参考：linux进程相关函数(获取、销毁、切换···)_储处理器执行的代码-CSDN博客 参考：fork()、vfork()、clone()的区别_linux clone fork-CSDN博客 0x1 从C函数走进子进程1.1 进程有关概念1.1.1 进程程序是指存放指令的文件，存放在磁盘上，它是固定不变的，保存着指令的有序集合 进程是动起来的概念，可以理解成动起来的程序。（回头看看程序员自我修">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1725447425374-34f85d01-61b6-41b4-993d-3739f43bc4f8.jpeg">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1725449684249-0afc3bac-80fa-4891-a4ca-8d52230e81f1.jpeg">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1725520062487-a9289a68-c329-4311-a2e5-f3653491e751.png">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1725521534710-ecc3e4f3-3a59-455a-8518-4ee9832628ef.png">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1725521563404-2340e616-ddce-4047-b31e-be1016202d38.png">
+<meta property="og:image" content="e:\blog_images\1725523442460-5ab430b5-a6d0-4ab7-8010-b0217c4f5162.png">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1725531833655-06cbd253-9b05-4082-a266-3f368db9af93.png">
+<meta property="og:image" content="e:\blog_images\1726049231841-1a5c4bdc-96e3-4ed7-9886-a2bdb6dc14b6.jpeg">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1726108227781-e82be599-1ad7-4755-839b-734eb69d8d50.jpeg">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1724511366296-7019bbcc-9ce3-46b8-bea3-c939ba7f99f9.png">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1726111417293-c9c0dab2-a03b-43ef-8077-3c444b56027c.png">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1726211709806-93e54516-2188-475d-b6d6-26cbd6a1af77.png">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1726212749197-6b4ebf41-fb80-4677-a0a3-5d0bfe0553e9.png">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1726214096416-98d3111d-f787-43c9-9d9c-0f0766b4dae1.png">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1726214453067-8e33a529-ea32-4953-bdab-46d9de921250.png">
+<meta property="article:published_time" content="2024-10-28T03:35:38.000Z">
+<meta property="article:modified_time" content="2024-10-28T03:41:57.825Z">
 <meta property="article:author" content="xswlhhh">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1725447425374-34f85d01-61b6-41b4-993d-3739f43bc4f8.jpeg">
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/2024/10/28/%E7%B4%AB%E7%A6%81%E5%9F%8E%E4%B9%8B%E6%AE%87/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>xswlhhh的黄金屋</title>
+  <title>紫禁城之殇 | xswlhhh的黄金屋</title>
   
 
 
@@ -191,9 +209,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -209,10 +228,9 @@
       <meta itemprop="name" content="xswlhhh的黄金屋">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/10/28/%E7%B4%AB%E7%A6%81%E5%9F%8E%E4%B9%8B%E6%AE%87/" class="post-title-link" itemprop="url">紫禁城之殇</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          紫禁城之殇
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -226,6 +244,13 @@
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
@@ -248,7 +273,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/z961968549/article/details/80189737#:~:text=%E5%BD%93%E6%9F%90%E4%B8%AA%E8%BF%9B%E7%A8%8B%E6%94%B6%E5%88%B0%E4%BF%A1%E5%8F%B7%E6%97%B6#:~:text=%E5%BD%93%E6%9F%90%E4%B8%AA%E8%BF%9B%E7%A8%8B%E6%94%B6%E5%88%B0%E4%BF%A1%E5%8F%B7%E6%97%B6">linux进程相关函数(获取、销毁、切换···)_储处理器执行的代码-CSDN博客</a></p>
+        <p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/z961968549/article/details/80189737#:~:text=%E5%BD%93%E6%9F%90%E4%B8%AA%E8%BF%9B%E7%A8%8B%E6%94%B6%E5%88%B0%E4%BF%A1%E5%8F%B7%E6%97%B6#:~:text=%E5%BD%93%E6%9F%90%E4%B8%AA%E8%BF%9B%E7%A8%8B%E6%94%B6%E5%88%B0%E4%BF%A1%E5%8F%B7%E6%97%B6">linux进程相关函数(获取、销毁、切换···)_储处理器执行的代码-CSDN博客</a></p>
 <p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/gogokongyin/article/details/51178257">fork()、vfork()、clone()的区别_linux clone fork-CSDN博客</a></p>
 <h1 id="0x1-从C函数走进子进程"><a href="#0x1-从C函数走进子进程" class="headerlink" title="0x1 从C函数走进子进程"></a>0x1 从C函数走进子进程</h1><h2 id="1-1-进程有关概念"><a href="#1-1-进程有关概念" class="headerlink" title="1.1 进程有关概念"></a>1.1 进程有关概念</h2><h3 id="1-1-1-进程"><a href="#1-1-1-进程" class="headerlink" title="1.1.1 进程"></a>1.1.1 进程</h3><p>程序是指存放指令的文件，存放在磁盘上，它是固定不变的，保存着指令的有序集合</p>
 <p>进程是动起来的概念，可以理解成动起来的程序。（回头看看程序员自我修养是如何解释的）</p>
@@ -820,554 +845,58 @@
 <p>最后</p>
 <p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1726214453067-8e33a529-ea32-4953-bdab-46d9de921250.png" alt="img"></p>
 
-      
     </div>
 
     
     
     
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+        
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/29/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB-%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93%E3%80%8B%E7%AC%AC%E5%85%AD%E7%AB%A0-%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E7%9A%84%E8%A3%85%E8%BD%BD%E4%B8%8E%E8%BF%9B%E7%A8%8B-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/myavatar.jpg">
-      <meta itemprop="name" content="xswlhhh">
-      <meta itemprop="description" content="用最少的时间做无关的事，用最多的时间做紧要的事">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xswlhhh的黄金屋">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/29/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB-%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93%E3%80%8B%E7%AC%AC%E5%85%AD%E7%AB%A0-%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E7%9A%84%E8%A3%85%E8%BD%BD%E4%B8%8E%E8%BF%9B%E7%A8%8B-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">《程序员自我修养-链接、装载与库》第六章 可执行文件的装载与进程 读书笔记</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-03-29 16:33:43" itemprop="dateCreated datePublished" datetime="2024-03-29T16:33:43+08:00">2024-03-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-10-28 11:33:24" itemprop="dateModified" datetime="2024-10-28T11:33:24+08:00">2024-10-28</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">读书笔记</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-              <span>2.7k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>可执行文件只有装载到内存以后才能被CPU执行，早起装载基本上就是把程序从外部存储器读取到内存中某个位置。但是硬件MMU诞生，多进程，多用户，虚拟存储的操作系统，装载过程变得复杂起来。</p>
-<p>作者介绍在ELF文件在linux下的装载过程。来为我们解答一些问题。</p>
-<p><strong>首先什么是进程的虚拟地址空间？</strong></p>
-<p><strong>为什么进程要有自己独立的虚拟地址空间？</strong></p>
-<p>我们从历史的角度来看看装载的几种方式，包括覆盖装载、页映射。</p>
-<p>接着还会介绍进程虚拟地址空间的分布情况。</p>
-<h1 id="6-1-进程虚拟地址空间"><a href="#6-1-进程虚拟地址空间" class="headerlink" title="6.1 进程虚拟地址空间"></a>6.1 进程虚拟地址空间</h1><p>程序是一个静态的概念，进程是一个动态的概念。程序是一道菜谱，进程便是炒菜的一个过程。</p>
-<p>我们知道每个程序运行起来以后，拥有自己的虚拟地址空间。其由CPU的位数决定。</p>
-<p>硬件决定了地址空间的最大理论上限，即硬件的寻址空间大小。</p>
-<p>32位就0<del>2^31-1，即0x00000000</del>0xffffffff，也就是4GB；而64位则64位寻址能力，即2^64字节，即17179869184GB，看似是无限的，但是实际上在未来的一段时间后，我们也会觉得这个地址不够用。</p>
-<p><strong>那么在32位的4GB空间中，我们程序是否可以任意使用？</strong></p>
-<p>很遗憾，并不可以。因为操作系统还要监管程序运行，我们要给其分配一段空间。</p>
-<p>Linux操作系统将进程的虚拟地址空间做了如图分配</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_6_1.png"></p>
-<p>我们只看左边，4gb被分成了两部分，用户和内核地址。原则上说我们最多用3GB的虚拟空间，但是在现代程序中，明显这是不够用的（这里不是讲64位，而是依然是32位，虽然64位才是一本万利的选择）。PAE机制能够让我们在32位下使用超过4GB的内存空间。这点我们后面会说。</p>
-<p>Window则2gb&#x2F;2gb这样分，也可以让操作系统占用的内存空间减少到1GB，在windows系统盘根目录下的Boot.ini加个“&#x2F;3g”参数</p>
-<h2 id="PAE"><a href="#PAE" class="headerlink" title="PAE"></a>PAE</h2><p>从硬件层面来讲，Inter将32位地址线拓展到36位之后，修改了页映射的，这样可以访问更多的物理地址。这个扩展方式就叫做PAE。</p>
-<p><strong>那么应用程序该如何使用这些大于常规的内存呢？</strong></p>
-<p>一个很常见的方法是窗口映射，比如一段256MB的空间（0x10000000-20000000），程序可以从高于4GB的物理空间中多申请多个大小为256MB的物理空间，编号为A,B,C,D等，然后将这个窗口映射到不同的物理块，用到A时将0x10000000~0x20000000映射到A，用到B，C再映射到B,C对应的物理地址上去。</p>
-<p>windows下，这种访问内存的操作方式叫做AWE（address windowing Extensions）；Linux则用mmap()系统调用来实现。</p>
-<p>当然这只是一种补救措施罢了。</p>
-<h1 id="6-2-装载的方式"><a href="#6-2-装载的方式" class="headerlink" title="6.2 装载的方式"></a>6.2 装载的方式</h1><p><strong>程序在装载时拥有局部性原理</strong>，如果一股脑把程序全部丢进内存，那很明显是不够用的。而且内存很贵，增加内存也是不现实的。因此我们可以把常用的部分留在内存，不常用的放在磁盘，这就是动态装入的基本原理。</p>
-<p>覆盖装入和页映射是两种典型的装载方式，这里我们来介绍。</p>
-<h2 id="覆盖装入"><a href="#覆盖装入" class="headerlink" title="覆盖装入"></a>覆盖装入</h2><p>覆盖装入在没有发明虚拟存储之前使用比较广泛，现在已经淘汰了。但是它的一些思想还是很有意义的。</p>
-<p>在一些现代嵌入式的内存受限环境下，特别是诸如DSP等，这种方法或许还有用武之地。</p>
-<p>覆盖装入把挖掘内存潜力的任务交给了程序员，程序员在编写程序时要把其分成若干块，然后编写一个小小的辅助代码（覆盖管理器）来管理这些模块应该何时驻留内存之中，何时被替换掉。</p>
-<p>最简单的情况下，一个main模块会调用到模块A和模块B，但是AB之间没有相互调用的关系。假设这三个模块的大小分别为1024,512,256字节。不考虑内存对齐，装载地址限制的情况下，理论上运行这个程序需要有1792个字节的内存。此时在内存中应该这样安排。</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_6_2.png"></p>
-<p>由于AB之间没有相互调用的依赖关系，因此可以相互覆盖。这样就省下了一些字节。</p>
-<p>所以程序要把这些模块手动分成一个树状结构来表示其调用依赖关系。但是要注意两点：</p>
-<ol>
-<li><ol>
-<li>这个树状结构中从任意一个模块到树的根的模块都叫调用路径。调用路径上的模块必须保存在内存中，如main-&gt;A-&gt;D。</li>
-<li>禁止跨树间调用</li>
-</ol>
-</li>
-</ol>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_6_3.png"></p>
-<p>当然跨模块间的调用要经过覆盖管理器，以确保所有被调用的模块都能够驻留在内存。</p>
-<p>覆盖装入的速度肯定还是比较慢的。</p>
-<h2 id="页映射"><a href="#页映射" class="headerlink" title="页映射"></a>页映射</h2><p>它是虚拟存储机制的一部分，由其发明而诞生。这里我们结合可执行文件的装载来阐述一下页映射是如何应用到动态装载中去的。</p>
-<p>页映射将磁盘中数据和指令按照“页”为单位划分为若干个页。硬件规定页的大小有4096字节、8192字节、2MB、4MB等。InterA32一般使用4096字节的页。</p>
-<p>假设我们有如下页，有16KB大小内存，这些页的大小为4KB。</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_6_4.png"></p>
-<p>如果我们的程序是P0~P7有32KB的程序，我们16KB空间显然无法直接装入。</p>
-<p>假设程序刚开始执行时的入口地址在P0，这时装载管理器（假设控制装载的叫这个名字）会把F0分配给P0，然后运行一段时间需要用到其他程序的页，如P5,P3,P6，会将P5分配到F1，P3分配到F2，P6分配到F3。</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_6_5.png"></p>
-<p>那么此时应该占满了16KB的内存了吧。如果还要装入P4，那么装载器必须做出选择，舍弃哪个页来装入。</p>
-<p>我们有很多算法来决定选择哪个页，比如FIFO算法，或者最少使用算法LUA。</p>
-<p>很多人可能猜到了，这个所谓的装载器其实就是我们的操纵系统，更精确的说，是它的存储管理器。目前几乎所有主流的操作系统都是按照这种方式装载的。</p>
-<h1 id="6-3-从操作系统角度看可执行文件的装载。"><a href="#6-3-从操作系统角度看可执行文件的装载。" class="headerlink" title="6.3 从操作系统角度看可执行文件的装载。"></a>6.3 从操作系统角度看可执行文件的装载。</h1><p>可执行文件中的页可以被装入任意页，从上面的页映射的动态装入的方式可以看到。</p>
-<p>如果程序使用物理地址直接进行操作，那么每次页被装入时都需要进行重定位。</p>
-<p>在虚拟存储中，现代硬件的MMU地址都提供地址转换的功能。有了硬件的地址转换和页映射机制，操作系统动态加载和静态加载有很大区别。本节我们将站在一个操作系统的角度来看可执行文件的装载。</p>
-<h2 id="进程的建立"><a href="#进程的建立" class="headerlink" title="进程的建立"></a>进程的建立</h2><p><strong>从操作系统角度看，一个进程最关键的特征是它拥有独立的虚拟地址空间。</strong></p>
-<p>创建一个进程，然后装载相应的可执行文件并且执行，在有虚拟存储的情况下，上述过程最开始只需要做三件事情：</p>
-<ol>
-<li>创建一个独立的虚拟地址空间</li>
-<li>读取可执行文件头，并且建立虚拟空间与可执行文件的映射关系。</li>
-<li>将CPU的指令寄存器设置成可执行文件的入口地址，启动并运行。</li>
-</ol>
-<h3 id="创建虚拟空间"><a href="#创建虚拟空间" class="headerlink" title="创建虚拟空间"></a>创建虚拟空间</h3><p>一个虚拟空间由一组映射函数将虚拟空间的页映射到物理空间，<strong>创建虚拟空间</strong>不是创建映射函数，而<strong>是创建对应的数据结构</strong>。在i386Linux下，创建虚拟空间实际上只是分配一个页目录，甚至不需要设置映射关系，这些映射关系等到后面程序发生页错误再进行设置。</p>
-<p>感觉有点绕？听不懂？不急，后面会解释</p>
-<p>这里是 虚拟空间映射到物理空间 的过程</p>
-<h3 id="建立虚拟空间和可执行文件的映射"><a href="#建立虚拟空间和可执行文件的映射" class="headerlink" title="建立虚拟空间和可执行文件的映射"></a>建立虚拟空间和可执行文件的映射</h3><p>这一步做的是虚拟空间和可执行文件的映射关系，</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/27/%E3%80%8A%E9%BB%91%E5%AE%A2%E5%85%8D%E6%9D%80%E6%94%BB%E9%98%B2%E3%80%8B%E7%AC%AC%E4%B8%80%E7%AB%A0-%E5%8F%98%E8%84%B8-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/myavatar.jpg">
-      <meta itemprop="name" content="xswlhhh">
-      <meta itemprop="description" content="用最少的时间做无关的事，用最多的时间做紧要的事">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xswlhhh的黄金屋">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/27/%E3%80%8A%E9%BB%91%E5%AE%A2%E5%85%8D%E6%9D%80%E6%94%BB%E9%98%B2%E3%80%8B%E7%AC%AC%E4%B8%80%E7%AB%A0-%E5%8F%98%E8%84%B8-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">《黑客免杀攻防》第一章 变脸 读书笔记</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2024-03-27 20:13:04 / 修改时间：20:13:36" itemprop="dateCreated datePublished" datetime="2024-03-27T20:13:04+08:00">2024-03-27</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">读书笔记</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-              <span>808</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>2023&#x2F;10&#x2F;11日</p>
-<p>这一章基本做一个介绍，对于一个小白来说，这个介绍写的很好，看了就很吸引人。</p>
-<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>免杀也就是反病毒，反间谍的对立面，可以说是反-反病毒，是一个反杀毒技术。除了使木马免于被查杀外，还可以扩增病毒木马的功能，改变病毒木马的行为。</p>
-<h2 id="免杀技术的简单原理"><a href="#免杀技术的简单原理" class="headerlink" title="免杀技术的简单原理"></a>免杀技术的简单原理</h2><p>最初接触免杀技术，会有特征码在这一概念，作者对于特征码提出了三个问题，笔者认为这有助于我们去思考</p>
-<p>“特征码究竟是什么？”“特征码是如何被定位出来的？”“除此之外，还有什么？”</p>
-<p>免杀源于特征码，杀毒软件也源于特征码</p>
-<p><strong>特征码是什么？</strong></p>
-<p>它是从反病毒领域引进来的一个词，意为病毒或木马所特有的一段二进制码</p>
-<p>反病毒公司的工作人员获得一个病毒样本，最重要的就是提取出特征码。</p>
-<p><strong>那么他是如何找到特征码的呢？</strong></p>
-<p>这里作者举了个特殊例子，我简单说明，就是从危险指令定位特征码，比如格式化所有硬盘指令，一般程序并不会执行这些指令。</p>
-<p>杀毒软件所用的特征码都是复杂的，一般由数段特征片段加上一定逻辑判断机制组合而成。</p>
-<p>当然我们可以有计划的向木马文件中填充垃圾信息，这样不会被定位了。</p>
-<p>这些以后细讲。</p>
-<h2 id="免杀技术和其他技术的区别"><a href="#免杀技术和其他技术的区别" class="headerlink" title="免杀技术和其他技术的区别"></a>免杀技术和其他技术的区别</h2><h3 id="免杀技术不是rootkit技术"><a href="#免杀技术不是rootkit技术" class="headerlink" title="免杀技术不是rootkit技术"></a>免杀技术不是rootkit技术</h3><p>免杀和Rootkit最终目的都是隐藏自己不被其他程序发现。Rootkit的实质是指一组非常直接的工具，免杀只是使用这组工具的方法之一</p>
-<p>其实这里我并没有完全理解，因为我零基础，不了解rootkit技术，到时候回来补充笔记</p>
-<p>现在免杀主要分为三种，其中一种就是行为免杀，也就是通过控制病毒木马的行为来达到躲过杀毒软件主动防御的目的。然后介绍了免杀处理技术和一种Rootkit的关系</p>
-<p>Rootkit并不代表免杀技术，只是构成高级免杀技巧的组成部分。</p>
-<h2 id="免杀不是加密解密技术"><a href="#免杀不是加密解密技术" class="headerlink" title="免杀不是加密解密技术"></a>免杀不是加密解密技术</h2><ul>
-<li>加密解密是针对一个程序展开研究，免杀技术任何时候都是针对两个</li>
-<li>加密解密是以某一程序为媒介所产生的技术对抗（保护者和破译人），免杀是一个程序和另一个程序的技术对抗（杀毒软件和木马）</li>
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>xswlhhh
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://example.com/2024/10/28/%E7%B4%AB%E7%A6%81%E5%9F%8E%E4%B9%8B%E6%AE%87/" title="紫禁城之殇">http://example.com/2024/10/28/紫禁城之殇/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
 </ul>
+</div>
 
-      
-    </div>
-
-    
-    
-    
+	
       <footer class="post-footer">
-        <div class="post-eof"></div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/03/29/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB-%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93%E3%80%8B%E7%AC%AC%E5%85%AD%E7%AB%A0-%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E7%9A%84%E8%A3%85%E8%BD%BD%E4%B8%8E%E8%BF%9B%E7%A8%8B-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="prev" title="《程序员自我修养-链接、装载与库》第六章 可执行文件的装载与进程 读书笔记">
+      <i class="fa fa-chevron-left"></i> 《程序员自我修养-链接、装载与库》第六章 可执行文件的装载与进程 读书笔记
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
       </footer>
+    
   </article>
   
   
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/27/%E7%A2%8E%E7%A2%8E%E5%BF%B50x0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/myavatar.jpg">
-      <meta itemprop="name" content="xswlhhh">
-      <meta itemprop="description" content="用最少的时间做无关的事，用最多的时间做紧要的事">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xswlhhh的黄金屋">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/27/%E7%A2%8E%E7%A2%8E%E5%BF%B50x0/" class="post-title-link" itemprop="url">碎碎念0x0</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-03-27 20:13:04" itemprop="dateCreated datePublished" datetime="2024-03-27T20:13:04+08:00">2024-03-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-03-29 16:25:49" itemprop="dateModified" datetime="2024-03-29T16:25:49+08:00">2024-03-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%A2%8E%E7%A2%8E%E5%BF%B5/" itemprop="url" rel="index"><span itemprop="name">碎碎念</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-              <span>281</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>三天感觉浪费了一天半，都是花在游戏上，快睡着前去思考，应不应该？</p>
-<p>玩游戏到底是为了什么？</p>
-<p>周三周四快要晚上的时候，收到好友的邀请一起玩游戏，一起玩会游戏有什么不好？</p>
-<p>但是玩完下线的时候，自己还觉得不够过瘾，周三周四晚上都是这样，所以又多玩到深夜。仔细算了算，这周起码三次熬夜到三点了，</p>
-<p>但是现在才只是周五下午。原本12点停止游戏，1点睡觉，到底是因为什么被打破？这样熬夜下去，感觉做不到的事情越来越多了，首先就是这个东西做不到；其次，熬夜对我来说，等于花费第二天早上的时间，去放纵自己。你真的确定这一天要这样吗？会这样发展成一个星期这样？发展成一个月这样？好好想清楚吧。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2024/03/27/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB-%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93%E3%80%8B%E7%AC%AC%E4%B8%89%E7%AB%A0-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/myavatar.jpg">
-      <meta itemprop="name" content="xswlhhh">
-      <meta itemprop="description" content="用最少的时间做无关的事，用最多的时间做紧要的事">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="xswlhhh的黄金屋">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2024/03/27/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB-%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93%E3%80%8B%E7%AC%AC%E4%B8%89%E7%AB%A0-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">《程序员自我修养:链接、装载与库》第三章 目标文件有什么？</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2024-03-27 18:26:27" itemprop="dateCreated datePublished" datetime="2024-03-27T18:26:27+08:00">2024-03-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-10-28 11:31:59" itemprop="dateModified" datetime="2024-10-28T11:31:59+08:00">2024-10-28</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">读书笔记</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-              <span>4.3k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-              <span>4 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>编译器编译源代码后生成的文件叫做目标文件。</p>
-<h1 id="3-1目标文件的格式"><a href="#3-1目标文件的格式" class="headerlink" title="3.1目标文件的格式"></a>3.1目标文件的格式</h1><p>windows下的可执行格式是PE文件，Linux则是ELF，它们都是COFF格式而来。</p>
-<p>目标文件就是源代码编译后但未进行链接的那些中间文件。</p>
-<p>动态链接库(.ddl)(.so)和静态链接库(.lib)(.a)都按照可执行文件存储。</p>
-<p>静态链接库可理解成多个目标文件捆绑在一起的包。</p>
-<p>下面是ELF文件相关的一个总结图，建议看看。</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730085119003.jpg"></p>
-<p>随后书下面就讲了一些 目标文件和可执行文件的小历史 这里不做概括</p>
-<p>COFF的主要贡献就是在目标文件中引入了段的机制。</p>
-<h1 id="3-2目标文件是什么样的"><a href="#3-2目标文件是什么样的" class="headerlink" title="3.2目标文件是什么样的?"></a>3.2目标文件是什么样的?</h1><p><strong>目标文件</strong>其实已经是二进制文件了。里面有机器指令代码和数据。</p>
-<p>当然它<strong>还有链接时需要的一些信息，比如符号表，调试信息，字符串等</strong>。</p>
-<p>一般目标文件将这些信息按照不同的属性，<strong>以“节”的形式存储</strong>，有时候也叫做“段”。节与节之间唯一的区别就是ELF的链接视图和装载视图的时候，此处节和段都叫段。</p>
-<p><strong>编译后的机器指令通常放在代码段（.text)，全局变量和局部静态变量放在数据段(.data)。</strong></p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730085552659.jpg"></p>
-<p>从上图可以看到，<strong>ELF文件开头是“文件头”</strong>，它描述了整个文件的属性（包括是否可执行、静态链接还是动态、入口地址、目标硬件、目标操作系统）<strong>其中还包括一个段表</strong>，<strong>是描述文件中各个段的数组（描述各个段在文件的偏移和属性）。</strong></p>
-<p>值得一提的是，初始化的全局变量和局部静态变量保存在data段；未初始化的全局变量和局部静态变量保存在bss段。但是本来它们应该在data段的，但是因为没初始化，都是0，程序不给存放数据0预留空间，所以此时bss段只是给它们预留位置而已。</p>
-<p>总的来说，程序指令去了text代码段，程序数据去了data和bss段。</p>
-<hr>
-<p>把文件分开来放的好处:</p>
-<ol>
-<li>程序被装载后，数据和指令将分别被映射到两个虚拟内存区域  </li>
-<li>对于CPU来说，它们有着极为强大的缓存体系（有必要提高缓存的命中率）。</li>
-<li>当程序运行多个该程序的副本时，指令只用在一个地方读取，程序的其他数据就可以共享，以用来节省空间。</li>
-</ol>
-<h1 id="3-3挖掘SimpleSection-o"><a href="#3-3挖掘SimpleSection-o" class="headerlink" title="3.3挖掘SimpleSection.o"></a>3.3挖掘SimpleSection.o</h1><p>这里是用readelf来分析文件的格式，笔者只是简单总结一下学到的东西，就不做赘述，建议跟着原文看一遍（P61开始）</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_3_3.jpg"></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objdump -h SimpleSection.o</span><br></pre></td></tr></table></figure>
-
-<p>-h是把ELF各个段的基本信息打印出来，-x可以把更多信息打印出来。</p>
-<p>这里多了打印出来除了上面提到的段的话，还有三个段(.rodata)只读数据段，(.comment)注释信息段，（.note.GNU-stack）堆栈提示段（此处是0，暂且忽略它）。此ELF文件事实上存在的段就只有text，data，rodata，comment这四个段了。</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/ca5b3bcd84d6debdbc422e6c8f3cbcb.png"></p>
-<h2 id="3-3-1-代码段"><a href="#3-3-1-代码段" class="headerlink" title="3.3.1 代码段"></a>3.3.1 代码段</h2><p>主要是对着格式分析,此处不再赘诉</p>
-<h2 id="3-3-2数据段和只读数据段"><a href="#3-3-2数据段和只读数据段" class="headerlink" title="3.3.2数据段和只读数据段"></a>3.3.2数据段和只读数据段</h2><p>主要是对着格式分析,此处不再赘诉</p>
-<hr>
-<p>“rodata”存放只读数据,语义上支持了C++的const关键字，又保证了程序安全性。另外再某些嵌入式平台下，有些存储区域是采用只读存储器的，如ROM，这样将“.rodata”段放在该存储区域中就可以保证程序访问存储器的正确性。</p>
-<p>另外值得一提的是，有时候编译器会把字符串常量放到data段，可以试试把文件名改成.cpp，然后用各种MSVC编译器编译一下</p>
-<p>然后后面根据它展示的内容，小小讲到了大小端序，在本书的附录有详细介绍，到时候去看。</p>
-<h2 id="3-3-3BSS段"><a href="#3-3-3BSS段" class="headerlink" title="3.3.3BSS段"></a>3.3.3BSS段</h2><p>上面说过，bss段存放未初始化的全局变量和局部静态变量。</p>
-<p>通过bss段的符号是否被定义，是否存放在目标文件的BSS段，引出了“弱符号和强符号和common块”这两个概念，在下一章会讨论这个问题。</p>
-<p>编译器优化有时候会给我们分析系统软件背后的机制带来很多在障碍，使很多问题不能够一目了然，本书尽量避开优化过程，还原机制和原理本身</p>
-<h2 id="3-3-4其他段"><a href="#3-3-4其他段" class="headerlink" title="3.3.4其他段"></a>3.3.4其他段</h2><p>这张图片帮忙说了很多，一下子概括了整整一小节的内容，后仅做补充</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730085644558.jpg"></p>
-<h3 id="自定义段"><a href="#自定义段" class="headerlink" title="自定义段"></a>自定义段</h3><p>有些时候我们可能希望变量或者某部分代码放到指定的段去，实现某些特定功能。比如为了满足某些硬件的内存和I&#x2F;O地址布局，或者是像Linux操作系统内核中用来完成一些初始化和用户空间复制时出现页错误异常等。</p>
-<p>GCC提供了一个扩展机制，使得程序员可以指定变量所处的段：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">__attribute__((section(<span class="string">&quot;FOO&quot;</span>))) <span class="type">int</span> global=<span class="number">42</span></span><br><span class="line">__attribute__((section(<span class="string">&quot;BAR&quot;</span>))) <span class="type">void</span> foo()</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>我们在全局变量或者函数之前加入“<strong>attribute</strong>((section(“name”)))”属性，就可以把相应的变量和函数放到以“name”作为段名的段中。</p>
-<h1 id="3-4ELF文件结构描述"><a href="#3-4ELF文件结构描述" class="headerlink" title="3.4ELF文件结构描述"></a>3.4ELF文件结构描述</h1><p>先放ELF文件结构预览图</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730085763485.jpg"></p>
-<p>ELF目标文件格式最前面是ELF文件头（包含了整个文件的基本属性，比如ELF文件版本、目标机器型号、程序入口地址等）紧接着是ELF各个段。</p>
-<p><strong>其中与ELF中和段的重要结构就是段表（SHtable），表中描述了（段名，段长度，偏移，读写权限以及其他）段的属性。</strong></p>
-<h2 id="3-4-1文件头"><a href="#3-4-1文件头" class="headerlink" title="3.4.1文件头"></a>3.4.1文件头</h2><p>直接上图</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730085850283.jpg"></p>
-<p>ELF文件头定义了ELF魔数、文件机器字节长度、数据存储方式、版本、运行平台、ABI版本、ELF重定位类型、硬件平台、硬件平台版本、入口地址、程序头入口和长度、段表的位置和长度及段的数量等。</p>
-<p>ELF文件头结构以及相关常数被定义在“&#x2F;usr&#x2F;include&#x2F;elf.h”里，<strong>ELF有32和64位的版本。不同版本的成员大小不一样，但是ELF文件头内容基本上一样</strong>，它们文件头分别叫做“Elf32_Ehdr”和“Elf64_Ehdr”。“elf.h”使用typedef定义了一套自己的变量体系。</p>
-<p>一下是Elfxx_Ehdr的结构体图</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730085883441.jpg"></p>
-<p>然后较详细介绍了ELF头部结构体一些成员的含义，比如ELF魔数、ELF_type，系统一般通过ELF_type来判断它是ET_REL，ET_EXEC，ET_DYN这三种之一的文件。</p>
-<details class="lake-collapse"><summary id="u4c678d99"><span class="ne-text">ELF头部结构体一些成员的含义</span></summary><p id="u60014499" class="ne-p" style="margin: 0; padding: 0; min-height: 24px"><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730085943016.jpg" width="1025" id="u5587b1b1" class="ne-image"></p><p id="ubd04a8f1" class="ne-p" style="margin: 0; padding: 0; min-height: 24px"><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730085995128.jpg" width="1006" id="u32a9dd32" class="ne-image"></p></details>
-
-<h2 id="3-4-2段表"><a href="#3-4-2段表" class="headerlink" title="3.4.2段表"></a>3.4.2段表</h2><p><strong>段表存放段的基本属性的结构</strong>，位置由ELF文件头的“e_shoff”成员决定。</p>
-<p>我们可以看ELF文件段表的基本内容</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730086037825.jpg"></p>
-<p>段表的结构比较简单，它是一个以“Elf32_Shdr”（也叫段描述符）结构体为元素的数组。每个结构体意味着一个段的信息。ELF段表第一个元素是无效的段描述符。</p>
-<p>“Elf32_Shdr”被定义在”&#x2F;usr&#x2F;include&#x2F;elf.h”，如图:</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730086102351.jpg"></p>
-<details class="lake-collapse"><summary id="u86eb7fea"><span class="ne-text">各个成员含义如下</span></summary><p id="u75baa19b" class="ne-p" style="margin: 0; padding: 0; min-height: 24px"><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/3ad734d862830a85f303d8c2d7b496e.png" width="576" id="u9500522c" class="ne-image"></p></details>
-
-<hr>
-<p>这里简单说一下段的标志位，表示该段在进程虚拟地址空间的属性，比如是否可写，是否可执行等。</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/a945ceae467dd87f8b4268d7c01942d.png"></p>
-<hr>
-<p>然后再简单说一下段的链接信息(sh_link、sh_info)</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730086244994.jpg"></p>
-<h2 id="3-4-3重定位表"><a href="#3-4-3重定位表" class="headerlink" title="3.4.3重定位表"></a>3.4.3重定位表</h2><p>如果一个段的类型是”SHT_REL”，也就是说它是一个<strong>重定位表</strong>，对于每个需要重定位的段都有一个相应的重定位表</p>
-<p>比如”.rel.text”就是对”.text”的重定位表。此时sh_link表示符号表的下标，sh_info表示它作用域哪个段。</p>
-<p>下一章静态链接过程的时候，再细细分析。</p>
-<h2 id="3-4-4字符串表"><a href="#3-4-4字符串表" class="headerlink" title="3.4.4字符串表"></a>3.4.4字符串表</h2><p>一般字符串表在ELF文件中也以段的形式存储，常见的段名是“.strtab”或者“.shstrtab”。分别代表“字符串表”和“段表字符串表”。</p>
-<h1 id="3-5链接的接口——符号"><a href="#3-5链接的接口——符号" class="headerlink" title="3.5链接的接口——符号"></a>3.5链接的接口——符号</h1><p>在链接中，目标文件的相互拼接实际上是目标文件之间对地址的引用，就是对函数和变量地址的引用，我们将<strong>函数和变量统称为符号</strong>，函数名和变量名就是符号名。</p>
-<p>每个目标文件都有一个相应的符号表(Symbol Table)，每个符号都有一个值，叫符号值，对于函数和变量来说，这就是它们的地址。</p>
-<p>还有几种不常用到的符号：定义在本目标文件的全局符号、段名(它的值就是段的起始地址)、本目标文件引用的全局符号、局部符号、行号信息（目标文件指令和源代码中代码行对应的关系）。</p>
-<h2 id="3-5-1-ELF符号结构"><a href="#3-5-1-ELF符号结构" class="headerlink" title="3.5.1 ELF符号结构"></a>3.5.1 ELF符号结构</h2><p>elf符号表往往是个段，段名“.symtab”。</p>
-<p>符号表结构是一个Elf32_Sym结构的数组</p>
-<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730086280295.jpg"></p>
-<p>符号绑定st_info，低4位表示符号类型。高28位表示符号绑定信息，有局部，全局符号还有弱引用。</p>
-<p>符号所在段st_shndx，定义在本目标文件中，表示<strong>符号所在段 在段表 中的下标。</strong></p>
-<p><strong>其他详细建议看书</strong></p>
-<h2 id="3-5-2-特殊符号"><a href="#3-5-2-特殊符号" class="headerlink" title="3.5.2 特殊符号"></a>3.5.2 特殊符号</h2><p>使用ld作为链接器来链接生成可执行文件时，它会为我们定义很多特殊符号，这些符号不是我们定义的，但我们可以使用它，这些符号叫做特殊符号。详细看书</p>
-<h2 id="3-5-3-符号修饰和函数签名"><a href="#3-5-3-符号修饰和函数签名" class="headerlink" title="3.5.3 符号修饰和函数签名"></a>3.5.3 符号修饰和函数签名</h2><p>相当于同一个函数名在不同函数位置中，或者不同返回类型，或者我们的一些函数和库重名，会有一些修饰区分它们，大概就是这样，详细看书。</p>
-<h2 id="3-5-4-extern“C”"><a href="#3-5-4-extern“C”" class="headerlink" title="3.5.4 extern“C”"></a>3.5.4 extern“C”</h2><p>c++为了和C兼容，C++有一个声明和定义C符号的关键字“extern”</p>
-<p>详细看书</p>
-<h2 id="3-5-5-弱符号和强符号"><a href="#3-5-5-弱符号和强符号" class="headerlink" title="3.5.5 弱符号和强符号"></a>3.5.5 弱符号和强符号</h2><p>对于C&#x2F;C++语言来说，<strong>编译器默认函数和初始化了的全局变量为强符号，未初始化的全局变量为弱符号。</strong></p>
-<p>也可以用GCC的“<strong>attribute</strong>((weak))”</p>
-<p><strong>注意：强符号和弱符号都是针对定义来说的，不是针对符号的引用</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="type">int</span> ext;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> weak;</span><br><span class="line"><span class="type">int</span> strong = <span class="number">1</span>;</span><br><span class="line">_attribute_((weak)) weak2 = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这里，weak和 weak2 是弱符号， strong和 main 是强符号，而ext 既非强符号也非弱符号，因为它只是一个外部变量的引用。</p>
-<details class="lake-collapse"><summary id="u805012ca"><span class="ne-text">针对强弱符号的概念，链接器会按如下规则处理和选择被多次定义的全局不好：</span></summary><ul class="ne-ul" style="margin: 0; padding-left: 23px"><li id="u61fcc03b" data-lake-index-type="0"><span class="ne-text">** 规则1：**不允许强符号被多次定义(即不同的目标文件不能有同名的强符号)；如果有多个强符号定义，则链接器包符号重复定义错误。</span></li><li id="ub79db9da" data-lake-index-type="0"><span class="ne-text">** 规则2：** 如果一个符号在某个目标文件中是强符号，在其他文件中都是弱符号，那么选择强符号。</span></li><li id="u023ddd23" data-lake-index-type="0"><span class="ne-text">** 规则3：** 如果一个符号在所有目标文件中都是弱符号，那么选择其中占用空间最大的一个。</span></li></ul><p id="u2d5f085f" class="ne-p" style="margin: 0; padding: 0; min-height: 24px"><span class="ne-text">同样对于符号名的引用也分为强引用和弱引用，强引用表示如果找不到符号定义会报错，弱引用不报错，默认为0或某个特殊值。</span></p><p id="u380c2145" class="ne-p" style="margin: 0; padding: 0; min-height: 24px"><span class="ne-text"><br></span><span class="ne-text">链接：https://www.jianshu.com/p/31108b62f81d</span></p></details>
-
-<p>同样对于符号名的引用也分为强引用和弱引用，强引用表示如果找不到符号定义会报错，弱引用不报错，默认为0或某个特殊值。</p>
-<h1 id="3-6-调试信息"><a href="#3-6-调试信息" class="headerlink" title="3.6 调试信息"></a>3.6 调试信息</h1><p>如果我们GCC编译的时候加上“-g”参数，编译器产生的目标文件里面加上调试信息，可以用readelf工具查看，目标文件里面多了很多“debug”的段</p>
-<p>我们可以用“strip”命令来去掉ELF的调试信息</p>
-<h1 id="3-7-完"><a href="#3-7-完" class="headerlink" title="3.7 完"></a>3.7 完</h1>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
   
 
 
 
           </div>
           
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81OTY4MS8zNjE0Mw=="></div>
+  </div>
+  
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -1414,6 +943,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0x1-%E4%BB%8EC%E5%87%BD%E6%95%B0%E8%B5%B0%E8%BF%9B%E5%AD%90%E8%BF%9B%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">0x1 从C函数走进子进程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E8%BF%9B%E7%A8%8B%E6%9C%89%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 进程有关概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-1-%E8%BF%9B%E7%A8%8B"><span class="nav-number">1.1.1.</span> <span class="nav-text">1.1.1 进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-2-%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">1.1.2.</span> <span class="nav-text">1.1.2 进程和线程的区别？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E4%BB%8EC%E8%AF%AD%E8%A8%80%E5%87%BD%E6%95%B0%E5%87%BA%E5%8F%91"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 从C语言函数出发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-1-%E8%8E%B7%E5%8F%96%E8%BF%9B%E7%A8%8BID"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.2.1 获取进程ID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-2-%E5%88%9B%E5%BB%BA%E8%BF%9B%E7%A8%8B"><span class="nav-number">1.2.2.</span> <span class="nav-text">1.2.2 创建进程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-2-1-fork"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">1.2.2.1 fork</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-2-2-vfork"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">1.2.2.2 vfork</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-2-3-clone"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">1.2.2.3 clone()</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E5%87%BA%E5%8F%91%E7%9A%84%E8%BD%AC%E6%8A%98%E7%82%B9"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 出发的转折点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-%E9%94%80%E6%AF%81%E8%BF%9B%E7%A8%8B"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 销毁进程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-1-%E4%B8%BB%E5%8A%A8"><span class="nav-number">1.4.1.</span> <span class="nav-text">1.4.1 主动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-2-%E8%A2%AB%E5%8A%A8"><span class="nav-number">1.4.2.</span> <span class="nav-text">1.4.2 被动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-3-%E9%97%AE%E9%A2%98"><span class="nav-number">1.4.3.</span> <span class="nav-text">1.4.3 问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-system%E5%92%8Cexec"><span class="nav-number">1.5.</span> <span class="nav-text">1.5 system和exec</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-1-system%E5%90%AF%E5%8A%A8%E4%B8%80%E4%B8%AA%E6%96%B0%E8%BF%9B%E7%A8%8B"><span class="nav-number">1.5.1.</span> <span class="nav-text">1.5.1 system启动一个新进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-2-%E8%BF%9B%E7%A8%8B%E6%9B%BF%E6%8D%A2%EF%BC%8Cexec%E5%87%BD%E6%95%B0%E6%97%8F"><span class="nav-number">1.5.2.</span> <span class="nav-text">1.5.2 进程替换，exec函数族</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-wait%E4%B8%8Eptrace"><span class="nav-number">1.6.</span> <span class="nav-text">1.6 wait与ptrace</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-1-wait"><span class="nav-number">1.6.1.</span> <span class="nav-text">1.6.1 wait</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-1-1-pid-t-wait-int-status"><span class="nav-number">1.6.1.1.</span> <span class="nav-text">1.6.1.1 pid_t wait(int *status);</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-1-2-pid-t-waitpid-pid-t-pid-int-status-int-options"><span class="nav-number">1.6.1.2.</span> <span class="nav-text">1.6.1.2 pid_t waitpid(pid_t pid, int *status, int options);</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-1-3-wstatus%E7%8A%B6%E6%80%81"><span class="nav-number">1.6.1.3.</span> <span class="nav-text">1.6.1.3 wstatus状态</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-2-ptrace"><span class="nav-number">1.6.2.</span> <span class="nav-text">1.6.2 ptrace</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-2-1-ptrace%E5%87%BD%E6%95%B0%E8%A7%A3%E6%9E%90"><span class="nav-number">1.6.2.1.</span> <span class="nav-text">1.6.2.1 ptrace函数解析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-2-2-%E5%8A%9F%E8%83%BD%E8%AF%A6%E7%BB%86%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.6.2.2.</span> <span class="nav-text">1.6.2.2 功能详细描述</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-6-2-2-1-%E5%8E%9F%E6%9D%A5"><span class="nav-number">1.6.2.2.1.</span> <span class="nav-text">1.6.2.2.1 原来</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-6-2-2-2-I386"><span class="nav-number">1.6.2.2.2.</span> <span class="nav-text">1.6.2.2.2 I386</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-3-%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81%E5%80%BC%E4%B8%AD%E6%AD%A2%E7%8A%B6%E6%80%81"><span class="nav-number">1.6.3.</span> <span class="nav-text">1.6.3 进程状态值中止状态</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-3-1-Stopped%E7%8A%B6%E6%80%81"><span class="nav-number">1.6.3.1.</span> <span class="nav-text">1.6.3.1 Stopped状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-3-2-Traced%E7%8A%B6%E6%80%81%E2%80%94%E2%80%94%E6%96%B0%E6%89%8B%E4%BE%8B%E5%AD%90"><span class="nav-number">1.6.3.2.</span> <span class="nav-text">1.6.3.2 Traced状态——新手例子</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-6-3-2-1-%E5%8F%AF%E8%83%BD%E6%9C%89%E7%9A%84%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98"><span class="nav-number">1.6.3.2.1.</span> <span class="nav-text">1.6.3.2.1 可能有的一些问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-6-3-2-2-USER%E5%AD%97%E6%AE%B5"><span class="nav-number">1.6.3.2.2.</span> <span class="nav-text">1.6.3.2.2 USER字段</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-3-3-Traced%E7%8A%B6%E6%80%81%E2%80%94%E2%80%94%E5%85%A5%E9%97%A8%E4%BE%8B%E5%AD%90"><span class="nav-number">1.6.3.3.</span> <span class="nav-text">1.6.3.3 Traced状态——入门例子</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-6-3-3-1-wait-status-%E4%BB%A5%E5%8F%8A%E7%9B%B8%E5%85%B3%E5%AE%8F"><span class="nav-number">1.6.3.3.1.</span> <span class="nav-text">1.6.3.3.1 wait(&amp;status)以及相关宏</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-6-3-3-2-PTRACE-SYSCALL%E4%B8%8Ewhile%E5%BE%AA%E7%8E%AF"><span class="nav-number">1.6.3.3.2.</span> <span class="nav-text">1.6.3.3.2 PTRACE_SYSCALL与while循环</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-6-3-3-3-%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C%E8%A7%A3%E6%9E%90"><span class="nav-number">1.6.3.3.3.</span> <span class="nav-text">1.6.3.3.3 运行结果解析</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-3-4-Traced%E7%8A%B6%E6%80%81%E2%80%94%E2%80%94%E8%BF%9B%E9%98%B6%E4%BE%8B%E5%AD%90"><span class="nav-number">1.6.3.4.</span> <span class="nav-text">1.6.3.4 Traced状态——进阶例子</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-6-3-4-1-%E8%BF%87%E6%BB%A4execve%E7%9A%84%E6%A1%86%E6%9E%B6"><span class="nav-number">1.6.3.4.1.</span> <span class="nav-text">1.6.3.4.1 过滤execve的框架</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-6-3-4-2-%E4%BC%98%E5%8C%96%E4%BB%A3%E7%A0%81"><span class="nav-number">1.6.3.4.2.</span> <span class="nav-text">1.6.3.4.2 优化代码</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-6-3-4-3-%E4%B8%BA%E4%BB%80%E4%B9%88%E5%AD%90%E8%BF%9B%E7%A8%8B%E4%BF%A1%E5%8F%B7%E4%B8%80%E7%9B%B4%E6%98%AF5%EF%BC%89SIGTRAP"><span class="nav-number">1.6.3.4.3.</span> <span class="nav-text">1.6.3.4.3 为什么子进程信号一直是5）SIGTRAP</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-7-%E8%BF%9B%E7%A8%8B%E6%A0%88%E4%B8%8E%E8%BF%9B%E7%A8%8B%E5%A0%86-%E7%BA%BF%E7%A8%8B%E6%A0%88%E5%92%8C%E7%BA%BF%E7%A8%8B%E5%A0%86"><span class="nav-number">1.7.</span> <span class="nav-text">1.7 进程栈与进程堆 线程栈和线程堆</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0X2-ptrace%E7%9A%84shellcode%E6%B3%A8%E5%85%A5"><span class="nav-number">2.</span> <span class="nav-text">0X2 ptrace的shellcode注入</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E7%9B%B8%E5%85%B3%E5%8E%9F%E7%90%86"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 相关原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%90"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 技术解析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-shellcode%E5%AD%98%E6%94%BE%E5%9C%A8%E5%93%AA%E9%87%8C"><span class="nav-number">2.2.1.</span> <span class="nav-text">2.2.1 shellcode存放在哪里</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-%E5%A6%82%E4%BD%95%E6%89%A7%E8%A1%8Cshellcode"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.2.2 如何执行shellcode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-3-%E9%9A%90%E8%97%8Fshellcode%E6%89%A7%E8%A1%8C"><span class="nav-number">2.2.3.</span> <span class="nav-text">2.2.3 隐藏shellcode执行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E5%AF%B9%E5%BA%94%E7%9A%84%E9%98%B2%E5%BE%A1%E6%8E%AA%E6%96%BD"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 对应的防御措施</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-%E8%83%BD%E5%A4%9F%E8%BF%9B%E8%A1%8C%E7%9A%84%E7%BB%95%E8%BF%87"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 能够进行的绕过</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-1-Escape-by-fork"><span class="nav-number">2.4.1.</span> <span class="nav-text">2.4.1 Escape by fork</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-2-Escape-by-Kill"><span class="nav-number">2.4.2.</span> <span class="nav-text">2.4.2 Escape by Kill</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A2%8E%E7%A2%8E%E5%BF%B5"><span class="nav-number">3.</span> <span class="nav-text">碎碎念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2024nepctf-NepBOX"><span class="nav-number">3.1.</span> <span class="nav-text">2024nepctf NepBOX</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2024-YCB-hard-seccomp"><span class="nav-number">3.2.</span> <span class="nav-text">2024 YCB hard-seccomp</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#shellcode-v-1"><span class="nav-number">3.2.1.</span> <span class="nav-text">shellcode v.1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shellcode-v-2"><span class="nav-number">3.2.2.</span> <span class="nav-text">shellcode v.2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shellcode-v-3"><span class="nav-number">3.2.3.</span> <span class="nav-text">shellcode v.3</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -1599,6 +1129,21 @@ $(document).ready(function() {
 
   
 
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
 
 </body>
 </html>
