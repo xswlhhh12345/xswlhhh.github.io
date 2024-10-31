@@ -34,7 +34,7 @@
 <meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1725520062487-a9289a68-c329-4311-a2e5-f3653491e751.png">
 <meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1725521534710-ecc3e4f3-3a59-455a-8518-4ee9832628ef.png">
 <meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1725521563404-2340e616-ddce-4047-b31e-be1016202d38.png">
-<meta property="og:image" content="e:\blog_images\1725523442460-5ab430b5-a6d0-4ab7-8010-b0217c4f5162.png">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1725523442460-5ab430b5-a6d0-4ab7-8010-b0217c4f5162.png">
 <meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1725531833655-06cbd253-9b05-4082-a266-3f368db9af93.png">
 <meta property="og:image" content="e:\blog_images\1726049231841-1a5c4bdc-96e3-4ed7-9886-a2bdb6dc14b6.jpeg">
 <meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1726108227781-e82be599-1ad7-4755-839b-734eb69d8d50.jpeg">
@@ -45,7 +45,7 @@
 <meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1726214096416-98d3111d-f787-43c9-9d9c-0f0766b4dae1.png">
 <meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1726214453067-8e33a529-ea32-4953-bdab-46d9de921250.png">
 <meta property="article:published_time" content="2024-10-28T03:35:38.000Z">
-<meta property="article:modified_time" content="2024-10-28T04:00:25.271Z">
+<meta property="article:modified_time" content="2024-10-30T08:20:54.197Z">
 <meta property="article:author" content="xswlhhh">
 <meta property="article:tag" content="main">
 <meta name="twitter:card" content="summary">
@@ -239,10 +239,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2024-10-28 11:35:38 / 修改时间：12:00:25" itemprop="dateCreated datePublished" datetime="2024-10-28T11:35:38+08:00">2024-10-28</time>
+              <time title="创建时间：2024-10-28 11:35:38" itemprop="dateCreated datePublished" datetime="2024-10-28T11:35:38+08:00">2024-10-28</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2024-10-30 16:20:54" itemprop="dateModified" datetime="2024-10-30T16:20:54+08:00">2024-10-30</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -605,7 +611,7 @@
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/ptrace.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/wait.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/user.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/reg.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">void</span>)</span></span>&#123;</span><br><span class="line">	<span class="type">pid_t</span> child;</span><br><span class="line">	<span class="type">long</span> orig_rax;</span><br><span class="line">	child=fork();</span><br><span class="line">	<span class="keyword">if</span>(child==<span class="number">0</span>)&#123;<span class="comment">//表示这是子进程，子进程fork返回0</span></span><br><span class="line">    <span class="comment">//当前进程会在每次执行系统调用之前暂停，并允许其父进程通过 ptrace 调用来检查和修改它的寄存器、内存等状态，或者继续它的执行。</span></span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;start move!!!&quot;</span>);</span><br><span class="line">        <span class="built_in">ptrace</span>(PTRACE_TRACEME,<span class="number">0</span>,<span class="literal">NULL</span>,<span class="literal">NULL</span>);<span class="comment">//0表示当前进程，参数规定是父进程跟踪</span></span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;keep moving???&quot;</span>);</span><br><span class="line">        <span class="built_in">execl</span>(<span class="string">&quot;/bin/ls&quot;</span>,<span class="string">&quot;ls&quot;</span>,<span class="string">&quot;-l&quot;</span>,<span class="string">&quot;-h&quot;</span>,<span class="literal">NULL</span>);<span class="comment">//这里进程被替换了？</span></span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;/bin/ls ok?&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;<span class="comment">//父进程，wait函数会等待子进程执行完再执行父进程</span></span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;father step1&quot;</span>);</span><br><span class="line">        <span class="built_in">wait</span>(<span class="literal">NULL</span>);</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;father step2&quot;</span>);</span><br><span class="line">        orig_rax=<span class="built_in">ptrace</span>(PTRACE_PEEKUSER,child,<span class="number">8</span>*ORIG_RAX,<span class="literal">NULL</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Child process called a system call, id is %ld\n&quot;</span>,orig_rax);</span><br><span class="line">        <span class="built_in">ptrace</span>(PTRACE_CONT,child,<span class="literal">NULL</span>,<span class="literal">NULL</span>);</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>执行结果如下所示</p>
-<p><img src="E:\blog_images\1725523442460-5ab430b5-a6d0-4ab7-8010-b0217c4f5162.png" alt="img"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1725523442460-5ab430b5-a6d0-4ab7-8010-b0217c4f5162.png" alt="img"></p>
 <p>首先fork出来的进程和父进程是不分前后顺序的（前面说到顺序由高度函数决定），所以先父进程进入到else分支，子进程接着进入if分支，然后父进程执行了wait函数之后，交给子进程执行，执行到ptrace(PTRACE_TRACEME,0,NULL,NULL)，但是此时子进程并没有进入traced状态，直到执行到exec类型的函数（才会发出相关信号），才会让子进程也被父函数跟踪。回到父函数，父函数调用了ptrace(PTRACE_PEEKUSER,child,8*ORIG_RAX,NULL)获取子进程RAX的值，59即是execve的系统调用号。之后调用ptrace(PTRACE_CONT,child,NULL,NULL);，让子进程继续执行，也就有了下面的&#x2F;bin&#x2F;ls输出的内容。</p>
 <hr>
 <h5 id="1-6-3-2-1-可能有的一些问题"><a href="#1-6-3-2-1-可能有的一些问题" class="headerlink" title="1.6.3.2.1 可能有的一些问题"></a>1.6.3.2.1 可能有的一些问题</h5><p>问题1：父进程怎么向子进程发送信号？</p>
@@ -947,6 +953,8 @@
 
   <aside class="sidebar">
     <div class="sidebar-inner">
+	<!--网易云插件-->
+	<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=489847882&auto=1&height=66"></iframe>
 
       <ul class="sidebar-nav motion-element">
         <li class="sidebar-nav-toc">
@@ -982,13 +990,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
