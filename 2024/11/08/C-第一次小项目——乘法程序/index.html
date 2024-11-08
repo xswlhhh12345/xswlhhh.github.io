@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content=":::info课程项目一：乘法程序  实现一个可以完成读取两个数并输出两数相乘结果的程序。  需求  1. 请使用C++完成代码，程序需要可以被一个C++编译器（如g++）编译。程序应该尽可能  符合普通人使用计算器完成乘法的直觉。  2. 通过以下方式执行代码，程序会打印表达式和结果。两个数需要通过命令行参数进行读  取。(以下为linux环境，如果windows环境，虽有小差别（如mul.ex">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++第一次小项目——乘法程序">
+<meta property="og:url" content="http://example.com/2024/11/08/C-%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%B0%8F%E9%A1%B9%E7%9B%AE%E2%80%94%E2%80%94%E4%B9%98%E6%B3%95%E7%A8%8B%E5%BA%8F/index.html">
+<meta property="og:site_name" content="xswlhhh的黄金屋">
+<meta property="og:description" content=":::info课程项目一：乘法程序  实现一个可以完成读取两个数并输出两数相乘结果的程序。  需求  1. 请使用C++完成代码，程序需要可以被一个C++编译器（如g++）编译。程序应该尽可能  符合普通人使用计算器完成乘法的直觉。  2. 通过以下方式执行代码，程序会打印表达式和结果。两个数需要通过命令行参数进行读  取。(以下为linux环境，如果windows环境，虽有小差别（如mul.ex">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697126140616-ba2abbcb-5dd2-4f54-8100-1b1115fc8bbb.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697126213764-7a8d9fab-ad09-4531-b03d-be6ae91f0e9f.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697126387502-9a6ad77e-d586-4112-b019-0ccd206353e9.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697126427363-6ccbd8c1-5b5c-4cc3-b416-0d208f541f62.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697127632392-78647f25-c005-4458-92c9-e2ebf4a4b42c.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697170557276-e009c9a0-038f-47e6-bf64-26af20947547.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697170583658-4c79ff09-ce33-47c4-acb4-2b89e4905646.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697127352046-455ad05e-0540-44f2-942d-5c382d939346.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697174639917-23b8b98a-3921-4c7a-bd2e-27bb71b22869.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697174489882-0634a596-2267-48ce-9f6a-987ee77005f2.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697127471464-38642af7-3bee-4f4d-b124-b713777c1212.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697126589586-5ddb5db1-e958-4c51-9b72-386bd4b2f110.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697170915826-3aaffeef-4c36-4940-aac6-5d806fcd27d2.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697171178393-03539b5f-cd8a-4d48-b610-31a0502a3e10.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697171248073-31f6676f-b08e-412f-bc23-f90bb0a6864e.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697172808327-b683c24d-b17f-4e64-b145-e24dc81c4a81.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697171670005-1f737062-f23c-4273-aee5-c79090db2dec.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697172556080-77194bef-a2e6-43f5-9e61-db6649089adb.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697176013861-b70e340a-f5a2-4c71-8ba6-12a458be42a4.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697176036349-4af8d6fd-c75c-4afb-b773-d007233047c3.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697174353039-abc85c74-900c-4473-9fb1-b638adc71072.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697176337696-b3a8f0ff-39b7-4e1a-9ccc-2d17e2cb58ec.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697176682822-372476cb-1e2e-4011-9903-a96ba249bd9e.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/jpeg/33556483/1697174883606-a3471f66-b975-4e7f-9ba8-68e2ddb4f6fd.jpeg">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697176092804-df738d3b-4fd8-4872-9093-d275f8c9ffba.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697176841489-ecf97a2d-4fcc-4304-9b2f-4f5164b77c4f.png">
+<meta property="article:published_time" content="2024-11-08T07:40:54.000Z">
+<meta property="article:modified_time" content="2024-11-08T07:45:33.127Z">
+<meta property="article:author" content="xswlhhh">
+<meta property="article:tag" content="作业">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697126140616-ba2abbcb-5dd2-4f54-8100-1b1115fc8bbb.png">
+
+<link rel="canonical" href="http://example.com/2024/11/08/C-%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%B0%8F%E9%A1%B9%E7%9B%AE%E2%80%94%E2%80%94%E4%B9%98%E6%B3%95%E7%A8%8B%E5%BA%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>C++第一次小项目——乘法程序 | xswlhhh的黄金屋</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">xswlhhh的黄金屋</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-resources">
+
+    <a href="/resources/" rel="section"><i class="download fa-fw"></i>资源</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/08/C-%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%B0%8F%E9%A1%B9%E7%9B%AE%E2%80%94%E2%80%94%E4%B9%98%E6%B3%95%E7%A8%8B%E5%BA%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/myavatar.jpg">
+      <meta itemprop="name" content="xswlhhh">
+      <meta itemprop="description" content="用最少的时间做无关的事，用最多的时间做紧要的事">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xswlhhh的黄金屋">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++第一次小项目——乘法程序
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-11-08 15:40:54 / 修改时间：15:45:33" itemprop="dateCreated datePublished" datetime="2024-11-08T15:40:54+08:00">2024-11-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%A4%A7%E5%AD%A6%E8%AF%BE%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">大学课程</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>12k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>10 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="info"><a href="#info" class="headerlink" title=":::info"></a>:::info</h1><p><strong><font style="color:rgb(0,0,0);">课程项目一：乘法程序 </font></strong></p>
+<p><font style="color:rgb(0,0,0);">实现一个可以完成读取两个数并输出两数相乘结果的程序。 </font></p>
+<p><strong><font style="color:rgb(0,0,0);">需求 </font></strong></p>
+<p><font style="color:rgb(0,0,0);">1. </font><font style="color:rgb(0,0,0);">请使用</font><font style="color:rgb(0,0,0);">C++</font><font style="color:rgb(0,0,0);">完成代码，程序需要可以被一个</font><font style="color:rgb(0,0,0);">C++</font><font style="color:rgb(0,0,0);">编译器（如</font><font style="color:rgb(0,0,0);">g++</font><font style="color:rgb(0,0,0);">）编译。程序应该尽可能 </font></p>
+<p><font style="color:rgb(0,0,0);">符合普通人使用计算器完成乘法的直觉。 </font></p>
+<p><font style="color:rgb(0,0,0);">2. </font><font style="color:rgb(0,0,0);">通过以下方式执行代码，程序会打印表达式和结果。两个数需要通过命令行参数进行读 </font></p>
+<p><font style="color:rgb(0,0,0);">取。</font><font style="color:rgb(0,0,0);">(</font><font style="color:rgb(0,0,0);">以下为</font><font style="color:rgb(0,0,0);">linux</font><font style="color:rgb(0,0,0);">环境，如果</font><font style="color:rgb(0,0,0);">windows</font><font style="color:rgb(0,0,0);">环境，虽有小差别（如</font><font style="color:rgb(0,0,0);">mul.exe</font><font style="color:rgb(0,0,0);">，带有拓展名</font><font style="color:rgb(0,0,0);">exe</font><font style="color:rgb(0,0,0);">）， </font></p>
+<p><font style="color:rgb(0,0,0);">但也需要实现类似功能。</font><font style="color:rgb(0,0,0);">) </font></p>
+<p><font style="color:rgb(0,0,0);">$.&#x2F;mul 2 3 </font></p>
+<p><font style="color:rgb(0,0,0);">2 * 3 &#x3D; 6 </font></p>
+<p><font style="color:rgb(0,0,0);">3. </font><font style="color:rgb(0,0,0);">如果输入存在非整数，程序需要尝试把它们转译成浮点数 </font></p>
+<p><font style="color:rgb(0,0,0);">$.&#x2F;mul 3.1416 2 </font></p>
+<p><font style="color:rgb(0,0,0);">3.1416 * 2 &#x3D; 6.2832 </font></p>
+<p><font style="color:rgb(0,0,0);">$.&#x2F;mul 3.1415 2.0e-2 </font></p>
+<p><font style="color:rgb(0,0,0);">3.1415 * 0.02 &#x3D; 0.06283 </font></p>
+<p><font style="color:rgb(0,0,0);">4. </font><font style="color:rgb(0,0,0);">如果当输入不是一个数字时，程序能够说明情况 </font></p>
+<p><font style="color:rgb(0,0,0);">$.&#x2F;mul a * 2 </font></p>
+<p><font style="color:rgb(0,0,0);">输入不能被解析为一个数字！ </font></p>
+<p><font style="color:rgb(0,0,0);">5. </font><font style="color:rgb(0,0,0);">如果你输入的是一些大整数，会发生什么情况？请尝试着描述可能的解决方法，并试着实 </font></p>
+<p><font style="color:rgb(0,0,0);">现它。 </font></p>
+<p><font style="color:rgb(0,0,0);">$.&#x2F;mul 1234567890 987654321 </font><em><font style="color:rgb(0,128,0);"># </font></em><font style="color:rgb(0,128,0);">结果应该是</font><em><font style="color:rgb(0,128,0);"> 1219326311126352690 </font></em></p>
+<p><font style="color:rgb(0,0,0);">6. </font><font style="color:rgb(0,0,0);">如果输入的是大浮点数，会发生什么情况？请尝试着描述可能的解决方法，并试着实现 </font></p>
+<p><font style="color:rgb(0,0,0);">它。 </font></p>
+<p><font style="color:rgb(0,0,0);">$.&#x2F;mul 1.0e200 1.0e200 </font></p>
+<p><font style="color:rgb(0,0,0);">7. </font><font style="color:rgb(0,0,0);">尝试多种方式对代码进行优化，包括执行速度、功能等（提示：搜索高精度乘法等关键 </font></p>
+<p><font style="color:rgb(0,0,0);">词，以及快速傅里叶变换等关键词，尝试支持大数，并提高乘法精度和速度；可以尝试完 </font></p>
+<p><font style="color:rgb(0,0,0);">善错误提示，让错误提示更加明确；尝试允许用户自选输出方式，如是否采用科学计数法 </font></p>
+<p><font style="color:rgb(0,0,0);">等）。</font></p>
+<p><font style="color:rgb(0,0,0);">8. 如果可以，尽量少使用相关代码库，直接调用高精度乘法相关的库无法获得高分。 </font></p>
+<p><font style="color:rgb(0,0,0);">9. </font><font style="color:rgb(0,0,0);">项目报告需要对需求进行分析，描述你的实现方案与项目特色，贴出核心代码并加以解 </font></p>
+<p><font style="color:rgb(0,0,0);">释，若代码编译运行比较复杂，需要附上如何编译运行代码。给出运行结果的展示（如截 </font></p>
+<p><font style="color:rgb(0,0,0);">图），并尽量给出性能展示与分析。最后给出总结。同时，鼓励写上实现代码时遇到的困 </font></p>
+<p><font style="color:rgb(0,0,0);">难以及相应的解决思路</font><font style="color:rgb(0,0,0);">&#x2F;</font><font style="color:rgb(0,0,0);">方案。 </font></p>
+<p><strong><font style="color:rgb(0,0,0);">请注意 </font></strong></p>
+<p><font style="color:rgb(0,0,0);">1. </font><font style="color:rgb(0,0,0);">请在截止日期前提交</font><strong><font style="color:rgb(0,0,0);">项目报告</font></strong><font style="color:rgb(0,0,0);">与</font><strong><font style="color:rgb(0,0,0);">源代码</font></strong><font style="color:rgb(0,0,0);">。提交截止时间是</font><strong><font style="color:rgb(0,0,0);">10</font><strong><strong><font style="color:rgb(0,0,0);">月</font></strong></strong><font style="color:rgb(0,0,0);">15</font><strong><strong><font style="color:rgb(0,0,0);">日</font></strong></strong><font style="color:rgb(0,0,0);">23</font><strong><strong><font style="color:rgb(0,0,0);">：</font></strong></strong><font style="color:rgb(0,0,0);">59</font></strong><font style="color:rgb(0,0,0);">。</font><strong><font style="color:rgb(0,0,0);">超过截止时间 </font></strong></p>
+<p><strong><font style="color:rgb(0,0,0);">的提交将无效</font></strong><font style="color:rgb(0,0,0);">。</font></p>
+<p><font style="color:rgb(0,0,0);">2. </font><font style="color:rgb(0,0,0);">请分开提交项目报告与源代码（即不要放在同个压缩包下）：报告与源代码命名方式为： </font></p>
+<p><font style="color:rgb(0,0,0);">姓名</font><font style="color:rgb(0,0,0);">-</font><font style="color:rgb(0,0,0);">学号</font><font style="color:rgb(0,0,0);">-</font><font style="color:rgb(0,0,0);">项目一，报告为</font><font style="color:rgb(0,0,0);">pdf</font><font style="color:rgb(0,0,0);">，源代码如果单份可以直接发送，如果多份请传</font><font style="color:rgb(0,0,0);">zip</font><font style="color:rgb(0,0,0);">压缩包。 </font></p>
+<p><font style="color:rgb(0,0,0);">3. </font><font style="color:rgb(0,0,0);">分数还将取决于源代码和报告的质量。报告应该容易理解，并很好地描述你的工作，特别 </font></p>
+<p><font style="color:rgb(0,0,0);">是你工作的亮点。 </font></p>
+<p><font style="color:rgb(0,0,0);">4. </font><font style="color:rgb(0,0,0);">请更加注意代码风格。本项目有足够的时间来编写具有正确结果和良好代码风格的代码。 </font></p>
+<p><font style="color:rgb(0,0,0);">如果代码风格很糟糕，可能会被扣分。可以阅读</font><font style="color:rgb(0,0,0);">Google C++</font><font style="color:rgb(0,0,0);">风格指南 </font></p>
+<p><font style="color:rgb(0,0,0);">(</font><font style="color:rgb(85,26,139);"><a target="_blank" rel="noopener" href="http://google.github.io/styleguide/cppguide.html">http://google.github.io/styleguide/cppguide.html</a></font><font style="color:rgb(0,0,0);">)或其他一些代码风格指南。</font></p>
+<p>:::</p>
+<h2 id="pqN1u"><font style="color:rgb(0,0,0);">需求1：请使用C++完成代码，程序需要可以被一个C++编译器（如g++）编译。程序应该尽可能 </font></h2>
+
+<p><strong><font style="color:rgb(0,0,0);">符合普通人使用计算器完成乘法的直觉。</font></strong></p>
+<p>直接 g++ .\project1.cpp -o .\project1.exe编译即可，如何使用？</p>
+<p>我们直接.&#x2F;project1.exe 123 123使用，即可得到123*123的结果</p>
+<hr>
+<h2 id="pZG7D">需求2：打印表达式和结果，通过命令行参数读取，此处用windows执行。</h2>
+
+<p>执行结果</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697126140616-ba2abbcb-5dd2-4f54-8100-1b1115fc8bbb.png"></p>
+<h3 id="TgGJ4">解析</h3>
+
+<p>此处是打印表达式用到的东西，此时还用命令行参数，所以存储格式是char，下面会进行转换int</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697126213764-7a8d9fab-ad09-4531-b03d-be6ae91f0e9f.png"></p>
+<p>此处是打印“&#x3D;”与结果，结果存储在一个int类型的数组中，在我们的函数里，为了计算方便，将字符串倒转过来，所以最后打印结果的时候需要逆序打印。</p>
+<p>这里还用一个函数判断是否为浮点数，以判断在什么位置应该打印小数点“.”,其中46为小数点的ASCII码</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697126387502-9a6ad77e-d586-4112-b019-0ccd206353e9.png"></p>
+<p>flag1与flag2判断前面是否需要带负号</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697126427363-6ccbd8c1-5b5c-4cc3-b416-0d208f541f62.png"></p>
+<p>现在我们来讲讲整数乘法部分是如何实现的，我们先看从函数调用看过去，在此之前，有一个char数组转int数组的操作（并且将数组逆转）（<strong>其实转成char数组也可以，但是乘法的算法和int不一样，需要重新设计）</strong></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697127632392-78647f25-c005-4458-92c9-e2ebf4a4b42c.png"></p>
+<p>然后将逆转后的数组(int)传参进函数运算</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697170557276-e009c9a0-038f-47e6-bf64-26af20947547.png"></p>
+<p>注意到len3&#x3D;len1+len2，,之后进行乘法运算，最后减去多余的0，如何理解？</p>
+<p>如25 * 25&#x3D;625，此时len3是4，第一个for循环式运算出来的结果是 ，5260，减去多余的0是526，然后逆序输出成625</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697170583658-4c79ff09-ce33-47c4-acb4-2b89e4905646.png"></p>
+<blockquote>
+<p>如果用局部变量来获取长度可能会有问题,如下。我们用全局来解决</p>
+<p>len_ptr1&#x3D;strlen(ptr1);如果用strlen,如果第一个字符是’\x00’,就会截断,长度为0</p>
+</blockquote>
+<h2 id="cR2cr">需求3：<font style="color:rgb(0,0,0);">如果输入存在非整数，程序需要尝试把它们转译成浮点数</font></h2>
+
+<p>执行结果，和描述有点差异，比如科学技术法打印出来并没有转换成小数，以及小数点后面的0并没有省去</p>
+<p>以及这里的科学技术法只能用大写E</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697127352046-455ad05e-0540-44f2-942d-5c382d939346.png"></p>
+<h3 id="Y8Svy">科学计数法转换</h3>
+
+<p>应该是用到了C++这两个库</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697174639917-23b8b98a-3921-4c7a-bd2e-27bb71b22869.png"></p>
+<p>分为两步，一个是科学计数法法转浮点数，另一个是浮点数转成字符数组</p>
+<p>这里在转换的时候遇到困难，搜资料发现有如此简单的方法，便采用，用到了类的东西</p>
+<p>使用find方法找到E的位置，exp是指数部分，base是我们前面的部分</p>
+<p>然后做一个运算</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697174489882-0634a596-2267-48ce-9f6a-987ee77005f2.png"></p>
+<h3 id="UrHR3">小数分析</h3>
+
+<p>上面提到过，有一个函数判断是否为浮点数，我们的函数如下，就是根据里面有没有”.”进行判断，是的话，返回真，执行我们的浮点数运算函数。这个函数就是看有没有’.’，此时Dotflag传进来的还是char类型的数组</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697127471464-38642af7-3bee-4f4d-b124-b713777c1212.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697126589586-5ddb5db1-e958-4c51-9b72-386bd4b2f110.png"></p>
+<p>那浮点数乘法部分我们如何实现的呢？</p>
+<p>首先我们先看，此处定义了dotflag，来分别存储各个数组小数点的位置，在小数运算中有个特性，就是结果的小数点后几位取决于乘法两个数小数点几位相加的结果。比如1.44&#x3D;1.2*1.2（2&#x3D;1+1）</p>
+<p>所以我们dotflag就是1 2相加。</p>
+<p>此时我们看前面两个for循环，这两个for循环是记住dot对的位置，然后去除dot。</p>
+<p>注意这里判断的时候，由于我们前面逆转操作时有 int(ptr[i]-‘0’)的操作，所以我们不能直接判断它是否为’.’，而是如图</p>
+<p>去掉小数点之后，我们数组就剩数字了，是不是意味着我们可以把它当做整数处理？</p>
+<p>所以后面直接带进整数乘法。</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697170915826-3aaffeef-4c36-4940-aac6-5d806fcd27d2.png"></p>
+<p>最后出来，我们要把小数点给插上去，插进去的时候注意len3长度要加1</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697171178393-03539b5f-cd8a-4d48-b610-31a0502a3e10.png"></p>
+<p>最后出来到main函数这里打印，注意这里有三个if同级，后面两个if是因为程序有点bug，临时做的一点修改，我目前找不到这个bug来源于哪里，这后面的两个if大概是这样的：</p>
+<p>因为逆序输出，第一位就是最后一位(len-1)，在科学计数法运算的时候，Float_Mul更改过的mul_result数组最后一位是以0结尾，也看不见小数点，这个问题可能和长度有关。但是呢，我们如果输入小数它又是正常的。</p>
+<p>bug如：0625   修补后0.625</p>
+<p>第三个if单独修补以’.’开头的东西</p>
+<p>大概效果如：.625   修补后0.625</p>
+<p>最后for循环里面，由于我们在Float_Mul插进去的是’.’，int类型值是46，所以我们也要判断如果是46就要换成点。注意这里数组每个值都不会大于10，如果大于10会被前面Big_Mul算法除掉，所以这是安全的。</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697171248073-31f6676f-b08e-412f-bc23-f90bb0a6864e.png"></p>
+<h2 id="xWD8I">需求4 检查</h2>
+
+<p>如图，我们声明了两个int变量来记录dot和E的个数，如果2个及以上就是非法字符，当然这里没法判断输入者可以用.和E结尾，不过程序会运行出一些奇怪的数据。</p>
+<p>还有输入其他的也是非法字符，只让输入0-9 . E e这些</p>
+<p>但是这里在处理科学计数法的时候会有一个问题，后面讲大浮点数的时候会涉及到。</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697172808327-b683c24d-b17f-4e64-b145-e24dc81c4a81.png"></p>
+<h2 id="c7QCB">需求5 大整数</h2>
+
+<p>由于这里的算法是针对大整数的，char类型数组不怕溢出，溢出了可以改改宏定义，所以多大都不怕。</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697171670005-1f737062-f23c-4273-aee5-c79090db2dec.png"></p>
+<h2 id="tynrl">需求6 大浮点数</h2>
+
+<p>大浮点数运算执行不通过，报错是自己写的，说太多’.’了（最后一行），我们可以看到整个存储它的数组</p>
+<p>原因找到了，是因为check检查的时候，我们输入1.0E200在这个位置记录了一个dot，转换之后，len长度发生变化，但是check函数并没有重新执行一遍，所以在最后检测到了dot，此时char_dot为2，退出程序。</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697172556080-77194bef-a2e6-43f5-9e61-db6649089adb.png"></p>
+<p>解决方法:在check前面进行科学计数法转换</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697176013861-b70e340a-f5a2-4c71-8ba6-12a458be42a4.png"></p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697176036349-4af8d6fd-c75c-4afb-b773-d007233047c3.png"></p>
+<p>可以看到都打印成功</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697174353039-abc85c74-900c-4473-9fb1-b638adc71072.png"></p>
+<h2 id="tRlZ1">需求7 需求8</h2>
+
+<p>完善错误提示</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cout&lt;&lt;<span class="string">&quot;ERROR[0]:Please enter a valid number&quot;</span>&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">cout&lt;&lt;<span class="string">&quot;ERROR[1]:Too many dot!&quot;</span>&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line">cout&lt;&lt;<span class="string">&quot;ERROR[2]:To many &#x27;E&#x27;!&quot;</span>&lt;&lt;endl;</span><br></pre></td></tr></table></figure>
+
+<p>支持大数</p>
+<p>看了看傅里叶变换，感觉很厉害，这里记录下来以后会看</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/stelayuri/p/13347896.html">https://www.cnblogs.com/stelayuri/p/13347896.html</a></p>
+<p>性能展示：</p>
+<p>普通整数相乘</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697176337696-b3a8f0ff-39b7-4e1a-9ccc-2d17e2cb58ec.png"></p>
+<p>科学计数法，最后一个没有运行时间，说明崩掉了，不知道为什么最后一个会崩掉？难道是输出太多数据了？</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697176682822-372476cb-1e2e-4011-9903-a96ba249bd9e.png"></p>
+<p>感觉对于大数字还是足够快的。</p>
+<p>不过了比较多的一个for循环，以及一个双重循环，这些就对时间有影响</p>
+<h2 id="lfdIl">需求9</h2>
+
+<p>高精度乘法的实现方案，我们用数组来存储一个一个位，这样就不会有大数的问题，按照对乘法的一般认识来写的这个程序，这样我们刚好用一个二层循环来实现乘法，先让A的每一位去乘B0，过完一次循环就到B1，以此类推。</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/jpeg/33556483/1697174883606-a3471f66-b975-4e7f-9ba8-68e2ddb4f6fd.jpeg"></p>
+<p>核心代码就在大数乘法的部分，解释如注释，也在前面大乘法的时候解释过：</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697176092804-df738d3b-4fd8-4872-9093-d275f8c9ffba.png"></p>
+<p>项目特色，个人觉得是段代码了，转换科学计数法的时候，很简洁，借鉴了别人的方法</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697176841489-ecf97a2d-4fcc-4304-9b2f-4f5164b77c4f.png"></p>
+<h2 id="F2JXq">总结</h2>
+
+<p>一个月的时间还是足够完成程序的，但是比较难处理的是修补程序各种想不到的bug，比如Float_Mul去掉点并记录位置的时候，此时int类型的 .  并不是其ACSII码46，而是其之前逆转字符串到int数组做的处理’.’-‘0’&#x3D;-2这个当时找了很久都没找到是什么问题，很折磨。从写浮点数开始就已经出现许多错误了，然后到check函数，check函数还是遇到许多问题的，但是还好不是什么短路求值问题，而是在科学计数法转换的时候出现的一些问题，详细见需求6。</p>
+<p>对刚学C++的我来说，感觉在这次作业比较偏向于C，因为还没学多少C++面向对象的一些特性，什么重载还有函数模板，感觉暂时也用不上（Ptr_Print）可以，不过那个函数是我为了检查有什么问题才写的，与主题程序无关。到科学计数法这一块，才认识到面向对象对的一些特性使用起来是多么方便。</p>
+<p>虽然，我个人认为能够完成整个任务并没有什么问题不是一件容易的事，但是，我深刻感觉到我的代码有点繁琐，许多功能并不能协同实现，一些代码带入了一些不必要的循环，有很多是我现在也没有意识到的，对于以后选取采用何种方式，必须要进行深究。</p>
+<h1 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;time.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAX 1024</span></span><br><span class="line"></span><br><span class="line"><span class="type">bool</span> flag1=<span class="literal">true</span>,flag2=<span class="literal">true</span>;</span><br><span class="line"><span class="type">int</span> *mul_result = <span class="keyword">new</span> <span class="type">int</span> [MAX]&#123;<span class="number">0</span>&#125;;</span><br><span class="line"><span class="type">int</span> len1=<span class="number">0</span>;</span><br><span class="line"><span class="type">int</span> len2=<span class="number">0</span>; </span><br><span class="line"><span class="type">int</span> len3=<span class="number">0</span>;</span><br><span class="line"><span class="type">int</span> dotflag=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Float_Mul</span><span class="params">(<span class="type">char</span> *ptr1,<span class="type">char</span>* ptr2,<span class="type">int</span>* result)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Big_Mul</span><span class="params">(<span class="type">char</span> *ptr1,<span class="type">char</span>* ptr2,<span class="type">int</span>* result)</span></span>;</span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">Dot_Flag</span><span class="params">(<span class="type">char</span> *ptr1,<span class="type">char</span>* ptr2)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Scientific_Notation</span><span class="params">(<span class="type">char</span>* ptr,<span class="type">int</span>*plen)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">check</span><span class="params">(<span class="type">char</span> *ptr1,<span class="type">char</span>* ptr2)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Ptr_Print</span><span class="params">(<span class="type">char</span>*ptr)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Is_Scientific</span><span class="params">(<span class="type">char</span> *ptr,<span class="type">int</span> *plen)</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc,<span class="type">char</span>* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="type">time_t</span> begin,end;</span><br><span class="line">    begin=<span class="built_in">clock</span>();</span><br><span class="line">    <span class="keyword">if</span>(argc == <span class="number">3</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">char</span> ptr1[MAX]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line">        <span class="type">char</span> ptr2[MAX]=&#123;<span class="number">0</span>&#125;;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//判断是否为负数，是的话通过前移字符串就取绝对值，然后打印负号</span></span><br><span class="line">        <span class="comment">//打印符号在最后面输出的时候打印</span></span><br><span class="line">        <span class="keyword">if</span>(argv[<span class="number">1</span>][<span class="number">0</span>]==<span class="string">&#x27;-&#x27;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">strcpy</span>(&amp;argv[<span class="number">1</span>][<span class="number">0</span>],&amp;argv[<span class="number">1</span>][<span class="number">1</span>]);</span><br><span class="line">            flag1=<span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(argv[<span class="number">2</span>][<span class="number">0</span>]==<span class="string">&#x27;-&#x27;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">strcpy</span>(&amp;argv[<span class="number">2</span>][<span class="number">0</span>],&amp;argv[<span class="number">2</span>][<span class="number">1</span>]);</span><br><span class="line">            flag2=<span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//打印表达式</span></span><br><span class="line">        <span class="built_in">Ptr_Print</span>(argv[<span class="number">1</span>]);</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot; *&quot;</span>&lt;&lt;<span class="string">&quot; &quot;</span>; </span><br><span class="line">        <span class="built_in">Ptr_Print</span>(argv[<span class="number">2</span>]);</span><br><span class="line">        len1=<span class="built_in">strlen</span>(&amp;argv[<span class="number">1</span>][<span class="number">0</span>]);</span><br><span class="line">        len2=<span class="built_in">strlen</span>(&amp;argv[<span class="number">2</span>][<span class="number">0</span>]);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//检查字符串是否合法,不合法直接退出程序</span></span><br><span class="line">        <span class="built_in">Is_Scientific</span>(argv[<span class="number">1</span>],&amp;len1);</span><br><span class="line">        <span class="built_in">Is_Scientific</span>(argv[<span class="number">2</span>],&amp;len2);</span><br><span class="line">        <span class="built_in">check</span>(argv[<span class="number">1</span>],argv[<span class="number">2</span>]);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//将字符倒过来才符合规律</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len1;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            ptr1[i]=<span class="built_in">int</span>(argv[<span class="number">1</span>][len1<span class="number">-1</span>-i]-<span class="string">&#x27;0&#x27;</span>);<span class="comment">//注意这里ptr里面存的已经是数字了，不是它的ASCII码</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len2;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            ptr2[i]=<span class="built_in">int</span>(argv[<span class="number">2</span>][len2<span class="number">-1</span>-i]-<span class="string">&#x27;0&#x27;</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        cout&lt;&lt;<span class="string">&quot; =&quot;</span>&lt;&lt;<span class="string">&quot; &quot;</span>; </span><br><span class="line">        <span class="comment">//根据判断有没有.的结果来选择进入函数</span></span><br><span class="line">        <span class="comment">//输出计算结果(逆序输出逆序算出的结果就是正序)</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">Dot_Flag</span>(argv[<span class="number">1</span>],argv[<span class="number">2</span>]))</span><br><span class="line">        &#123;<span class="comment">//Entering float_Mul func()</span></span><br><span class="line">            <span class="built_in">Float_Mul</span>(ptr1,ptr2,mul_result);</span><br><span class="line">            <span class="keyword">if</span>(flag1==<span class="literal">true</span>&amp;&amp;flag2==<span class="literal">false</span>||flag1==<span class="literal">false</span>&amp;&amp;flag2==<span class="literal">true</span>)</span><br><span class="line">	            cout&lt;&lt;<span class="string">&quot;-&quot;</span>;</span><br><span class="line">            <span class="keyword">if</span>(mul_result[len3<span class="number">-1</span>]==<span class="number">0</span>)</span><br><span class="line">                mul_result[len3<span class="number">-1</span>]=<span class="string">&#x27;.&#x27;</span>;</span><br><span class="line">            <span class="keyword">if</span>(mul_result[len3<span class="number">-1</span>]==<span class="number">46</span>)</span><br><span class="line">                cout&lt;&lt;<span class="string">&quot;0&quot;</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> i=len3<span class="number">-1</span> ; i&gt;=<span class="number">0</span> ; i--)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(mul_result[i]!=<span class="number">46</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    cout&lt;&lt;mul_result[i];</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span>    <span class="built_in">putchar</span>(<span class="string">&#x27;.&#x27;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;<span class="comment">//Entering Big_Mul func()</span></span><br><span class="line">            <span class="built_in">Big_Mul</span>(ptr1,ptr2,mul_result);</span><br><span class="line">            <span class="keyword">if</span>(flag1==<span class="literal">true</span>&amp;&amp;flag2==<span class="literal">false</span>||flag1==<span class="literal">false</span>&amp;&amp;flag2==<span class="literal">true</span>)</span><br><span class="line">	            cout&lt;&lt;<span class="string">&quot;-&quot;</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> i=len3<span class="number">-1</span> ; i&gt;=<span class="number">0</span> ; i--)</span><br><span class="line">            &#123;</span><br><span class="line">                cout&lt;&lt;mul_result[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;<span class="string">&quot;two argument expected.&quot;</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">delete</span> []mul_result;</span><br><span class="line">    end=<span class="built_in">clock</span>();</span><br><span class="line">    cout&lt;&lt;endl;</span><br><span class="line">    cout&lt;&lt;endl&lt;&lt;<span class="string">&quot;runtime:   &quot;</span>&lt;&lt;<span class="built_in">double</span>(end-begin)/CLOCKS_PER_SEC&lt;&lt;endl;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//浮点数乘法</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Float_Mul</span><span class="params">(<span class="type">char</span> *ptr1,<span class="type">char</span>* ptr2,<span class="type">int</span>* result)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> temp;</span><br><span class="line">    <span class="type">int</span> dotflag1=<span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> dotflag2=<span class="number">0</span>;</span><br><span class="line">    len3=len1+len2;<span class="comment">//这里len还算有.的长度</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//判断是否为&#x27;.&#x27;,并记录位置，我们处理是将dot展示移出，等计算完再放回来</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len1;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">int</span>(ptr1[i])==<span class="built_in">int</span>(<span class="string">&#x27;.&#x27;</span>-<span class="string">&#x27;0&#x27;</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            dotflag1=i;</span><br><span class="line">            <span class="built_in">strcpy</span>(&amp;ptr1[i],&amp;ptr1[i+<span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len2;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">int</span>(ptr2[i])==<span class="built_in">int</span>(<span class="string">&#x27;.&#x27;</span>-<span class="string">&#x27;0&#x27;</span>))</span><br><span class="line">        &#123;</span><br><span class="line">            dotflag2=i;</span><br><span class="line">            <span class="built_in">strcpy</span>(&amp;ptr2[i],&amp;ptr2[i+<span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    dotflag=dotflag1+dotflag2;</span><br><span class="line">    <span class="built_in">Big_Mul</span>(ptr1,ptr2,mul_result);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//把小数点插进去，计算结果是 123.45的话，在存储中会是54321，把小数点插入54.321,长度len+1</span></span><br><span class="line">    <span class="comment">//strcpy(&amp;mul_result[dotflag+1],&amp;mul_result[dotflag]);</span></span><br><span class="line">    <span class="keyword">if</span>(dotflag)</span><br><span class="line">    &#123;</span><br><span class="line">        len3=len3+<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=len3<span class="number">-1</span>;i&gt;dotflag;i--)</span><br><span class="line">        &#123;</span><br><span class="line">            mul_result[i]=mul_result[i<span class="number">-1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        mul_result[dotflag]=<span class="string">&#x27;.&#x27;</span>;<span class="comment">//这里本来放点。可是左值是一个INT类型</span></span><br><span class="line">        <span class="comment">//所以会转为ACSII码，这个地方会显示46,我们遇到46去替换就行了</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    cout&lt;&lt;endl;</span></span><br><span class="line"><span class="comment">    cout&lt;&lt;&quot;dot&quot;&lt;&lt;dotflag&lt;&lt;endl;</span></span><br><span class="line"><span class="comment">    for(int i=0;i&lt;len3+1;i++)</span></span><br><span class="line"><span class="comment">    &#123;</span></span><br><span class="line"><span class="comment">        cout&lt;&lt;mul_result[i]&lt;&lt;&quot;,&quot;;</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//判断是否采用浮点数</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">Dot_Flag</span><span class="params">(<span class="type">char</span> *ptr1,<span class="type">char</span>* ptr2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> max=len1;</span><br><span class="line">    <span class="keyword">if</span>(len1&lt;len2)</span><br><span class="line">        max=len2;</span><br><span class="line">    <span class="comment">//获取两者的最大值，以用于比较</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;max;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(i&lt;len1)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(ptr1[i]==<span class="string">&#x27;.&#x27;</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(i&lt;len2)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(ptr2[i]==<span class="string">&#x27;.&#x27;</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//大整数乘法</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Big_Mul</span><span class="params">(<span class="type">char</span> *ptr1,<span class="type">char</span>* ptr2,<span class="type">int</span>* mul_result)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> temp;</span><br><span class="line">    len3=len1+len2;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span> ; i &lt; len1 ; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        temp =<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span> ; j &lt; len2 ; ++j)</span><br><span class="line">        &#123;</span><br><span class="line">            mul_result[i+j]=ptr1[i]*ptr2[j]+temp+mul_result[i+j];<span class="comment">//现有的加，之前的进位+原本的数据</span></span><br><span class="line">            temp=mul_result[i+j]/<span class="number">10</span>; <span class="comment">//留下temp用于退出循环进位，如果没有退出循环，就在循环里进位</span></span><br><span class="line">            mul_result[i+j]%=<span class="number">10</span>;</span><br><span class="line">            <span class="comment">//cout&lt;&lt;&quot;mul_result_&quot;&lt;&lt;i+j&lt;&lt;&quot;:&quot;&lt;&lt;mul_result[i+j]&lt;&lt;endl;</span></span><br><span class="line">        &#125;</span><br><span class="line">        mul_result[i+len2]=temp;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=len3<span class="number">-1</span> ; i&gt;=<span class="number">0</span> ; --i)<span class="comment">//从倒数开始，减去多余的位置</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(mul_result[i]==<span class="number">0</span> &amp;&amp; len3 &gt; <span class="number">1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            len3--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">check</span><span class="params">(<span class="type">char</span> *ptr1,<span class="type">char</span>* ptr2)</span></span></span><br><span class="line"><span class="function"></span>&#123;   </span><br><span class="line">    <span class="type">int</span> char_e=<span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> char_dot=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len1;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> qwq=((ptr1[i]==<span class="string">&#x27;.&#x27;</span>||ptr1[i]==<span class="string">&#x27;-&#x27;</span>)||(ptr1[i]==<span class="string">&#x27;+&#x27;</span>||ptr1[i]==<span class="string">&#x27;E&#x27;</span>)||(ptr1[i]==<span class="string">&#x27;e&#x27;</span>));</span><br><span class="line">        <span class="keyword">if</span>(!((<span class="string">&#x27;0&#x27;</span>&lt;=ptr1[i]&amp;&amp;ptr1[i]&lt;=<span class="string">&#x27;9&#x27;</span>)||qwq))</span><br><span class="line">        &#123;</span><br><span class="line">            cout&lt;&lt;<span class="string">&quot;ERROR[0]1:Please enter a valid number&quot;</span>&lt;&lt;endl;</span><br><span class="line">            <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(ptr1[i]==<span class="string">&#x27;.&#x27;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            char_dot++;</span><br><span class="line">            <span class="keyword">if</span>(char_dot&gt;=<span class="number">2</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                cout&lt;&lt;<span class="string">&quot;ERROR[1]:Too many dot!&quot;</span>&lt;&lt;endl;</span><br><span class="line">                <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(ptr1[i]==<span class="string">&#x27;E&#x27;</span>||ptr1[i]==<span class="string">&#x27;e&#x27;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            char_e++;</span><br><span class="line">            <span class="keyword">if</span>(char_e&gt;=<span class="number">2</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                cout&lt;&lt;<span class="string">&quot;ERROR[2]:To many &#x27;E&#x27;!&quot;</span>&lt;&lt;endl;</span><br><span class="line">                <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    char_e=<span class="number">0</span>;</span><br><span class="line">    char_dot=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len2;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> qwq=((ptr2[i]==<span class="string">&#x27;.&#x27;</span>||ptr2[i]==<span class="string">&#x27;-&#x27;</span>)||(ptr2[i]==<span class="string">&#x27;+&#x27;</span>||ptr2[i]==<span class="string">&#x27;E&#x27;</span>)||(ptr2[i]==<span class="string">&#x27;e&#x27;</span>));</span><br><span class="line">        <span class="keyword">if</span>(!((<span class="string">&#x27;0&#x27;</span>&lt;=ptr2[i]&amp;&amp;ptr2[i]&lt;=<span class="string">&#x27;9&#x27;</span>)||qwq))</span><br><span class="line">        &#123;</span><br><span class="line">            cout&lt;&lt;<span class="string">&quot;ERROR[0]2:Please enter a valid number&quot;</span>&lt;&lt;endl;</span><br><span class="line">            <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(ptr2[i]==<span class="string">&#x27;.&#x27;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            char_dot++;</span><br><span class="line">            <span class="keyword">if</span>(char_dot&gt;=<span class="number">2</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                cout&lt;&lt;<span class="string">&quot;ERROR[1]:Too many dot!&quot;</span>&lt;&lt;endl;</span><br><span class="line">                <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(ptr2[i]==<span class="string">&#x27;E&#x27;</span>||ptr2[i]==<span class="string">&#x27;e&#x27;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            char_e++;</span><br><span class="line">            <span class="keyword">if</span>(char_e&gt;=<span class="number">2</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                cout&lt;&lt;<span class="string">&quot;ERROR[2]:To many &#x27;E&#x27;!&quot;</span>&lt;&lt;endl;</span><br><span class="line">                <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Scientific_Notation</span><span class="params">(<span class="type">char</span>* ptr,<span class="type">int</span> *plen)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">char</span> c[<span class="number">50</span>]=&#123;<span class="string">&#x27;\x00&#x27;</span>&#125;;</span><br><span class="line">    string s=ptr;</span><br><span class="line">    <span class="type">double</span> double_num;</span><br><span class="line">    <span class="type">int</span> eIndex = s.<span class="built_in">find</span>(<span class="string">&quot;E&quot;</span>);</span><br><span class="line">    <span class="type">double</span> base = <span class="built_in">stod</span>(s.<span class="built_in">substr</span>(<span class="number">0</span>, eIndex)); <span class="comment">//获取小数部分</span></span><br><span class="line">    <span class="type">int</span> exp = <span class="built_in">stoi</span>(s.<span class="built_in">substr</span>(eIndex + <span class="number">1</span>)); <span class="comment">//获取指数部分</span></span><br><span class="line">    double_num= base * <span class="built_in">pow</span>(<span class="number">10</span>, exp);</span><br><span class="line">    <span class="built_in">sprintf</span>(ptr,<span class="string">&quot;%f&quot;</span>,double_num);</span><br><span class="line">    *plen=<span class="built_in">strlen</span>(ptr);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Ptr_Print</span><span class="params">(<span class="type">char</span>*ptr)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> len=<span class="built_in">strlen</span>(ptr);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;len;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;ptr[i];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Is_Scientific</span><span class="params">(<span class="type">char</span> *ptr,<span class="type">int</span> *plen)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> ( <span class="type">int</span> i = <span class="number">0</span>; i &lt; *plen; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(ptr[i]==<span class="string">&#x27;E&#x27;</span>||ptr[i]==<span class="string">&#x27;e&#x27;</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">Scientific_Notation</span>(ptr,plen);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>xswlhhh
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://example.com/2024/11/08/C-%E7%AC%AC%E4%B8%80%E6%AC%A1%E5%B0%8F%E9%A1%B9%E7%9B%AE%E2%80%94%E2%80%94%E4%B9%98%E6%B3%95%E7%A8%8B%E5%BA%8F/" title="C++第一次小项目——乘法程序">http://example.com/2024/11/08/C-第一次小项目——乘法程序/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+	
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E4%BD%9C%E4%B8%9A/" rel="tag"># 作业</a>
+              <a href="/tags/C/" rel="tag"># C++</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/11/04/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C%E5%9B%9B%E2%80%94%E2%80%94%E5%A4%9A%E7%BA%A7%E5%8F%8D%E9%A6%88%E9%98%9F%E5%88%97%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95/" rel="prev" title="操作系统实验四——多级反馈队列调度算法">
+      <i class="fa fa-chevron-left"></i> 操作系统实验四——多级反馈队列调度算法
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/11/08/C-%E7%AC%AC%E4%BA%8C%E6%AC%A1%E5%B0%8F%E9%A1%B9%E7%9B%AE%E2%80%94%E2%80%94%E5%9B%9B%E5%88%99%E9%A2%84%E7%AE%97%E5%99%A8/" rel="next" title="C++第二次小项目——四则预算器">
+      C++第二次小项目——四则预算器 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81OTY4MS8zNjE0Mw=="></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+	<!--网易云插件-->
+	<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=489847882&auto=1&height=66"></iframe>
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#info"><span class="nav-number">1.</span> <span class="nav-text">:::info</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#pqN1u"><span class="nav-number">1.1.</span> <span class="nav-text">需求1：请使用C++完成代码，程序需要可以被一个C++编译器（如g++）编译。程序应该尽可能 </span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pZG7D"><span class="nav-number">1.2.</span> <span class="nav-text">需求2：打印表达式和结果，通过命令行参数读取，此处用windows执行。</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TgGJ4"><span class="nav-number">1.2.1.</span> <span class="nav-text">解析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cR2cr"><span class="nav-number">1.3.</span> <span class="nav-text">需求3：如果输入存在非整数，程序需要尝试把它们转译成浮点数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Y8Svy"><span class="nav-number">1.3.1.</span> <span class="nav-text">科学计数法转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UrHR3"><span class="nav-number">1.3.2.</span> <span class="nav-text">小数分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xWD8I"><span class="nav-number">1.4.</span> <span class="nav-text">需求4 检查</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c7QCB"><span class="nav-number">1.5.</span> <span class="nav-text">需求5 大整数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tynrl"><span class="nav-number">1.6.</span> <span class="nav-text">需求6 大浮点数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tRlZ1"><span class="nav-number">1.7.</span> <span class="nav-text">需求7 需求8</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lfdIl"><span class="nav-number">1.8.</span> <span class="nav-text">需求9</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#F2JXq"><span class="nav-number">1.9.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%BA%90%E4%BB%A3%E7%A0%81"><span class="nav-number">2.</span> <span class="nav-text">源代码</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="xswlhhh"
+      src="/images/myavatar.jpg">
+  <p class="site-author-name" itemprop="name">xswlhhh</p>
+  <div class="site-description" itemprop="description">用最少的时间做无关的事，用最多的时间做紧要的事</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/2991796382@qq.com" title="E-Mail → 2991796382@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2024-03 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xswlhhh</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">171k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:36</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+$(document).ready(function() {
+
+    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+    var countOffset = 20000;  // 初始化首次数据
+
+    function fixCount() {            
+       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
+        {
+            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset); 
+            clearInterval(int);
+        }                  
+        if ($("#busuanzi_container_site_pv").css("display") != "none")
+        {
+            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据 
+            clearInterval(int); // 停止检测
+        }  
+    }
+       	
+});
+</script> 
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>
