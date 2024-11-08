@@ -115,7 +115,7 @@
   <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/" rel="section"><i class="home fa-fw"></i>首页</a>
+    <a href="/archives/" rel="section"><i class="home fa-fw"></i>首页</a>
 
   </li>
         <li class="menu-item menu-item-archives">
@@ -222,7 +222,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2024-11-08 15:41:33 / 修改时间：15:46:11" itemprop="dateCreated datePublished" datetime="2024-11-08T15:41:33+08:00">2024-11-08</time>
+              <time title="创建时间：2024-11-08 15:41:33 / 修改时间：15:49:35" itemprop="dateCreated datePublished" datetime="2024-11-08T15:41:33+08:00">2024-11-08</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -257,7 +257,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="info"><a href="#info" class="headerlink" title=":::info"></a>:::info</h1><p><strong><font style="color:rgb(0,0,0);">题目：文本查询程序 </font></strong></p>
+          <p>:::info<br><strong><font style="color:rgb(0,0,0);">题目：文本查询程序 </font></strong></p>
 <p><font style="color:rgb(0,0,0);">实现一个文本查询程序。 </font></p>
 <p><strong><font style="color:rgb(0,0,0);">需求 </font></strong></p>
 <p><font style="color:rgb(0,0,0);">1. 使用 C++ 完成代码，确保程序可由 C++ 编译器（如g++）编译。 </font></p>
@@ -375,7 +375,7 @@
 <p><font style="color:rgb(0,0,0);">3. 退出 </font></p>
 <p>:::</p>
 <p>main函数就是针对需求3来设计，然后该读取的读取，该调用对的调用，以及可能涉及到的一些异常处理。</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2024/png/33556483/1704529617060-c79e7bd4-da7a-4d43-bf1f-115b0b6a9eec.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1704529617060-c79e7bd4-da7a-4d43-bf1f-115b0b6a9eec.png"></p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;<span class="comment">//对输入的buf进行判别</span></span><br><span class="line">    <span class="type">int</span> cho;</span><br><span class="line">    string buf;</span><br><span class="line"></span><br><span class="line">    string newbuf;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">        <span class="built_in">menu</span>();</span><br><span class="line">        cin&gt;&gt;cho;</span><br><span class="line">        cin.<span class="built_in">ignore</span>();</span><br><span class="line">        <span class="keyword">switch</span> (cho)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">1</span>:<span class="comment">//让用户输入路径</span></span><br><span class="line">                cout&lt;&lt;<span class="string">&quot;请输入读取的文件路径&quot;</span>&lt;&lt;endl;</span><br><span class="line">                cout&lt;&lt;<span class="string">&quot;&gt;&gt;&gt; &quot;</span>;</span><br><span class="line">                <span class="built_in">getline</span>(cin,buf);</span><br><span class="line">                cout&lt;&lt;<span class="string">&quot;请指定每行最大的字符数n :)&quot;</span>&lt;&lt;endl;</span><br><span class="line">                cout&lt;&lt;<span class="string">&quot;&gt;&gt;&gt;&quot;</span>;</span><br><span class="line">                <span class="type">int</span> num;</span><br><span class="line">                cin&gt;&gt;num;</span><br><span class="line">                cin.<span class="built_in">ignore</span>();</span><br><span class="line">                cout&lt;&lt;<span class="string">&quot;请指定新文件保存的路径 :)&quot;</span>&lt;&lt;endl;</span><br><span class="line">                cout&lt;&lt;<span class="string">&quot;&gt;&gt;&gt;&quot;</span>;</span><br><span class="line">                <span class="built_in">getline</span>(cin,newbuf);</span><br><span class="line">                <span class="keyword">try</span>&#123;</span><br><span class="line">                    ff=<span class="built_in">make_shared</span>&lt;FileFormatter&gt;(buf,newbuf,num);</span><br><span class="line">                    ff-&gt;<span class="built_in">readFromFile</span>();</span><br><span class="line">                    ff-&gt;formatText();</span><br><span class="line">                    ff-&gt;<span class="built_in">saveToFile</span>();</span><br><span class="line">                &#125;<span class="built_in">catch</span>(string str)&#123;</span><br><span class="line">                    cerr&lt;&lt;<span class="string">&quot;错误的文件路径&quot;</span>&lt;&lt;buf&lt;&lt;<span class="string">&quot;导致打开异常 :(&quot;</span>&lt;&lt;endl;</span><br><span class="line">                &#125;<span class="built_in">catch</span>(<span class="type">char</span> ch)&#123;</span><br><span class="line">                    cerr&lt;&lt;<span class="string">&quot;错误的文件路径&quot;</span>&lt;&lt;buf&lt;&lt;<span class="string">&quot;导致写入异常 :(&quot;</span>&lt;&lt;endl;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">                cout&lt;&lt;<span class="string">&quot;请输入读取的文件路径&quot;</span>&lt;&lt;endl;</span><br><span class="line">                cout&lt;&lt;<span class="string">&quot;&gt;&gt;&gt; &quot;</span>;</span><br><span class="line">                <span class="built_in">getline</span>(cin,newbuf);<span class="comment">//buf就是路径</span></span><br><span class="line">                <span class="keyword">try</span>&#123;</span><br><span class="line">                    ifs=<span class="built_in">make_shared</span>&lt;IFileStream&gt;(newbuf);</span><br><span class="line">                    cout&lt;&lt;<span class="string">&quot;&gt;&gt;&gt; &quot;</span>;</span><br><span class="line">                    <span class="built_in">getline</span>(cin,buf);<span class="comment">//从输入流中读取一行数据到buf</span></span><br><span class="line">                    <span class="built_in">BlankFliter</span>(buf);<span class="comment">//首先排除空格的影响</span></span><br><span class="line">                    <span class="built_in">StringTraslate</span>(buf);</span><br><span class="line">                &#125;<span class="built_in">catch</span>(string str)&#123;</span><br><span class="line">                    cerr&lt;&lt;str;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">                <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                cout&lt;&lt;<span class="string">&quot;无效的选项:(&quot;</span>&lt;&lt;endl;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>:::info<br><font style="color:rgb(0,0,0);">4. </font><font style="color:rgb(0,0,0);">进入文件格式化功能，程序会根据用户后续输入的文件位置（绝对地址或相对地址）和文 </font></p>
@@ -386,8 +386,8 @@
 <p><font style="color:rgb(0,0,0);">名，并被确认替换）。 </font></p>
 <p>:::</p>
 <p>调用在main的代码已经写了，对应FileFormatter类的设计已在需求2展示，这里直接展示结果</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2024/png/33556483/1704532241776-c17d27f3-7fed-4b78-92fd-53114aac86bc.png"></p>
-<p><img src="https://cdn.nlark.com/yuque/0/2024/png/33556483/1704532171956-431bee23-b70c-45a8-a252-a03f34a9141c.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1704532241776-c17d27f3-7fed-4b78-92fd-53114aac86bc.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1704532171956-431bee23-b70c-45a8-a252-a03f34a9141c.png"></p>
 <p>:::info<br><font style="color:rgb(0,0,0);">5. </font><font style="color:rgb(0,0,0);">文本查询允许用户指定一个文件（给定文件位置与文件名），并在其中查询单词，查询结 </font></p>
 <p><font style="color:rgb(0,0,0);">果是单词在文件中出现的次数及其所在行的列表。如果一个单词在一行中出现多次，此行 </font></p>
 <p><font style="color:rgb(0,0,0);">只列出一次。行会按照升序输出，即第</font><font style="color:rgb(0,0,0);">7</font><font style="color:rgb(0,0,0);">行会在第</font><font style="color:rgb(0,0,0);">9</font><font style="color:rgb(0,0,0);">行之前显示，以此类推。如果查询不 </font></p>
@@ -401,7 +401,7 @@
 <p><font style="color:rgb(0,0,0);"> (line 168) When we fetch an element from a map, we </font></p>
 <p><font style="color:rgb(0,0,0);"> (line 214) If the element is not found, find returns</font></p>
 <p>:::</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2024/png/33556483/1704523984530-c577a032-a2fd-4e93-b06d-5651ebcdb138.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1704523984530-c577a032-a2fd-4e93-b06d-5651ebcdb138.png"></p>
 <p>结果如图，相对应的函数，定义了一个StringTraslate和ExpTraslate函数实现对应的效果，以及一些辅助函数如空格过滤，判断输入的字符串是变量还是常量等。</p>
 <p>StringTraslate主要是按照操作符分割字符串，已经判断是查询操作还是赋值操作</p>
 <p>ExpTraslate先是把StringTraslate处理后的字符串设法转换成后缀表达式，然后利用栈完成运算（利用栈也是为了支持复杂运算）。</p>
@@ -419,7 +419,7 @@
 
 
 <p>:::info<br><font style="color:rgb(0,0,0);">文本查询功能可以通过交互式的方式保存用户输入的</font><strong><font style="color:rgb(0,0,0);">字符串</font></strong><font style="color:rgb(0,0,0);">（与项目二一样，忽略输入时 </font></p>
-<p><font style="color:rgb(0,0,0);">的各种空格），并可以支持逻辑查询操作（各种逻辑运算）。</font><img src="https://cdn.nlark.com/yuque/0/2024/png/33556483/1704523808550-09f668af-a43d-4bb2-a0d5-2118441545ce.png"><img src="https://cdn.nlark.com/yuque/0/2024/png/33556483/1704523766560-fd64c2bb-e889-4f77-9423-6c76ff93fe72.png"><img src="https://cdn.nlark.com/yuque/0/2024/png/33556483/1704523843712-98b9fd63-9d0f-4ec7-9376-6f072db8fd50.png"></p>
+<p><font style="color:rgb(0,0,0);">的各种空格），并可以支持逻辑查询操作（各种逻辑运算）。</font><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1704523808550-09f668af-a43d-4bb2-a0d5-2118441545ce.png"><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1704523766560-fd64c2bb-e889-4f77-9423-6c76ff93fe72.png"><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1704523843712-98b9fd63-9d0f-4ec7-9376-6f072db8fd50.png"></p>
 <p>:::</p>
 <p>还是老样子涉及到unordered_map</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">unordered_map&lt;string,string&gt;umap&#123;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"><span class="function">string <span class="title">IsNameReturn</span><span class="params">(string &amp;buf)</span></span>&#123;<span class="comment">//针对一个单词的一次性检查是否是变量</span></span><br><span class="line">    string result;</span><br><span class="line">    <span class="keyword">auto</span> iter = umap.<span class="built_in">find</span>(buf);</span><br><span class="line">    <span class="keyword">if</span>(iter!=umap.<span class="built_in">end</span>())&#123;</span><br><span class="line">        result=iter-&gt;second;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> buf;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -430,22 +430,22 @@
 <p>:::</p>
 <p>OFileStream和IFileStream里面都有对应的错误异常处理</p>
 <p>输入的路径有问题，就返回主函数重新执行菜单</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2024/png/33556483/1704540735494-f2cedcc8-0f5a-4de1-876b-55eb3a88d8ae.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1704540735494-f2cedcc8-0f5a-4de1-876b-55eb3a88d8ae.png"></p>
 <p>输入的查询表达式有问题，返回主函数</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2024/png/33556483/1704541429865-d1f0af06-56a1-4acd-aee2-b382fbf76e76.png"><img src="https://cdn.nlark.com/yuque/0/2024/png/33556483/1704540889279-4f1ec330-28f5-402e-b8d2-ae3716d72008.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1704541429865-d1f0af06-56a1-4acd-aee2-b382fbf76e76.png"><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1704540889279-4f1ec330-28f5-402e-b8d2-ae3716d72008.png"></p>
 <h3 id="wWtmc">解析需求9</h3>
 
 <p>:::info<br><font style="color:rgb(0,0,0);">9. </font><font style="color:rgb(0,0,0);">尝试支持带括号控制优先级的复杂运算（优先级参照</font><font style="color:rgb(0,0,0);">C++</font><font style="color:rgb(0,0,0);">运算符优先级），如 </font></p>
 <p><font style="color:rgb(0,0,0);">&gt;&gt;&gt; ((~a | b &amp; c) | d) &amp; d</font></p>
 <p>:::</p>
 <p>利用栈就可以实现复杂表达式的运算，就是优先级的问题。代码在需求5已经贴出</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2024/png/33556483/1704540714628-b25c6efc-db46-4184-94bb-ab1cb59a1d3e.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1704540714628-b25c6efc-db46-4184-94bb-ab1cb59a1d3e.png"></p>
 <h3 id="Hn8Uf">解析需求11</h3>
 
 <p>可以看到能够成功写到文件中，其实就是字符串处理操作中，根据&gt;&gt;分割成前后部分，后面打开文件即可</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">QueryResult</span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        string inputword;<span class="comment">//需要查询的单词</span></span><br><span class="line">        shared_ptr&lt;set&lt;<span class="type">unsigned</span>&gt;&gt; idx;<span class="comment">//出现的行号</span></span><br><span class="line">        shared_ptr&lt;vector&lt;string&gt;&gt; file;<span class="comment">//查找的文件</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">write</span><span class="params">(ofstream&amp; ofs)</span></span>&#123;</span><br><span class="line">        ofs&lt;&lt;<span class="string">&quot;\&quot;&quot;</span>&lt;&lt;<span class="keyword">this</span>-&gt;inputword&lt;&lt;<span class="string">&quot;\&quot;出现了&quot;</span>&lt;&lt;<span class="keyword">this</span>-&gt;idx-&gt;<span class="built_in">size</span>()&lt;&lt;<span class="string">&quot;次&quot;</span>&lt;&lt;endl;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> num:*(<span class="keyword">this</span>-&gt;idx))&#123;</span><br><span class="line">            ofs&lt;&lt;<span class="string">&quot; (line &quot;</span>&lt;&lt;num+<span class="number">1</span>&lt;&lt;<span class="string">&quot;) &quot;</span>;</span><br><span class="line">            ofs&lt;&lt;*(<span class="keyword">this</span>-&gt;file-&gt;<span class="built_in">begin</span>()+num)&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">	..........</span><br><span class="line">    ...........</span><br><span class="line">    .........</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://cdn.nlark.com/yuque/0/2024/png/33556483/1704542200925-6309bb02-72a2-430d-9780-4e2f5de6cd5d.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1704542200925-6309bb02-72a2-430d-9780-4e2f5de6cd5d.png"></p>
 <h1 id="p9gkH"><font style="color:rgb(0,0,0);">总结</font></h1>
 
 <p>算是比较正常的完成了一个程序，有了正确的思路和设计方向就是省了很多纠错的时间，对类和对象的印象更加深刻了，以及多态继承等概念，还有共享指针的妙处就是跨越{}作用域给你传输数据。解决了上次没有解决复杂表达式的问题，果然还是直接设计面向对象的栈类型是最佳的，以及重载需要的操作符，让我们更加方便的对对象进行操作。复习了RAII和异常处理类操作，没有用上模板但是没关系，也不强求，看需求。</p>
@@ -505,7 +505,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2024-11-08 15:41:11 / 修改时间：15:45:23" itemprop="dateCreated datePublished" datetime="2024-11-08T15:41:11+08:00">2024-11-08</time>
+              <time title="创建时间：2024-11-08 15:41:11 / 修改时间：15:50:47" itemprop="dateCreated datePublished" datetime="2024-11-08T15:41:11+08:00">2024-11-08</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -574,8 +574,8 @@
 <p>:::</p>
 <p>由于后面需要大数，因此引入gmpxx库，由于myms里面自带。我们之前通过VScode和mysm2搞了一下环境</p>
 <p>因此我们的命令行参数设置如下即可，并且看到成功编译。</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1701349738450-4790cef0-9bb7-4f9a-bad2-5bc9dbe3e4ae.png"></p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1701349761339-482e9b3e-3fe7-42b1-b3e5-6cd67242799f.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1701349738450-4790cef0-9bb7-4f9a-bad2-5bc9dbe3e4ae.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1701349761339-482e9b3e-3fe7-42b1-b3e5-6cd67242799f.png"></p>
 <p>我们设计了一个Complex类，实部和虚部用两个高精度浮点类型mpf_t来表示。下面对一些运算符进行重载，包括对象是string类的和Complex类的，定义了一些方法。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Complex</span>&#123;</span><br><span class="line">    <span class="keyword">public</span>:<span class="comment">//也设立两个负数的flag</span></span><br><span class="line">        <span class="type">mpf_t</span> realPart;<span class="comment">//实</span></span><br><span class="line">        <span class="type">mpf_t</span> imaginaryPart;<span class="comment">//虚</span></span><br><span class="line">    <span class="built_in">Complex</span>()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">mpf_init2</span>(imaginaryPart,<span class="number">333</span>);</span><br><span class="line">        <span class="built_in">mpf_init2</span>(realPart,<span class="number">333</span>);</span><br><span class="line">        <span class="built_in">mpf_set_ui</span>(realPart,<span class="number">0</span>);</span><br><span class="line">        <span class="built_in">mpf_set_ui</span>(imaginaryPart,<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">Complex</span>(<span class="type">mpf_t</span> initx,<span class="type">mpf_t</span> inity)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">mpf_init2</span>(imaginaryPart,<span class="number">333</span>);</span><br><span class="line">        <span class="built_in">mpf_init2</span>(realPart,<span class="number">333</span>);</span><br><span class="line">        <span class="built_in">mpf_set</span>(realPart,initx);</span><br><span class="line">        <span class="built_in">mpf_set</span>(imaginaryPart,inity);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">char</span>* <span class="title">getx</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">mpf_get_str</span>(<span class="literal">nullptr</span>,<span class="number">0</span>,<span class="number">10</span>,<span class="number">0</span>,realPart);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="type">char</span>* <span class="title">gety</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">mpf_get_str</span>(<span class="literal">nullptr</span>,<span class="number">0</span>,<span class="number">10</span>,<span class="number">0</span>,imaginaryPart);</span><br><span class="line">    &#125;</span><br><span class="line">    Complex &amp; <span class="keyword">operator</span>=(Complex b)</span><br><span class="line">    Complex <span class="keyword">operator</span>+(Complex b) <span class="type">const</span></span><br><span class="line">    Complex <span class="keyword">operator</span>-(Complex b) <span class="type">const</span></span><br><span class="line"></span><br><span class="line">    Complex <span class="keyword">operator</span>*(Complex b) <span class="type">const</span></span><br><span class="line"></span><br><span class="line">    Complex <span class="keyword">operator</span>/(Complex b) <span class="type">const</span></span><br><span class="line">    Complex <span class="keyword">operator</span>+(string buf) <span class="type">const</span></span><br><span class="line">    Complex <span class="keyword">operator</span>-(string buf) <span class="type">const</span></span><br><span class="line">    Complex <span class="keyword">operator</span>*(string buf) <span class="type">const</span></span><br><span class="line">    Complex <span class="keyword">operator</span>/(string buf) <span class="type">const</span></span><br><span class="line">    string <span class="built_in">mod</span>() <span class="type">const</span></span><br><span class="line">    string <span class="built_in">con</span>() <span class="type">const</span></span><br><span class="line">    string <span class="built_in">alldata</span>() <span class="type">const</span></span><br><span class="line">    string <span class="built_in">realdata</span>() <span class="type">const</span></span><br><span class="line">    string <span class="built_in">imagdata</span>() <span class="type">const</span></span><br><span class="line">    <span class="type">void</span> <span class="built_in">print</span>()<span class="type">const</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
@@ -588,7 +588,7 @@
 <p><font style="color:rgb(0,0,0);">如果用户输入复数，且复数有效，则用自行定义的统一格式打印该复数，若格式错 </font></p>
 <p><font style="color:rgb(0,0,0);">误，则打印错误信息（程序仍继续执行）。可参考如下（也可以自行统一格式）：</font></p>
 </blockquote>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1701352809967-5ce1e3bd-8ade-430e-bfe5-7ca9e649b4d2.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1701352809967-5ce1e3bd-8ade-430e-bfe5-7ca9e649b4d2.png"></p>
 <blockquote>
 <p><font style="color:rgb(0,0,0);">对于赋值操作，程序应保存相应变量名和复数值，并支持变量覆盖操作（可以通过赋 </font></p>
 <p><font style="color:rgb(0,0,0);">值覆盖原来数值）（有效变量名可以参考</font><font style="color:rgb(0,0,0);">C++</font><font style="color:rgb(0,0,0);">有效变量名标准，如变量名只能是字母 </font></p>
@@ -596,37 +596,37 @@
 <p><font style="color:rgb(0,0,0);">线开头。变量名区分大小写。变量名不能为</font><font style="color:rgb(0,0,0);">“i”</font><font style="color:rgb(0,0,0);">等预设名称。保存变量可以参考使用</font><font style="color:rgb(0,0,0);">unordered_map </font><font style="color:rgb(0,0,0);">等容器）。若输入为已赋值变量，则输出该变量及相应复数值，若 </font></p>
 <p><font style="color:rgb(0,0,0);">未定义变量，则提示错误。</font></p>
 </blockquote>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1701352766040-0cfdb9ff-f352-4f2d-95ff-b2093b13798c.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1701352766040-0cfdb9ff-f352-4f2d-95ff-b2093b13798c.png"></p>
 <blockquote>
 <p><font style="color:rgb(0,0,0);">支持变量间的加减乘除法</font></p>
 </blockquote>
 <p>在此前先说明，我创建的无序图键值对分别是，一个变量名对应一个字符串</p>
 <p>然而因为我写的算法的原因并不支持复杂变量间的加减乘除运算，这是因为我在处理这些变量的时候等价于利用宏直接进行一个替换成一个字符串。</p>
 <p>如果创建无序图的时候</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1701353501824-daebade0-875e-47a1-9de5-6c160279f1b5.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1701353501824-daebade0-875e-47a1-9de5-6c160279f1b5.png"></p>
 <blockquote>
 <p><font style="color:rgb(0,0,0);">支持模运算和赋值，</font></p>
 </blockquote>
 <p>在这一点，对mod还算是比较成功的….</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1701354226233-6be07421-caa6-4e1f-a438-9dbbb1a8d165.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1701354226233-6be07421-caa6-4e1f-a438-9dbbb1a8d165.png"></p>
 <blockquote>
 <p><font style="color:rgb(0,0,0);">支持求共轭复数</font></p>
 </blockquote>
 <p>con的话，因为代码算法的局限性，只完成了一点</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1701354794270-f576b8e0-62db-4e0e-b390-78f4269d4d0f.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1701354794270-f576b8e0-62db-4e0e-b390-78f4269d4d0f.png"></p>
 <blockquote>
 <p><font style="color:rgb(0,0,0);">（</font><strong><font style="color:rgb(0,0,0);">选做</font></strong><font style="color:rgb(0,0,0);">）支持变量的连续的加减乘除法（同个运算），并可支持变量与数的混合运 </font></p>
 <p><font style="color:rgb(0,0,0);">算，括号解析（对于乘除法），和相应变量赋值</font></p>
 </blockquote>
 <p>乘除法就算了，因为变量间都是宏替换的，实现不了….</p>
 <p>但是加法肯定没问题，图中4.099999999999999999999我猜是因为mpf的局限，表示不了4.1，这里后面总结会说到这个东西。</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1701354896959-57c971a9-40ca-4728-8376-6ad94d97a4d9.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1701354896959-57c971a9-40ca-4728-8376-6ad94d97a4d9.png"></p>
 <p>这里展示一下常数的乘除法</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1701355022399-5fd325cf-506d-4a5f-aa43-248bb02cd96c.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1701355022399-5fd325cf-506d-4a5f-aa43-248bb02cd96c.png"></p>
 <p>:::info<br><font style="color:rgb(0,0,0);">4. 可尝试支持对复杂表达式的混合计算，如</font></p>
 <p>:::</p>
 <p>然而并不可以，因为程序残次，解析括号花费了挺多时间，也没有解决，我的评价是不如直接用mpf（或者其他高精度库）的栈，不用string的。</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1701355309671-8dc90039-d06c-4f31-aa67-ee6cfb59a63a.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1701355309671-8dc90039-d06c-4f31-aa67-ee6cfb59a63a.png"></p>
 <p>为什么这里a,b,c都有初始化，还会提示非法变量呢？</p>
 <p>明显和我们的变量转换函数有关，我这里的思路是组部分解析buf，就是从0开始找，如果找到了就标记当前的下标，我们从当前下标开始找。这样有个问题，就是我们是abc顺序插入umap的，这里猜测umap存储是cba的一个链表，所以我们找到c的时候，就已经跳过了a和b</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">NameTraslate</span><span class="params">(string &amp;buf)</span></span>&#123;</span><br><span class="line">    string::const_iterator it = buf.<span class="built_in">begin</span>();</span><br><span class="line">    string::const_iterator word_start;</span><br><span class="line">    string::const_iterator word_end;</span><br><span class="line">    string word;</span><br><span class="line">    <span class="type">int</span> idx=<span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> next_idx=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">const</span> <span class="keyword">auto</span>&amp; it : umap) &#123;</span><br><span class="line">		idx=buf.<span class="built_in">find</span>(it.first,next_idx);</span><br><span class="line">        <span class="keyword">if</span>(idx!= std::string::npos)&#123;<span class="comment">//如果不等于，说明找到了</span></span><br><span class="line">            next_idx=idx+it.first.<span class="built_in">length</span>();</span><br><span class="line">            buf.<span class="built_in">replace</span>(idx,it.first.<span class="built_in">length</span>(),it.second);<span class="comment">//用值替换对应对的键</span></span><br><span class="line">        &#125;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">if</span>(buf.<span class="built_in">find</span>(<span class="string">&#x27;_&#x27;</span>)!=std::string::npos)&#123;<span class="comment">//如果还找到相对应对的标识符,输出,未定义对的变量.</span></span><br><span class="line">        cerr&lt;&lt;<span class="string">&quot;未定义的变量&quot;</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -634,21 +634,21 @@
 <p>改进后，把idx&#x3D;buf.find(it.first,next_idx);改为idx&#x3D;buf.find(it.first,0)，之后就可以随便加都可以了。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">NameTraslate</span><span class="params">(string &amp;buf)</span></span>&#123;</span><br><span class="line">    string::const_iterator it = buf.<span class="built_in">begin</span>();</span><br><span class="line">    string::const_iterator word_start;</span><br><span class="line">    string::const_iterator word_end;</span><br><span class="line">    string word;</span><br><span class="line">    <span class="type">int</span> idx=<span class="number">0</span>;</span><br><span class="line">    <span class="type">int</span> next_idx=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">const</span> <span class="keyword">auto</span>&amp; it : umap) &#123;</span><br><span class="line">		idx=buf.<span class="built_in">find</span>(it.first,<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">if</span>(idx!= std::string::npos)&#123;<span class="comment">//如果不等于，说明找到了</span></span><br><span class="line">            next_idx=idx+it.first.<span class="built_in">length</span>();</span><br><span class="line">            buf.<span class="built_in">replace</span>(idx,it.first.<span class="built_in">length</span>(),it.second);<span class="comment">//用值替换对应对的键</span></span><br><span class="line">        &#125;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="keyword">if</span>(buf.<span class="built_in">find</span>(<span class="string">&#x27;_&#x27;</span>)!=std::string::npos)&#123;<span class="comment">//如果还找到相对应对的标识符,输出,未定义对的变量.</span></span><br><span class="line">        cerr&lt;&lt;<span class="string">&quot;未定义的变量&quot;</span>&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1701355653195-68a64dfb-6481-47ee-9e09-9a6e53e03f4f.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1701355653195-68a64dfb-6481-47ee-9e09-9a6e53e03f4f.png"></p>
 <p>:::info<br><font style="color:rgb(0,0,0);">5. 可尝试支持科学计数法的输入，尝试支持大浮点数（如1.0e200等）。</font></p>
 <p>:::</p>
 <p>格式肯定是支持的，但是小数点的处理真不太行。虽然说把它分成指数exp和基数base来处理的思想是没错的，但是对位数的处理，有挺大的问题，特别是字符串的数据有多种情况。</p>
 <p>这里突然想到，如果我们一开始把科学技术法的处理或者传入的数据是一个mpf_t高精度格式，让其库的函数来处理，会不会更好？特别是mpf_get_str会返回exponent的位置，我们直接根据这个位置插入小数点会不会更好？</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">ETraslate</span><span class="params">(string &amp;buf)</span></span>&#123;</span><br><span class="line">    string s=buf;</span><br><span class="line">    <span class="type">int</span> idx_e = s.<span class="built_in">find</span>(<span class="string">&quot;E&quot;</span>);</span><br><span class="line">    <span class="type">int</span> idx_ch =s.<span class="built_in">find</span>(<span class="string">&quot;#&quot;</span>);</span><br><span class="line">    <span class="type">int</span> idx_i=s.<span class="built_in">find</span>(<span class="string">&quot;i&quot;</span>);</span><br><span class="line">    <span class="type">bool</span> flag_i=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span>(idx_e!= std::string::npos)&#123;</span><br><span class="line">        <span class="keyword">if</span>(idx_i!=std::string::npos)&#123;</span><br><span class="line">            buf.<span class="built_in">pop_back</span>();<span class="comment">//把i给pop掉</span></span><br><span class="line">            flag_i=<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(idx_ch!= std::string::npos)&#123;<span class="comment">//如果存在的话&#123;</span></span><br><span class="line">            buf[idx_ch]=<span class="string">&#x27;-&#x27;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        string base = s.<span class="built_in">substr</span>(<span class="number">0</span>, idx_e); <span class="comment">//获取小数部分</span></span><br><span class="line">        <span class="type">int</span> exp = <span class="built_in">stoi</span>(s.<span class="built_in">substr</span>(idx_e + <span class="number">1</span>)); <span class="comment">//获取指数部分</span></span><br><span class="line">        buf=<span class="built_in">AdjustResult</span>(exp,base);</span><br><span class="line">        <span class="keyword">if</span>(flag_i)&#123;</span><br><span class="line">            buf.<span class="built_in">append</span>(<span class="string">&quot;i&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">string <span class="title">AdjustResult</span><span class="params">(<span class="type">int</span> exp,string &amp;buf)</span></span>&#123;</span><br><span class="line">    string adjust_result;</span><br><span class="line">    <span class="keyword">if</span> (exp &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">// 计算小数点需要向左移动的位数</span></span><br><span class="line">        <span class="type">int</span> move = -exp;</span><br><span class="line">        adjust_result = <span class="string">&quot;0.&quot;</span> + std::<span class="built_in">string</span>(move, <span class="string">&#x27;0&#x27;</span>) + buf;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 在整数部分后面拼接exp个&quot;0&quot;</span></span><br><span class="line">        adjust_result = buf + std::<span class="built_in">string</span>(exp, <span class="string">&#x27;0&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> adjust_result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1701356178560-0cdaf5a6-4531-4cf3-a9aa-e32ca61db6ab.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1701356178560-0cdaf5a6-4531-4cf3-a9aa-e32ca61db6ab.png"></p>
 <p>:::info</p>
 <ol start="6">
 <li>可尝试支持大数，支持高精度计算（可调用相关高精度运算库）。</li>
 </ol>
 <p>:::</p>
 <p>只能说托mpf的福，没问题，但是表达式执行算法有大问题。</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1701356730668-9eef0e9c-572a-42b6-aa2c-28f796453797.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1701356730668-9eef0e9c-572a-42b6-aa2c-28f796453797.png"></p>
 <p>:::info<br><font style="color:rgb(0,0,0);">7. </font><font style="color:rgb(0,0,0);">可尝试多种方式对代码进行优化，包括执行速度、功能等（如在交互中支持</font><font style="color:rgb(0,0,0);">++</font><font style="color:rgb(0,0,0);">，</font><font style="color:rgb(0,0,0);">+&#x3D;</font><font style="color:rgb(0,0,0);">，</font><font style="color:rgb(0,0,0);">- </font></p>
 <p><font style="color:rgb(0,0,0);">-</font><font style="color:rgb(0,0,0);">，</font><font style="color:rgb(0,0,0);">-&#x3D;</font><font style="color:rgb(0,0,0);">，</font><font style="color:rgb(0,0,0);">*&#x3D;</font><font style="color:rgb(0,0,0);">，</font><font style="color:rgb(0,0,0);">&#x2F;&#x3D;</font><font style="color:rgb(0,0,0);">等操作）；可以尝试完善错误提示，让错误提示更加明确；尝试允许用户自 </font></p>
 <p><font style="color:rgb(0,0,0);">选输出方式，如是否采用科学计数法等；可内嵌帮助文档，通过特定指令能够输出对应帮 </font></p>
@@ -760,7 +760,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2024-11-08 15:40:54 / 修改时间：15:45:33" itemprop="dateCreated datePublished" datetime="2024-11-08T15:40:54+08:00">2024-11-08</time>
+              <time title="创建时间：2024-11-08 15:40:54 / 修改时间：15:52:23" itemprop="dateCreated datePublished" datetime="2024-11-08T15:40:54+08:00">2024-11-08</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -848,23 +848,23 @@
 <h2 id="pZG7D">需求2：打印表达式和结果，通过命令行参数读取，此处用windows执行。</h2>
 
 <p>执行结果</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697126140616-ba2abbcb-5dd2-4f54-8100-1b1115fc8bbb.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1697126140616-ba2abbcb-5dd2-4f54-8100-1b1115fc8bbb.png"></p>
 <h3 id="TgGJ4">解析</h3>
 
 <p>此处是打印表达式用到的东西，此时还用命令行参数，所以存储格式是char，下面会进行转换int</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697126213764-7a8d9fab-ad09-4531-b03d-be6ae91f0e9f.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1697126213764-7a8d9fab-ad09-4531-b03d-be6ae91f0e9f.png"></p>
 <p>此处是打印“&#x3D;”与结果，结果存储在一个int类型的数组中，在我们的函数里，为了计算方便，将字符串倒转过来，所以最后打印结果的时候需要逆序打印。</p>
 <p>这里还用一个函数判断是否为浮点数，以判断在什么位置应该打印小数点“.”,其中46为小数点的ASCII码</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697126387502-9a6ad77e-d586-4112-b019-0ccd206353e9.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1697126387502-9a6ad77e-d586-4112-b019-0ccd206353e9.png"></p>
 <p>flag1与flag2判断前面是否需要带负号</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697126427363-6ccbd8c1-5b5c-4cc3-b416-0d208f541f62.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1697126427363-6ccbd8c1-5b5c-4cc3-b416-0d208f541f62.png"></p>
 <p>现在我们来讲讲整数乘法部分是如何实现的，我们先看从函数调用看过去，在此之前，有一个char数组转int数组的操作（并且将数组逆转）（<strong>其实转成char数组也可以，但是乘法的算法和int不一样，需要重新设计）</strong></p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697127632392-78647f25-c005-4458-92c9-e2ebf4a4b42c.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1697127632392-78647f25-c005-4458-92c9-e2ebf4a4b42c.png"></p>
 <p>然后将逆转后的数组(int)传参进函数运算</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697170557276-e009c9a0-038f-47e6-bf64-26af20947547.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1697170557276-e009c9a0-038f-47e6-bf64-26af20947547.png"></p>
 <p>注意到len3&#x3D;len1+len2，,之后进行乘法运算，最后减去多余的0，如何理解？</p>
 <p>如25 * 25&#x3D;625，此时len3是4，第一个for循环式运算出来的结果是 ，5260，减去多余的0是526，然后逆序输出成625</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697170583658-4c79ff09-ce33-47c4-acb4-2b89e4905646.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1697170583658-4c79ff09-ce33-47c4-acb4-2b89e4905646.png"></p>
 <blockquote>
 <p>如果用局部变量来获取长度可能会有问题,如下。我们用全局来解决</p>
 <p>len_ptr1&#x3D;strlen(ptr1);如果用strlen,如果第一个字符是’\x00’,就会截断,长度为0</p>
@@ -873,21 +873,21 @@
 
 <p>执行结果，和描述有点差异，比如科学技术法打印出来并没有转换成小数，以及小数点后面的0并没有省去</p>
 <p>以及这里的科学技术法只能用大写E</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697127352046-455ad05e-0540-44f2-942d-5c382d939346.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1697127352046-455ad05e-0540-44f2-942d-5c382d939346.png"></p>
 <h3 id="Y8Svy">科学计数法转换</h3>
 
 <p>应该是用到了C++这两个库</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697174639917-23b8b98a-3921-4c7a-bd2e-27bb71b22869.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1697174639917-23b8b98a-3921-4c7a-bd2e-27bb71b22869.png"></p>
 <p>分为两步，一个是科学计数法法转浮点数，另一个是浮点数转成字符数组</p>
 <p>这里在转换的时候遇到困难，搜资料发现有如此简单的方法，便采用，用到了类的东西</p>
 <p>使用find方法找到E的位置，exp是指数部分，base是我们前面的部分</p>
 <p>然后做一个运算</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697174489882-0634a596-2267-48ce-9f6a-987ee77005f2.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1697174489882-0634a596-2267-48ce-9f6a-987ee77005f2.png"></p>
 <h3 id="UrHR3">小数分析</h3>
 
 <p>上面提到过，有一个函数判断是否为浮点数，我们的函数如下，就是根据里面有没有”.”进行判断，是的话，返回真，执行我们的浮点数运算函数。这个函数就是看有没有’.’，此时Dotflag传进来的还是char类型的数组</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697127471464-38642af7-3bee-4f4d-b124-b713777c1212.png"></p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697126589586-5ddb5db1-e958-4c51-9b72-386bd4b2f110.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1697127471464-38642af7-3bee-4f4d-b124-b713777c1212.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1697126589586-5ddb5db1-e958-4c51-9b72-386bd4b2f110.png"></p>
 <p>那浮点数乘法部分我们如何实现的呢？</p>
 <p>首先我们先看，此处定义了dotflag，来分别存储各个数组小数点的位置，在小数运算中有个特性，就是结果的小数点后几位取决于乘法两个数小数点几位相加的结果。比如1.44&#x3D;1.2*1.2（2&#x3D;1+1）</p>
 <p>所以我们dotflag就是1 2相加。</p>
@@ -895,36 +895,36 @@
 <p>注意这里判断的时候，由于我们前面逆转操作时有 int(ptr[i]-‘0’)的操作，所以我们不能直接判断它是否为’.’，而是如图</p>
 <p>去掉小数点之后，我们数组就剩数字了，是不是意味着我们可以把它当做整数处理？</p>
 <p>所以后面直接带进整数乘法。</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697170915826-3aaffeef-4c36-4940-aac6-5d806fcd27d2.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1697170915826-3aaffeef-4c36-4940-aac6-5d806fcd27d2.png"></p>
 <p>最后出来，我们要把小数点给插上去，插进去的时候注意len3长度要加1</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697171178393-03539b5f-cd8a-4d48-b610-31a0502a3e10.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1697171178393-03539b5f-cd8a-4d48-b610-31a0502a3e10.png"></p>
 <p>最后出来到main函数这里打印，注意这里有三个if同级，后面两个if是因为程序有点bug，临时做的一点修改，我目前找不到这个bug来源于哪里，这后面的两个if大概是这样的：</p>
 <p>因为逆序输出，第一位就是最后一位(len-1)，在科学计数法运算的时候，Float_Mul更改过的mul_result数组最后一位是以0结尾，也看不见小数点，这个问题可能和长度有关。但是呢，我们如果输入小数它又是正常的。</p>
 <p>bug如：0625   修补后0.625</p>
 <p>第三个if单独修补以’.’开头的东西</p>
 <p>大概效果如：.625   修补后0.625</p>
 <p>最后for循环里面，由于我们在Float_Mul插进去的是’.’，int类型值是46，所以我们也要判断如果是46就要换成点。注意这里数组每个值都不会大于10，如果大于10会被前面Big_Mul算法除掉，所以这是安全的。</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697171248073-31f6676f-b08e-412f-bc23-f90bb0a6864e.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1697171248073-31f6676f-b08e-412f-bc23-f90bb0a6864e.png"></p>
 <h2 id="xWD8I">需求4 检查</h2>
 
 <p>如图，我们声明了两个int变量来记录dot和E的个数，如果2个及以上就是非法字符，当然这里没法判断输入者可以用.和E结尾，不过程序会运行出一些奇怪的数据。</p>
 <p>还有输入其他的也是非法字符，只让输入0-9 . E e这些</p>
 <p>但是这里在处理科学计数法的时候会有一个问题，后面讲大浮点数的时候会涉及到。</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697172808327-b683c24d-b17f-4e64-b145-e24dc81c4a81.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1697172808327-b683c24d-b17f-4e64-b145-e24dc81c4a81.png"></p>
 <h2 id="c7QCB">需求5 大整数</h2>
 
 <p>由于这里的算法是针对大整数的，char类型数组不怕溢出，溢出了可以改改宏定义，所以多大都不怕。</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697171670005-1f737062-f23c-4273-aee5-c79090db2dec.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1697171670005-1f737062-f23c-4273-aee5-c79090db2dec.png"></p>
 <h2 id="tynrl">需求6 大浮点数</h2>
 
 <p>大浮点数运算执行不通过，报错是自己写的，说太多’.’了（最后一行），我们可以看到整个存储它的数组</p>
 <p>原因找到了，是因为check检查的时候，我们输入1.0E200在这个位置记录了一个dot，转换之后，len长度发生变化，但是check函数并没有重新执行一遍，所以在最后检测到了dot，此时char_dot为2，退出程序。</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697172556080-77194bef-a2e6-43f5-9e61-db6649089adb.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1697172556080-77194bef-a2e6-43f5-9e61-db6649089adb.png"></p>
 <p>解决方法:在check前面进行科学计数法转换</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697176013861-b70e340a-f5a2-4c71-8ba6-12a458be42a4.png"></p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697176036349-4af8d6fd-c75c-4afb-b773-d007233047c3.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1697176013861-b70e340a-f5a2-4c71-8ba6-12a458be42a4.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1697176036349-4af8d6fd-c75c-4afb-b773-d007233047c3.png"></p>
 <p>可以看到都打印成功</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697174353039-abc85c74-900c-4473-9fb1-b638adc71072.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1697174353039-abc85c74-900c-4473-9fb1-b638adc71072.png"></p>
 <h2 id="tRlZ1">需求7 需求8</h2>
 
 <p>完善错误提示</p>
@@ -935,19 +935,19 @@
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/stelayuri/p/13347896.html">https://www.cnblogs.com/stelayuri/p/13347896.html</a></p>
 <p>性能展示：</p>
 <p>普通整数相乘</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697176337696-b3a8f0ff-39b7-4e1a-9ccc-2d17e2cb58ec.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1697176337696-b3a8f0ff-39b7-4e1a-9ccc-2d17e2cb58ec.png"></p>
 <p>科学计数法，最后一个没有运行时间，说明崩掉了，不知道为什么最后一个会崩掉？难道是输出太多数据了？</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697176682822-372476cb-1e2e-4011-9903-a96ba249bd9e.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1697176682822-372476cb-1e2e-4011-9903-a96ba249bd9e.png"></p>
 <p>感觉对于大数字还是足够快的。</p>
 <p>不过了比较多的一个for循环，以及一个双重循环，这些就对时间有影响</p>
 <h2 id="lfdIl">需求9</h2>
 
 <p>高精度乘法的实现方案，我们用数组来存储一个一个位，这样就不会有大数的问题，按照对乘法的一般认识来写的这个程序，这样我们刚好用一个二层循环来实现乘法，先让A的每一位去乘B0，过完一次循环就到B1，以此类推。</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/jpeg/33556483/1697174883606-a3471f66-b975-4e7f-9ba8-68e2ddb4f6fd.jpeg"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1697174883606-a3471f66-b975-4e7f-9ba8-68e2ddb4f6fd.jpeg"></p>
 <p>核心代码就在大数乘法的部分，解释如注释，也在前面大乘法的时候解释过：</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697176092804-df738d3b-4fd8-4872-9093-d275f8c9ffba.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1697176092804-df738d3b-4fd8-4872-9093-d275f8c9ffba.png"></p>
 <p>项目特色，个人觉得是段代码了，转换科学计数法的时候，很简洁，借鉴了别人的方法</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2023/png/33556483/1697176841489-ecf97a2d-4fcc-4304-9b2f-4f5164b77c4f.png"></p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1697176841489-ecf97a2d-4fcc-4304-9b2f-4f5164b77c4f.png"></p>
 <h2 id="F2JXq">总结</h2>
 
 <p>一个月的时间还是足够完成程序的，但是比较难处理的是修补程序各种想不到的bug，比如Float_Mul去掉点并记录位置的时候，此时int类型的 .  并不是其ACSII码46，而是其之前逆转字符串到int数组做的处理’.’-‘0’&#x3D;-2这个当时找了很久都没找到是什么问题，很折磨。从写浮点数开始就已经出现许多错误了，然后到check函数，check函数还是遇到许多问题的，但是还好不是什么短路求值问题，而是在科学计数法转换的时候出现的一些问题，详细见需求6。</p>
