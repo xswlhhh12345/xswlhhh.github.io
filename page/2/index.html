@@ -22,51 +22,30 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="编译器编译源代码后生成的文件叫做目标文件。 3.1目标文件的格式windows下的可执行格式是PE文件，Linux则是ELF，它们都是COFF格式而来。 目标文件就是源代码编译后但未进行链接的那些中间文件。 动态链接库(.ddl)(.so)和静态链接库(.lib)(.a)都按照可执行文件存储。 静态链接库可理解成多个目标文件捆绑在一起的包。 下面是ELF文件相关的一个总结图，建议看看。  随后书下">
-<meta property="og:type" content="article">
-<meta property="og:title" content="《程序员自我修养:链接、装载与库》第三章 目标文件有什么？">
-<meta property="og:url" content="http://example.com/2024/03/27/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB-%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93%E3%80%8B%E7%AC%AC%E4%B8%89%E7%AB%A0-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/index.html">
+  <meta name="description" content="用最少的时间做无关的事，用最多的时间做紧要的事">
+<meta property="og:type" content="website">
+<meta property="og:title" content="xswlhhh的黄金屋">
+<meta property="og:url" content="http://example.com/page/2/index.html">
 <meta property="og:site_name" content="xswlhhh的黄金屋">
-<meta property="og:description" content="编译器编译源代码后生成的文件叫做目标文件。 3.1目标文件的格式windows下的可执行格式是PE文件，Linux则是ELF，它们都是COFF格式而来。 目标文件就是源代码编译后但未进行链接的那些中间文件。 动态链接库(.ddl)(.so)和静态链接库(.lib)(.a)都按照可执行文件存储。 静态链接库可理解成多个目标文件捆绑在一起的包。 下面是ELF文件相关的一个总结图，建议看看。  随后书下">
+<meta property="og:description" content="用最少的时间做无关的事，用最多的时间做紧要的事">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730085119003.jpg">
-<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730085552659.jpg">
-<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/books_1_3_3.jpg">
-<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/ca5b3bcd84d6debdbc422e6c8f3cbcb.png">
-<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730085644558.jpg">
-<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730085763485.jpg">
-<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730085850283.jpg">
-<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730085883441.jpg">
-<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730085943016.jpg">
-<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730085995128.jpg">
-<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730086037825.jpg">
-<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730086102351.jpg">
-<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/3ad734d862830a85f303d8c2d7b496e.png">
-<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/a945ceae467dd87f8b4268d7c01942d.png">
-<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730086244994.jpg">
-<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730086280295.jpg">
-<meta property="article:published_time" content="2024-03-27T10:26:27.000Z">
-<meta property="article:modified_time" content="2024-11-04T07:13:44.223Z">
 <meta property="article:author" content="xswlhhh">
-<meta property="article:tag" content="程序员自我修养">
-<meta property="article:tag" content="读书笔记">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1730085119003.jpg">
 
-<link rel="canonical" href="http://example.com/2024/03/27/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB-%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93%E3%80%8B%E7%AC%AC%E4%B8%89%E7%AB%A0-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">
+<link rel="canonical" href="http://example.com/page/2/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : false,
-    isPost : true,
+    isHome : true,
+    isPost : false,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>《程序员自我修养:链接、装载与库》第三章 目标文件有什么？ | xswlhhh的黄金屋</title>
+  <title>xswlhhh的黄金屋</title>
   
 
 
@@ -212,10 +191,9 @@
         <div class="content-wrap">
           
 
-          <div class="content post posts-expand">
+          <div class="content index posts-expand">
             
-
-    
+      
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -231,9 +209,10 @@
       <meta itemprop="name" content="xswlhhh的黄金屋">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          《程序员自我修养:链接、装载与库》第三章 目标文件有什么？
-        </h1>
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/03/27/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB-%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93%E3%80%8B%E7%AC%AC%E4%B8%89%E7%AB%A0-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">《程序员自我修养:链接、装载与库》第三章 目标文件有什么？</a>
+        </h2>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -262,13 +241,6 @@
             </span>
 
           
-            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span id="busuanzi_value_page_pv"></span>
-            </span>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
@@ -291,7 +263,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>编译器编译源代码后生成的文件叫做目标文件。</p>
+          <p>编译器编译源代码后生成的文件叫做目标文件。</p>
 <h1 id="3-1目标文件的格式"><a href="#3-1目标文件的格式" class="headerlink" title="3.1目标文件的格式"></a>3.1目标文件的格式</h1><p>windows下的可执行格式是PE文件，Linux则是ELF，它们都是COFF格式而来。</p>
 <p>目标文件就是源代码编译后但未进行链接的那些中间文件。</p>
 <p>动态链接库(.ddl)(.so)和静态链接库(.lib)(.a)都按照可执行文件存储。</p>
@@ -394,62 +366,30 @@
 <h1 id="3-6-调试信息"><a href="#3-6-调试信息" class="headerlink" title="3.6 调试信息"></a>3.6 调试信息</h1><p>如果我们GCC编译的时候加上“-g”参数，编译器产生的目标文件里面加上调试信息，可以用readelf工具查看，目标文件里面多了很多“debug”的段</p>
 <p>我们可以用“strip”命令来去掉ELF的调试信息</p>
 <h1 id="3-7-完"><a href="#3-7-完" class="headerlink" title="3.7 完"></a>3.7 完</h1>
+      
     </div>
 
     
     
     
-        
-
-<div>
-<ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>本文作者： </strong>xswlhhh
-  </li>
-  <li class="post-copyright-link">
-    <strong>本文链接：</strong>
-    <a href="http://example.com/2024/03/27/%E3%80%8A%E7%A8%8B%E5%BA%8F%E5%91%98%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB-%E9%93%BE%E6%8E%A5%E3%80%81%E8%A3%85%E8%BD%BD%E4%B8%8E%E5%BA%93%E3%80%8B%E7%AC%AC%E4%B8%89%E7%AB%A0-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" title="《程序员自我修养:链接、装载与库》第三章 目标文件有什么？">http://example.com/2024/03/27/《程序员自我修养-链接、装载与库》第三章-读书笔记/</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
-  </li>
-</ul>
-</div>
-
-	
       <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/%E7%A8%8B%E5%BA%8F%E5%91%98%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/" rel="tag"># 程序员自我修养</a>
-              <a href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" rel="tag"># 读书笔记</a>
-          </div>
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item"></div>
-      <div class="post-nav-item">
-    <a href="/2024/03/27/%E7%A2%8E%E7%A2%8E%E5%BF%B50x0/" rel="next" title="碎碎念0x0">
-      碎碎念0x0 <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
+        <div class="post-eof"></div>
       </footer>
-    
   </article>
   
   
   
 
 
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
+
 
           </div>
           
-    
-  <div class="comments">
-    <div id="lv-container" data-id="city" data-uid="MTAyMC81OTY4MS8zNjE0Mw=="></div>
-  </div>
-  
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -498,7 +438,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#3-1%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6%E7%9A%84%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">3.1目标文件的格式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-2%E7%9B%AE%E6%A0%87%E6%96%87%E4%BB%B6%E6%98%AF%E4%BB%80%E4%B9%88%E6%A0%B7%E7%9A%84"><span class="nav-number">2.</span> <span class="nav-text">3.2目标文件是什么样的?</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-3%E6%8C%96%E6%8E%98SimpleSection-o"><span class="nav-number">3.</span> <span class="nav-text">3.3挖掘SimpleSection.o</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-1-%E4%BB%A3%E7%A0%81%E6%AE%B5"><span class="nav-number">3.1.</span> <span class="nav-text">3.3.1 代码段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-2%E6%95%B0%E6%8D%AE%E6%AE%B5%E5%92%8C%E5%8F%AA%E8%AF%BB%E6%95%B0%E6%8D%AE%E6%AE%B5"><span class="nav-number">3.2.</span> <span class="nav-text">3.3.2数据段和只读数据段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-3BSS%E6%AE%B5"><span class="nav-number">3.3.</span> <span class="nav-text">3.3.3BSS段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-4%E5%85%B6%E4%BB%96%E6%AE%B5"><span class="nav-number">3.4.</span> <span class="nav-text">3.3.4其他段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%AE%B5"><span class="nav-number">3.4.1.</span> <span class="nav-text">自定义段</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-4ELF%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E6%8F%8F%E8%BF%B0"><span class="nav-number">4.</span> <span class="nav-text">3.4ELF文件结构描述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-1%E6%96%87%E4%BB%B6%E5%A4%B4"><span class="nav-number">4.1.</span> <span class="nav-text">3.4.1文件头</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-2%E6%AE%B5%E8%A1%A8"><span class="nav-number">4.2.</span> <span class="nav-text">3.4.2段表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-3%E9%87%8D%E5%AE%9A%E4%BD%8D%E8%A1%A8"><span class="nav-number">4.3.</span> <span class="nav-text">3.4.3重定位表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-4%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%A1%A8"><span class="nav-number">4.4.</span> <span class="nav-text">3.4.4字符串表</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-5%E9%93%BE%E6%8E%A5%E7%9A%84%E6%8E%A5%E5%8F%A3%E2%80%94%E2%80%94%E7%AC%A6%E5%8F%B7"><span class="nav-number">5.</span> <span class="nav-text">3.5链接的接口——符号</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-1-ELF%E7%AC%A6%E5%8F%B7%E7%BB%93%E6%9E%84"><span class="nav-number">5.1.</span> <span class="nav-text">3.5.1 ELF符号结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-2-%E7%89%B9%E6%AE%8A%E7%AC%A6%E5%8F%B7"><span class="nav-number">5.2.</span> <span class="nav-text">3.5.2 特殊符号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-3-%E7%AC%A6%E5%8F%B7%E4%BF%AE%E9%A5%B0%E5%92%8C%E5%87%BD%E6%95%B0%E7%AD%BE%E5%90%8D"><span class="nav-number">5.3.</span> <span class="nav-text">3.5.3 符号修饰和函数签名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-4-extern%E2%80%9CC%E2%80%9D"><span class="nav-number">5.4.</span> <span class="nav-text">3.5.4 extern“C”</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-5-%E5%BC%B1%E7%AC%A6%E5%8F%B7%E5%92%8C%E5%BC%BA%E7%AC%A6%E5%8F%B7"><span class="nav-number">5.5.</span> <span class="nav-text">3.5.5 弱符号和强符号</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-6-%E8%B0%83%E8%AF%95%E4%BF%A1%E6%81%AF"><span class="nav-number">6.</span> <span class="nav-text">3.6 调试信息</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-7-%E5%AE%8C"><span class="nav-number">7.</span> <span class="nav-text">3.7 完</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -684,21 +623,6 @@ $(document).ready(function() {
 
   
 
-<script>
-NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
-  window.livereOptions = {
-    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
-  };
-  (function(d, s) {
-    var j, e = d.getElementsByTagName(s)[0];
-    if (typeof LivereTower === 'function') { return; }
-    j = d.createElement(s);
-    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-    j.async = true;
-    e.parentNode.insertBefore(j, e);
-  })(document, 'script');
-});
-</script>
 
 </body>
 </html>
