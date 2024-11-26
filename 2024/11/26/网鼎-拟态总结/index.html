@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="​	上一个星期去了强网拟态和网鼎杯的线下赛，总计参与做出了3道pwn题。强网拟态的强度是让人一直在打并且沉浸在里面的，网鼎杯只有4小时ctf时间说实话对我来说是真的太短了，我出的这3道pwn题跟平时的堆题不一样，这三道堆题让我得到了更广阔的视野和更有用的shellcode编写能力，简单来说就是对我的影响很大，这里就来简单分析一下一路上做题的心得和感受。 QWNT​	如果要我选择这两个比赛谁带给我的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网鼎&amp;拟态总结">
+<meta property="og:url" content="http://example.com/2024/11/26/%E7%BD%91%E9%BC%8E-%E6%8B%9F%E6%80%81%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="xswlhhh的黄金屋">
+<meta property="og:description" content="​	上一个星期去了强网拟态和网鼎杯的线下赛，总计参与做出了3道pwn题。强网拟态的强度是让人一直在打并且沉浸在里面的，网鼎杯只有4小时ctf时间说实话对我来说是真的太短了，我出的这3道pwn题跟平时的堆题不一样，这三道堆题让我得到了更广阔的视野和更有用的shellcode编写能力，简单来说就是对我的影响很大，这里就来简单分析一下一路上做题的心得和感受。 QWNT​	如果要我选择这两个比赛谁带给我的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/33556483/1732589712640-a3652b84-145f-4c24-ab45-cd155c197649.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/33556483/1732588987803-2773248c-bb84-48c8-84e8-932ba25d28fe.png">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1732589837157-9d3036b5-4a28-409b-95d9-4eb308cb5bc5.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/33556483/1732590128149-76671c55-f5ff-412c-a1f0-ed1ee6e1e44f.png">
+<meta property="og:image" content="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1732592307143-7d043fb2-5e7d-44b1-a32e-890e0e481a4c.png">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2024/png/33556483/1732594175866-98e20640-3217-48ac-b78c-3d30fd140f63.png">
+<meta property="article:published_time" content="2024-11-26T05:13:52.000Z">
+<meta property="article:modified_time" content="2024-11-26T05:16:20.194Z">
+<meta property="article:author" content="xswlhhh">
+<meta property="article:tag" content="碎碎念">
+<meta property="article:tag" content="二进制知识">
+<meta property="article:tag" content="ctf">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2024/png/33556483/1732589712640-a3652b84-145f-4c24-ab45-cd155c197649.png">
+
+<link rel="canonical" href="http://example.com/2024/11/26/%E7%BD%91%E9%BC%8E-%E6%8B%9F%E6%80%81%E6%80%BB%E7%BB%93/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>网鼎&拟态总结 | xswlhhh的黄金屋</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">xswlhhh的黄金屋</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/archives" rel="section"><i class="home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-resources">
+
+    <a href="/resources/" rel="section"><i class="download fa-fw"></i>资源</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/11/26/%E7%BD%91%E9%BC%8E-%E6%8B%9F%E6%80%81%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/myavatar.jpg">
+      <meta itemprop="name" content="xswlhhh">
+      <meta itemprop="description" content="用最少的时间做无关的事，用最多的时间做紧要的事">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xswlhhh的黄金屋">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          网鼎&拟态总结
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-11-26 13:13:52 / 修改时间：13:16:20" itemprop="dateCreated datePublished" datetime="2024-11-26T13:13:52+08:00">2024-11-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%80%BB%E7%BB%93/" itemprop="url" rel="index"><span itemprop="name">总结</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+              <span>4.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>​	上一个星期去了强网拟态和网鼎杯的线下赛，总计参与做出了3道pwn题。强网拟态的强度是让人一直在打并且沉浸在里面的，网鼎杯只有4小时ctf时间说实话对我来说是真的太短了，我出的这3道pwn题跟平时的堆题不一样，这三道堆题让我得到了更广阔的视野和更有用的shellcode编写能力，简单来说就是对我的影响很大，这里就来简单分析一下一路上做题的心得和感受。</p>
+<h1 id="QWNT"><a href="#QWNT" class="headerlink" title="QWNT"></a>QWNT</h1><p>​	如果要我选择这两个比赛谁带给我的影响最大？那么我将毫不犹豫地选择强网拟态，强网拟态ctf上了三波题，我只看pwn，但是我菜，题目看上去很难，其实一点也不简单。</p>
+<p>​	不过这里并不急着聊聊CTF，而是聊聊qwnt的iot&#x2F;车联网和无人机固件，本来以为就是简单的用firmware之类的固件分析软件分析，找到一个vuln相关的ELF文件，但是呢实际上并不是这样的。在qwnt的前几天的突击学习也让我学到了很多车联网安全的系统理论，虽然比赛题目一个都不会（也不能这么说，有一些场景题目，其系统崩溃就有分，只不过我们不是很懂要做什么而搞崩溃的，其实不是很有含金量），但是这一两天的学习速度相当的可怕，对车的理解也是比较清晰了。固件分析其实可以先问问AI这个固件后缀怎么分析，另一个就是搜相关产品的固件分析的方法，有一些人已经分析过了会提前写在blog上面。这里就简单说下.fw.sig，一开始想用开源的解密软件去解密sig文件，但是没有秘钥，其实怎么解密都是失败。偶然间看了别人blog，其实可以改后缀自己解压缩，就会提取出来一个bin文件，然后分析固件即可（但是我后面遇到了很大的问题，就是一个1g的bin提取了超过40G的二进制文件，我并不知道这是正常的还是非正常的。）</p>
+<p>​	qwnt其他部分基本上就聊完了，真没做什么，因为真不会做，后来问了圈圈，发现圈圈也是这么想的，那我就放心了<img src="https://cdn.nlark.com/yuque/0/2024/png/33556483/1732589712640-a3652b84-145f-4c24-ab45-cd155c197649.png" alt="img">。那么就来聊聊我们最熟悉的pwn吧。</p>
+<h2 id="jemalloc浅谈"><a href="#jemalloc浅谈" class="headerlink" title="jemalloc浅谈"></a>jemalloc浅谈</h2><p>​	第一道放的是一道jemalloc，当时我们是大概三四个小时找不到漏洞，后来跟圈圈聊，圈圈直接说他一眼丁真就看出来了，我当时想上去就是一拳<img src="https://cdn.nlark.com/yuque/0/2024/png/33556483/1732588987803-2773248c-bb84-48c8-84e8-932ba25d28fe.png" alt="img">。这并不是常规的堆分配器，而是新遇到的jemalloc，它的堆分配方式和内核真的非常相像，都有slab的概念，其实简单调一调不难理解其的堆分配过程。</p>
+<p>​	以我的话来概括，有一个地方存着各个大小freelist，一个地方存放着相同大小的object指针以供后来分配或者释放使用，再有一个地方就是我们的chunk了&#x2F;object了，其是由一个slab切割相同大小得到的小块。</p>
+<p>​	漏洞不仔细看真不好看出来，之前确实没有想过这方面的问题，关注到case4和case6的free函数，其对指针的解析并不相同，如果你进一步fuzz，程序就会发生崩溃。</p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1732589837157-9d3036b5-4a28-409b-95d9-4eb308cb5bc5.png" alt="img"></p>
+<p>​	问题就出在这里。解决了这个，后面就很简单了，就是覆写堆指针和func指针，还有泄露libc地址之类的。</p>
+<h2 id="heap-legend浅谈"><a href="#heap-legend浅谈" class="headerlink" title="heap_legend浅谈"></a>heap_legend浅谈</h2><h3 id="堆风水杂谈"><a href="#堆风水杂谈" class="headerlink" title="堆风水杂谈"></a>堆风水杂谈</h3><p>​	说到这道题，就不得不艾特一下圈圈<img src="https://cdn.nlark.com/yuque/0/2024/png/33556483/1732590128149-76671c55-f5ff-412c-a1f0-ed1ee6e1e44f.png" alt="img">了，tql，如果他亲手来做应该是很快秒了拿一血。但是他们当时去看kernel了（OTZ，kernel还是二血)。这道题的限制可能相对没有那么多，因为存在EAF，但是不能泄露使得这道题必定走上难题的道路。</p>
+<p>​	那么这道题就首先面临两个问题：“要爆破，还是要泄露？”。好的，其实两个都要，那我们要确定如何去leak？这里就涉及IO_leak stdout了，但是在2.39攻击stdout并不容易。</p>
+<p>​	因为我们一开始并不能拿到堆地址，而且如果使用house of rust等无需leak的方法，实际上会受到tcache的加密和unsorted 双链检查的限制。</p>
+<p>​	不过我们再次确定思路，如果我们一定要IOLeak，就必须要分配到libc的地址，什么bin中的chunk可以帮助我们达到这个目的呢？那必须是tcache，如果风水构造妥当，它必然是可以任意分配造成任意写的最佳答案。那么就有另一个问题出来了，就是如何利用tcache去分配libc地址的chunk。我们现在不能够泄露堆地址和libc地址，只有一个EAF，能够打largebin attack，只有tcache加解密的部分秘钥。其实让tcache分配到libc上最简单的方法就是让tcache_struct上面能够写有libc地址，如何做到呢？不急，我们先来总结我们能够做什么？</p>
+<p>​	基于上述条件largebin attack只能够堆地址范围内写一个堆地址，largebin可以帮助我们伪造双链，unsorted bin和small bin都有libc地址，同时双链比largebin更好伪造。那么这有一个思路就是基于unsorted bin和small bin在tcache_struct上伪造双链，这样一来就能够在在tcache_struct上面能够写有libc地址（当时就是这么想的，只不过真的没想到要怎么做）。</p>
+<p><img src="https://xswlhhh12345-blog-test.oss-cn-guangzhou.aliyuncs.com/img/1732592307143-7d043fb2-5e7d-44b1-a32e-890e0e481a4c.png" alt="img"></p>
+<p>​	如果要伪造双链，就得在它上面写两个堆地址，其实这正是largebin attack能做到的，但是我一开始尝试没有漏洞的堆风水去做，结果是并不太如意，就差一点点，不知道能不能够实现。写上libc地址之后，或者说tcache_struct染上libc之后，首先要考虑的就是如何去改写上面的libc地址。这表明我们要通过双链检测机制和unsorted bin分配机制，把chunk分配在tcache_struct上面，这一步就得去用house of water手法了，这里由于不是我做的前半部分，我就不做解析，就选择和你们一起学习去了。</p>
+<p>​	至此对于heap_legend的攻击思路明确，就很简单了，当然后面还有io_uring。我后面简单说一说编写经验吧。</p>
+<p>​	这题因为EAF的漏洞，其实我们堆的能力还是很强，这里还有第二种思路去打IO_leak。</p>
+<p>​	首先其实一个关键性的问题就是我们如何能够控制tcache_struct，第二个就是如何写上libc地址。我们如果先思考第一个问题，再思考我们能够打largebin attack写一个堆地址。其实也不难想到可以用largebin attack部分地位写tcache_struct上的指针。如果我们恰好第一个分配的chunk（也就是紧紧跟在tcache_struct后面的chunk）能够被覆盖，那么我们就能够控制tcache_struct的后半部分，紧跟着再写一个堆地址，再通过控制的chunk去改写，就存在可能控制整一个tcache_struct。之后也是简单的伪造双链，让tcache_struct上染上libc地址。</p>
+<p>​	至此第二种思路结束。</p>
+<p>​	对比：第一种思路利用unsorted bin两次分配通过unsorted bin拿到了unsorted chunk在tcache_struct上面。第二种思路只利用了一次unsorted bin一次分配让tcache_struct上染上libc地址。这里我就不说多了，你细品，如果品出来了，这道题绝对能给巨大的收获。</p>
+<h3 id="io-uring编写杂谈"><a href="#io-uring编写杂谈" class="headerlink" title="io_uring编写杂谈"></a>io_uring编写杂谈</h3><p>​	这道题的后半部分由我来完成：那就是io_uring的编写，以前懒得学的，还是要补回来的，┭┮﹏┭┮，也是边吃边玩边写，最后wdb的前一个晚上一鼓作气两点半写完shellcode，打通远程。</p>
+<p>​	这道题目ban了所有的open函数，这就必须要用到最极端的io_uring了，如何去编写io_uring的orw版本必然是shellcode学习者很难解决的一个大问题。</p>
+<p>​	我们这里简单说一下编写思路（用musl和glibc编译都行，看你选择用什么），具体shellcode真要学习，非常建议根据下面步骤具体写一遍。</p>
+<p>​	首先肯定先用c去写一遍，要用liburing库区简化整一个过程，最好只是实现一个open操作；第二就是编译出一个静态文件，拖进IDA里面去分析；第三，根据ACTF已经存在的wp，其中的io_uring shellcode其实只是完成了关键部分（比如初始化uring结构体），并且可能存在汇编代码偏差，你需要根据这些部分去完善你的orw操作（根据IDA去copy，让AI改写语法格式等）。第四，就是在简单编写的shellcode题上测试，看到底卡在哪里了，是初始化分配错误吗？还是地址分配的有问题？</p>
+<p>​	走完上面这四步，恭喜你，成功学会了io_uring的编写！</p>
+<p>​	pwntools貌似有把ELF文件解析成shellcode代码的函数？这个听圈圈了解，不过我们两个都不熟悉，还是尝试手搓+copy。</p>
+<h1 id="wdb浅谈"><a href="#wdb浅谈" class="headerlink" title="wdb浅谈"></a>wdb浅谈</h1><p>​	wdb4小时的ctf pwn我只能出一题（当时就是想能出就是win），card_master。我出的时候是七解，此时距离ctf比赛结束还有一个半小时。非CTF方向的我是一点不会，web和渗透方面我也只是会简单的用用扫描工具罢了。。。</p>
+<h2 id="CardMaster"><a href="#CardMaster" class="headerlink" title="CardMaster"></a>CardMaster</h2><p>​	本题libc版本2.27，Ubuntu GLIBC 2.27-3ubuntu1，老版本的2.27tcache是可以直接double free的。</p>
+<p>​	根据纸牌来分配堆，纸牌的花色数量和每个花色拥有的纸牌数量由你来指定。存储纸牌的信息堆块和还有花色的堆块指针的集合堆指针都在一个大堆上管理。并且有func函数指针，那么只要我们劫持func，就可以打通本题。</p>
+<p>​	如果你能够fuzz出来，或者能够看出来，其实这道题是存在非常好用的double free的，让我没想到的是，这道题竟然让圈圈苦苦盯了四个小时<img src="https://cdn.nlark.com/yuque/0/2024/png/33556483/1732594175866-98e20640-3217-48ac-b78c-3d30fd140f63.png" alt="img">（因为找洞的事情，那个free函数看起来太正常了，按照平常来说应该是没有问题的，但是这是libc2.27老版本)。不过后面其实测出了double free，或者看出具体有什么问题，发现之后也是很快就秒了。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>​	这三天打的挺累的，因为自己确实菜，水平有限，很多不会的题目，上面解出来的题目对于我来说都是相对不那么容易的。时间过得真快，转眼过去已经大三上快结束了，回想过去，那个沉迷于pwn的少年还在图书馆苦苦研究准备新生赛ret2libc的记忆并不久远，但时间就是白驹过隙，如大江一般奔流而不复回。个人的进步遇到的阻碍却依然是以前一样的挑战，不禁让人感慨，这两年半，我到底改变了什么，我很难说出来。我选择考研，是为了更好的学习安全的知识，这确实是我热爱的，但是为什么我的热爱无法击败我面对的阻碍呢？答案或许很重要，但是眼下更重要的是，明白怎么去做。时间不等人，平生心力为何尽？一事无成空相守。剩下的时间，做自己喜欢的事情就好。</p>
+<p>​	我很喜欢《揪心的玩笑和漫长的白日梦》的一句词：<strong>“就在一瞬间，握紧我矛盾密布的手”</strong>，喜欢的原因可能是很有感触吧。</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>xswlhhh
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://example.com/2024/11/26/%E7%BD%91%E9%BC%8E-%E6%8B%9F%E6%80%81%E6%80%BB%E7%BB%93/" title="网鼎&amp;拟态总结">http://example.com/2024/11/26/网鼎-拟态总结/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+	
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%A2%8E%E7%A2%8E%E5%BF%B5/" rel="tag"># 碎碎念</a>
+              <a href="/tags/%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%9F%A5%E8%AF%86/" rel="tag"># 二进制知识</a>
+              <a href="/tags/ctf/" rel="tag"># ctf</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/11/09/XSCTF2024pwn%E5%87%BA%E9%A2%98%E7%AC%94%E8%AE%B0-wp/" rel="prev" title="XSCTF2024pwn出题笔记&wp">
+      <i class="fa fa-chevron-left"></i> XSCTF2024pwn出题笔记&wp
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="lv-container" data-id="city" data-uid="MTAyMC81OTY4MS8zNjE0Mw=="></div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+	<!--网易云插件-->
+	<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1997293311&auto=1&height=66"></iframe>
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#QWNT"><span class="nav-number">1.</span> <span class="nav-text">QWNT</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#jemalloc%E6%B5%85%E8%B0%88"><span class="nav-number">1.1.</span> <span class="nav-text">jemalloc浅谈</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#heap-legend%E6%B5%85%E8%B0%88"><span class="nav-number">1.2.</span> <span class="nav-text">heap_legend浅谈</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A0%86%E9%A3%8E%E6%B0%B4%E6%9D%82%E8%B0%88"><span class="nav-number">1.2.1.</span> <span class="nav-text">堆风水杂谈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#io-uring%E7%BC%96%E5%86%99%E6%9D%82%E8%B0%88"><span class="nav-number">1.2.2.</span> <span class="nav-text">io_uring编写杂谈</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#wdb%E6%B5%85%E8%B0%88"><span class="nav-number">2.</span> <span class="nav-text">wdb浅谈</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CardMaster"><span class="nav-number">2.1.</span> <span class="nav-text">CardMaster</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="xswlhhh"
+      src="/images/myavatar.jpg">
+  <p class="site-author-name" itemprop="name">xswlhhh</p>
+  <div class="site-description" itemprop="description">用最少的时间做无关的事，用最多的时间做紧要的事</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="/2991796382@qq.com" title="E-Mail → 2991796382@qq.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2024-03 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xswlhhh</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">201k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">3:03</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    <span id="busuanzi_container_site_pv">总访问量<span id="busuanzi_value_site_pv"></span>次</span>
+    <span class="post-meta-divider">|</span>
+    <span id="busuanzi_container_site_uv">总访客数<span id="busuanzi_value_site_uv"></span>人</span>
+    <span class="post-meta-divider">|</span>
+<!-- 不蒜子计数初始值纠正 -->
+<script>
+$(document).ready(function() {
+
+    var int = setInterval(fixCount, 50);  // 50ms周期检测函数
+    var countOffset = 20000;  // 初始化首次数据
+
+    function fixCount() {            
+       if (document.getElementById("busuanzi_container_site_pv").style.display != "none")
+        {
+            $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + countOffset); 
+            clearInterval(int);
+        }                  
+        if ($("#busuanzi_container_site_pv").css("display") != "none")
+        {
+            $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + countOffset); // 加上初始数据 
+            clearInterval(int); // 停止检测
+        }  
+    }
+       	
+});
+</script> 
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<script>
+NexT.utils.loadComments(document.querySelector('#lv-container'), () => {
+  window.livereOptions = {
+    refer: location.pathname.replace(CONFIG.root, '').replace('index.html', '')
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+});
+</script>
+
+</body>
+</html>
